@@ -31,7 +31,7 @@ const createProducts = async (req , res) => {
 };
 const getProducts = async (req , res) => {
     try{
-        const result = await db.query("SELECT * FROM warehouses ORDER BY id");
+        const result = await db.query("SELECT * FROM products ORDER BY id");
         res.status(200).json({
             success: true,
         })
@@ -45,7 +45,54 @@ const getProducts = async (req , res) => {
         })
     }
 }
+const updateProducts = async (req , res) => {
+    try{
+        const {id} = req.params;
+        const {sku, name, category, reorder_threshold, reorder_qty} =req.body;
+
+        await db.query(`
+            UPDATE products
+            SET sku = $1, name = $2, category = $3, reorder_threshold = $4, reorder_qty = $5`,
+        [sku, name, category, reorder_threshold, reorder_qty]
+    );
+    res.status(200).json({
+        success: true,
+        message:"PRODUCT UPDATED SUCCESSFULLY"
+    })
+    }catch(error){
+        console.log(error);
+    }
+    res.status(500).json({
+        success:false,
+        message:"INTERNAL SERVER ERROR"
+    })
+}
+const deleteProducts = async(req , res) => {
+    console.log("Inside function");
+    try{
+        const{id} = req.params;
+        console.log("id:", id);
+        const result = await db.query(`
+            DELETE FROM products
+            WHERE id = $1,`
+        [id]);
+        console.log(result);
+
+        res.status(200).json({
+            success:true,
+            message:"PRODUCT DELETED SUCCESSFULLY"
+        })
+    }catch(error){
+        console.log(error);
+    }
+    res.status(500).json({
+        success:false,
+        message:"INTERNAL SERVER ERROR"
+    })
+};
 module.exports = {
     createProducts,
-    getProducts
+    getProducts,
+    updateProducts,
+    deleteProducts
 }

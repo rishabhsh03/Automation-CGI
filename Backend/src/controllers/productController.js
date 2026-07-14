@@ -2,8 +2,9 @@ const db = require("../models/db");
 
 require("dotenv").config();
 
-const createProducts = async (req , res) => {
-    try {
+const saveProducts = async (req , res) => {
+     console.log("req.body =", req.body);
+    
         const {
             sku,
             name,
@@ -12,6 +13,14 @@ const createProducts = async (req , res) => {
             reorder_qty
         } = req.body; 
 
+         console.log({
+        sku,
+        name,
+        category,
+        reorder_threshold,
+        reorder_qty
+    });
+        try{
          await db.query(
             `INSERT INTO products
             (sku, name, category, reorder_threshold, reorder_qty)
@@ -34,8 +43,8 @@ const getProducts = async (req , res) => {
         const result = await db.query("SELECT * FROM products ORDER BY id");
         res.status(200).json({
             success: true,
+            data:result.rows
         })
-        data:result.rows
     }catch(error){
         console.log(error);
         
@@ -52,8 +61,9 @@ const updateProducts = async (req , res) => {
 
         await db.query(`
             UPDATE products
-            SET sku = $1, name = $2, category = $3, reorder_threshold = $4, reorder_qty = $5`,
-        [sku, name, category, reorder_threshold, reorder_qty]
+            SET sku = $1, name = $2, category = $3, reorder_threshold = $4, reorder_qty = $5 
+            WHERE id = $6`,
+        [sku, name, category, reorder_threshold, reorder_qty, id]
     );
     res.status(200).json({
         success: true,
@@ -74,7 +84,7 @@ const deleteProducts = async(req , res) => {
         console.log("id:", id);
         const result = await db.query(`
             DELETE FROM products
-            WHERE id = $1,`
+            WHERE id = $1`,
         [id]);
         console.log(result);
 
@@ -91,7 +101,7 @@ const deleteProducts = async(req , res) => {
     })
 };
 module.exports = {
-    createProducts,
+    saveProducts,
     getProducts,
     updateProducts,
     deleteProducts

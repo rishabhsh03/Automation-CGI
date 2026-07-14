@@ -1,9 +1,8 @@
-const db = require("../db");
-const express = require("express");
-const router = require.Router();
+const db = require("../models/db");
+
 require("dotenv").config();
 
-const createProduct = async (req , res) => {
+const createProducts = async (req , res) => {
     try {
         const {
             sku,
@@ -16,7 +15,7 @@ const createProduct = async (req , res) => {
          await db.query(
             `INSERT INTO products
             (sku, name, category, reorder_threshold, reorder_qty)
-            VALUE($1, $2, $3, $4, $5)`,
+            VALUES($1, $2, $3, $4, $5)`,
             [sku, name, category, reorder_threshold, reorder_qty]
         );    
         res.status(200).json({
@@ -30,7 +29,23 @@ const createProduct = async (req , res) => {
         });
     }
 };
-
-module.export = {
-    createProduct
+const getProducts = async (req , res) => {
+    try{
+        const result = await db.query("SELECT * FROM warehouses ORDER BY id");
+        res.status(200).json({
+            success: true,
+        })
+        data:result.rows
+    }catch(error){
+        console.log(error);
+        
+        res.status(500).json({
+            success:false,
+            message:"INERNAL SERVER ERROR"
+        })
+    }
+}
+module.exports = {
+    createProducts,
+    getProducts
 }

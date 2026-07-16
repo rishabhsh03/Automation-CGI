@@ -1,0 +1,205 @@
+.sales-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+    height:450px;
+
+}
+
+.sales-header{
+
+    margin-bottom:25px;
+
+}
+
+.sales-header h2{
+
+    color:#1E293B;
+
+    font-size:24px;
+
+}
+
+.sales-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+.activity{
+
+    border-radius:16px;
+
+    color:white;
+
+    padding:18px;
+
+    height:150px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    transition:.3s;
+
+}
+
+.activity:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.activity-icon{
+
+    font-size:45px;
+
+    margin-bottom:15px;
+
+}
+
+.activity h1{
+
+    font-size:32px;
+
+    margin-bottom:8px;
+
+}
+
+.activity p{
+
+    font-size:15px;
+
+}
+
+/* Colors */
+
+.pending{
+
+    background:#F59E0B;
+
+}
+
+.ready{
+
+    background:#3B82F6;
+
+}
+
+.delivered{
+
+    background:#22C55E;
+
+}
+
+.returned{
+
+    background:#EF4444;
+
+}
+
+/* Animations */
+
+.pulse{
+
+    animation:pulse 1.5s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{
+
+transform:scale(1);
+
+}
+
+50%{
+
+transform:scale(1.2);
+
+}
+
+100%{
+
+transform:scale(1);
+
+}
+
+}
+
+.truck{
+
+    animation:truckMove 2s infinite;
+
+}
+
+@keyframes truckMove{
+
+0%{
+
+transform:translateX(-8px);
+
+}
+
+50%{
+
+transform:translateX(8px);
+
+}
+
+100%{
+
+transform:translateX(-8px);
+
+}
+
+}
+
+.bounce{
+
+    animation:bounce 1.5s infinite;
+
+}
+
+@keyframes bounce{
+
+0%,100%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-10px);
+
+}
+
+}
+
+.rotate{
+
+    animation:rotate 2s linear infinite;
+
+}
+
+@keyframes rotate{
+
+100%{
+
+transform:rotate(360deg);
+}
+}

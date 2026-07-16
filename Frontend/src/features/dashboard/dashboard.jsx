@@ -9,8 +9,8 @@ import CategoryProgress from "../../components/CategoryProgress";
 import HeatMap from "../../components/HeatMap";
 import ProductChart from "../../components/ProductChart";
 import PurchaseSalesChart from "../../components/PurchaseSalesChart";
-import InventoryTable from "../../components/InventoryTable";
-import RecentOrders from "../../components/RecentOrders";
+import InventoryTable from "../inventory/InventoryTable";
+import RecentOrders from "../../components/RecentOrders"; 
 
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState({
@@ -61,11 +61,7 @@ export default function Dashboard() {
             value={dashboard.summary.totalOrders}
           />
 
-          <KpiCards
-            title="Suppliers"
-            value={dashboard.summary.totalSuppliers}
-          />
-
+         
         </div>
 
         {/* Row 1 */}

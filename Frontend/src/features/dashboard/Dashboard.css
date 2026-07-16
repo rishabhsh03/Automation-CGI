@@ -2,11 +2,12 @@
 
 .dashboard-container{
     display:flex;
-    background:#06080b;
+    background-color:#06080b;
+    
 }
 
 .dashboard-content{
-
+    
     margin-left:270px;   /* Same width as sidebar */
 
     width:calc(100% - 270px);

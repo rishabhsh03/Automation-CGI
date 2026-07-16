@@ -82,7 +82,9 @@ export default function Dashboard() {
 
         <div className="row-two">
 
-          <ProductChart />
+          <ProductChart
+    categories={dashboard.categories}
+/>
 
           <PurchaseSalesChart />
 

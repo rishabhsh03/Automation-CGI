@@ -1,0 +1,107 @@
+/* Card */
+
+.product-chart {
+    background: #111827;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.25);
+    color: white;
+    height: 420px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+
+.product-chart-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.product-chart-header h2{
+    font-size:22px;
+    font-weight:600;
+    color:#fff;
+}
+
+.product-chart-header p{
+    color:#94A3B8;
+    font-size:14px;
+}
+
+/* Chart */
+
+.chart-container{
+    flex:1;
+    width:100%;
+    height:320px;
+}
+
+/* Legend */
+
+.chart-legend{
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    margin-top:15px;
+}
+
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#CBD5E1;
+    font-size:14px;
+}
+
+.legend-color{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+}
+
+.blue{
+    background:#3B82F6;
+}
+
+.green{
+    background:#22C55E;
+}
+
+.orange{
+    background:#F59E0B;
+}
+
+.red{
+    background:#EF4444;
+}
+
+/* Tooltip */
+
+.recharts-tooltip-wrapper{
+    border-radius:10px;
+}
+
+.recharts-default-tooltip{
+    background:#1F2937 !important;
+    border:none !important;
+    border-radius:10px !important;
+    color:white !important;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.product-chart{
+    height:350px;
+}
+
+.chart-container{
+    height:250px;
+}
+
+}

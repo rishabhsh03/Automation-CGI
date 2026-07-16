@@ -1,0 +1,73 @@
+/* Whole Page */
+
+.dashboard-container{
+    display:flex;
+    background:#F5F7FA;
+}
+
+.dashboard-content{
+
+    margin-left:270px;   /* Same width as sidebar */
+
+    width:calc(100% - 270px);
+
+    min-height:100vh;
+
+    padding:25px;
+}
+/* KPI Cards */
+
+.kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-top:25px;
+}
+
+/* Three Cards Row */
+
+.row-three{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:20px;
+    margin-top:25px;
+}
+
+/* Two Cards Row */
+
+.row-two{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-top:25px;
+}
+
+/* Responsive */
+
+@media(max-width:1400px){
+
+.kpi-grid{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.row-three{
+    grid-template-columns:1fr;
+}
+
+.row-two{
+    grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:768px){
+
+.dashboard-content{
+    padding:15px;
+}
+
+.kpi-grid{
+    grid-template-columns:1fr;
+}
+
+}

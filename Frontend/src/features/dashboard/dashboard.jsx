@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import "./Dashboard.css";
 
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import KpiCards from "../../components/kpiCards";
-
 import SalesActivity from "../../components/SalesActivity";
 import CategoryProgress from "../../components/CategoryProgress";
 import HeatMap from "../../components/HeatMap";
@@ -12,68 +12,79 @@ import PurchaseSalesChart from "../../components/PurchaseSalesChart";
 import InventoryTable from "../../components/InventoryTable";
 import RecentOrders from "../../components/RecentOrders";
 
-const icons = {
-  CPU: "...",
-  GPU: "...",
-  RAM: "...",
-  SSD: "...",
-};
-
 export default function Dashboard() {
-
   const [dashboard, setDashboard] = useState({
-  summary: {},
-  categories: [],
-});
+    summary: {},
+    categories: [],
+  });
 
   useEffect(() => {
     fetch("http://localhost:8000/api/get-dashboard")
-      .then(res => res.json())
-      .then(result => setDashboard(result.data))
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success) {
+          setDashboard(result.data);
+        }
+      })
       .catch(console.error);
   }, []);
 
-  if (!dashboard || !dashboard.categories) {
-    return <h1>Loading...</h1>;
+  if (!dashboard.summary) {
+    return <h2>Loading...</h2>;
   }
 
   return (
-
-    <div className="flex bg-gray-100 min-h-screen">
+    <div className="dashboard-container">
 
       <Sidebar />
 
-      <main className="flex-1 p-6">
+      <main className="dashboard-content">
 
         <Navbar />
-        
+
         {/* KPI Cards */}
 
-        <div className="grid grid-cols-4 gap-6 mt-6">
+        <div className="kpi-grid">
 
-       <KpiCards
-       title="Total Products"
-       value={dashboard.summary.totalProducts}
-       icon="https://cdn-icons-png.flaticon.com/512/1046/1046857.png"
-        />
+          <KpiCards
+            title="Total Products"
+            value={dashboard.summary.totalProducts}
+          />
+
+          <KpiCards
+            title="Low Stock"
+            value={dashboard.summary.lowStock}
+          />
+
+          <KpiCards
+            title="Orders"
+            value={dashboard.summary.totalOrders}
+          />
+
+          <KpiCards
+            title="Suppliers"
+            value={dashboard.summary.totalSuppliers}
+          />
 
         </div>
 
-        {/* Second Row */}
+        {/* Row 1 */}
 
-        <div className="grid grid-cols-3 gap-6 mt-8">
+        <div className="row-three">
 
           <SalesActivity />
 
-          <CategoryProgress categories={dashboard.categories} />
+          <CategoryProgress
+            categories={dashboard.categories}
+          />
 
           <HeatMap />
 
         </div>
 
-        {/* Third Row */}
+        {/* Row 2 */}
 
-        <div className="grid grid-cols-2 gap-6 mt-8">
+        <div className="row-two">
 
           <ProductChart />
 
@@ -81,9 +92,9 @@ export default function Dashboard() {
 
         </div>
 
-        {/* Fourth Row */}
+        {/* Row 3 */}
 
-        <div className="grid grid-cols-2 gap-6 mt-8">
+        <div className="row-two">
 
           <InventoryTable />
 
@@ -94,7 +105,5 @@ export default function Dashboard() {
       </main>
 
     </div>
-
   );
-
 }

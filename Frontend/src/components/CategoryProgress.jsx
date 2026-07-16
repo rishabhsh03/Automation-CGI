@@ -1,27 +1,38 @@
+import "../CategoryProgress.css";
 export default function CategoryProgress({ categories = [] }) {
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6">
-      <h2 className="text-xl font-bold mb-6">
-        Categories
-      </h2>
+    <div className="category-card">
 
-      {categories.map((item) => (
-        <div key={item.category} className="mb-4">
-          <div className="flex justify-between">
-            <span>{item.category}</span>
-            <span>{item.total}</span>
-          </div>
+      <div className="category-header">
+        <h2>Top Categories</h2>
+      </div>
 
-          <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-            <div
-              className="bg-green-500 h-2 rounded-full"
-              style={{
-                width: `${Number(item.total) * 10}%`,
-              }}
-            />
+      <div className="category-scroll">
+
+        {categories.map((item) => (
+          <div className="category-item" key={item.category}>
+
+            <div className="category-title">
+              <span>{item.category}</span>
+              <span>{item.total}</span>
+            </div>
+
+            <div className="progress-bar">
+
+              <div
+                className="progress-fill"
+                style={{
+                  width: `${Number(item.total) * 10}%`,
+                }}
+              ></div>
+
+            </div>
+
           </div>
-        </div>
-      ))}
+        ))}
+
+      </div>
+
     </div>
   );
 }

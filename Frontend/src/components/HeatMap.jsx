@@ -51,7 +51,7 @@ export default function HeatMap() {
               {item.name}
             </span>
 
-            <span className="text-3xl font-bold">
+            <span className="text-2xl font-bold">
               {item.value}%
             </span>
           </div>

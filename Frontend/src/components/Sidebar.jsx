@@ -1,88 +1,95 @@
+import "./Sidebar.css";
+
 import {
-  FaThLarge,
+  FaHome,
   FaBoxes,
   FaShoppingCart,
   FaTruck,
-  FaFileAlt,
-  FaPlug,
-  FaChartBar,
+  FaWarehouse,
   FaUsers,
-  FaFileInvoice,
-  FaChevronLeft,
+  FaChartBar,
+  FaCog,
+  FaSignOutAlt,
 } from "react-icons/fa";
 
 export default function Sidebar() {
-  const menu = [
-    { name: "Dashboard", icon: <FaThLarge />, active: true },
-    { name: "Inventory", icon: <FaBoxes /> },
-    { name: "Sales", icon: <FaShoppingCart /> },
-    { name: "Purchases", icon: <FaTruck /> },
-    { name: "Documents", icon: <FaFileAlt /> },
-    { name: "Integrations", icon: <FaPlug /> },
-    { name: "Reports", icon: <FaChartBar /> },
-    { name: "Customers", icon: <FaUsers /> },
-    { name: "Invoices", icon: <FaFileInvoice /> },
-  ];
-
   return (
-    <aside className="w-72 h-screen bg-[#1B2321] text-white flex flex-col shadow-xl">
+    <aside className="sidebar">
 
       {/* Logo */}
 
-      <div className="flex items-center justify-between px-6 py-6 border-b border-gray-700">
+      <div className="sidebar-logo">
 
-        <div className="flex items-center gap-3">
-
-          <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center font-bold text-xl">
-            I
-          </div>
-
-          <h1 className="text-3xl font-bold tracking-wide">
-            Inventory System
-          </h1>
-
+        <div className="logo-circle">
+          I
         </div>
 
-        <button className="text-gray-400 hover:text-white">
-          <FaChevronLeft />
-        </button>
+        <div>
+          <h2>Inventory</h2>
+          <p>Management</p>
+        </div>
 
       </div>
 
-      {/* Main */}
+      {/* Menu */}
 
-      <div className="px-6 mt-8">
+      <div className="sidebar-menu">
 
-        <p className="text-gray-500 uppercase text-xs mb-5">
-          Main
-        </p>
+        <p className="menu-title">MAIN MENU</p>
 
-        {menu.map((item) => (
+        <button className="menu-item active">
+          <FaHome />
+          <span>Dashboard</span>
+        </button>
 
-          <button
-            key={item.name}
-            className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl mb-2 transition-all duration-300 ${
-              item.active
-                ? "bg-[#38453F]"
-                : "hover:bg-[#2B3633]"
-            }`}
-          >
+        <button className="menu-item">
+          <FaBoxes />
+          <span>Inventory</span>
+        </button>
 
-            <span className="text-lg">{item.icon}</span>
+        <button className="menu-item">
+          <FaShoppingCart />
+          <span>Orders</span>
+        </button>
 
-            <span>{item.name}</span>
+        <button className="menu-item">
+          <FaTruck />
+          <span>Purchase</span>
+        </button>
 
-          </button>
+        <button className="menu-item">
+          <FaWarehouse />
+          <span>Warehouse</span>
+        </button>
 
-        ))}
+        <button className="menu-item">
+          <FaUsers />
+          <span>Suppliers</span>
+        </button>
+
+        <button className="menu-item">
+          <FaChartBar />
+          <span>Reports</span>
+        </button>
+
+        <button className="menu-item">
+          <FaCog />
+          <span>Settings</span>
+        </button>
 
       </div>
 
       {/* Footer */}
 
-      <div className="mt-auto p-6 text-gray-500 text-sm border-t border-gray-700">
+      <div className="sidebar-footer">
 
-        Inventory Management System
+        <button className="logout-btn">
+
+          <FaSignOutAlt />
+
+          Logout
+
+        </button>
 
       </div>
 

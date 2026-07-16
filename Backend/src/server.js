@@ -6,6 +6,11 @@ app.use(cors());
 app.use(express.json());
 const db = require("./models/db");
 const productRoutes = require("./routes/productRoutes");
+const dashboardRoutes =
+require("./routes/dashboardRoutes");
+
+
+
 
 const PORT = process.env.PORT || 8000;
 
@@ -19,7 +24,7 @@ app.get("/welcomepage", (req, res) => {
 
 // Register routes
 app.use("/api", productRoutes);
-
+app.use("/api/get-dashboard", dashboardRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

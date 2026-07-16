@@ -2,39 +2,45 @@ const db = require("../models/db");
 
 require("dotenv").config();
 
-const saveProducts = async (req , res) => {
-     console.log("req.body =", req.body);
-    
-        const {
-            sku,
-            name,
-            category,
-            reorder_threshold,
-            reorder_qty
-        } = req.body; 
+const saveProducts = async (req, res) => {
+    try {
+        const products = req.body;
 
-         console.log({
-        sku,
-        name,
-        category,
-        reorder_threshold,
-        reorder_qty
-    });
-        try{
-         await db.query(
-            `INSERT INTO products
-            (sku, name, category, reorder_threshold, reorder_qty)
-            VALUES($1, $2, $3, $4, $5)`,
-            [sku, name, category, reorder_threshold, reorder_qty]
-        );    
+        for (const product of products) {
+
+            const {
+                sku,
+                name,
+                category,
+                reorder_threshold,
+                reorder_qty
+            } = product;
+
+            await db.query(
+                `INSERT INTO products
+                (sku, name, category, reorder_threshold, reorder_qty)
+                VALUES ($1, $2, $3, $4, $5)`,
+                [
+                    sku,
+                    name,
+                    category,
+                    reorder_threshold,
+                    reorder_qty
+                ]
+            );
+        }
+
         res.status(200).json({
-            message:"Product created sucessfully"
-        });   
-    }catch(error){
+            success: true,
+            message: "Products inserted successfully"
+        });
+
+    } catch (error) {
         console.log(error);
 
         res.status(500).json({
-            message:"INTERNAL SERVER ERROR"
+            success: false,
+            message: "Internal Server Error"
         });
     }
 };

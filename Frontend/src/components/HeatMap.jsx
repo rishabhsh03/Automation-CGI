@@ -1,65 +1,145 @@
-const products = [
-  { name: "CPU", color: "bg-green-500", value: 95 },
-  { name: "GPU", color: "bg-blue-500", value: 88 },
-  { name: "RAM", color: "bg-purple-500", value: 82 },
-  { name: "SSD", color: "bg-pink-500", value: 76 },
-  { name: "HDD", color: "bg-yellow-500", value: 68 },
-  { name: "Motherboard", color: "bg-indigo-500", value: 92 },
-  { name: "Monitor", color: "bg-orange-500", value: 65 },
-  { name: "Keyboard", color: "bg-red-500", value: 73 },
-  { name: "Mouse", color: "bg-cyan-500", value: 81 },
-  { name: "UPS", color: "bg-emerald-500", value: 55 },
-  { name: "Networking", color: "bg-violet-500", value: 60 },
-  { name: "Accessories", color: "bg-teal-500", value: 45 },
+import "./HeatMap.css";
+
+const warehouses = ["WH-A", "WH-B", "WH-C", "WH-D"];
+
+const data = [
+  {
+    product: "CPU",
+    stock: {
+      "WH-A": 90,
+      "WH-B": 70,
+      "WH-C": 45,
+      "WH-D": 15,
+    },
+  },
+  {
+    product: "GPU",
+    stock: {
+      "WH-A": 82,
+      "WH-B": 65,
+      "WH-C": 58,
+      "WH-D": 92,
+    },
+  },
+  {
+    product: "RAM",
+    stock: {
+      "WH-A": 55,
+      "WH-B": 20,
+      "WH-C": 88,
+      "WH-D": 78,
+    },
+  },
+  {
+    product: "SSD",
+    stock: {
+      "WH-A": 95,
+      "WH-B": 84,
+      "WH-C": 74,
+      "WH-D": 62,
+    },
+  },
 ];
 
+function getColor(value) {
+
+  if (value >= 80) return "green";
+
+  if (value >= 60) return "yellow";
+
+  if (value >= 40) return "orange";
+
+  return "red";
+}
+
 export default function HeatMap() {
+
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6">
 
-      {/* Header */}
+    <div className="heatmap-card">
 
-      <div className="flex justify-between items-center mb-6">
+      <div className="heatmap-header">
 
         <div>
-          <h2 className="text-xl font-bold text-gray-800">
-            Product Heat Map
-          </h2>
 
-          <p className="text-gray-500 text-sm">
-            Product popularity
-          </p>
+          <p>Warehouse Stock Health</p>
+
         </div>
 
-        <button className="text-green-600 text-sm font-semibold">
-          View All
-        </button>
+      </div>
+
+      <table className="heatmap-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Product</th>
+
+            {warehouses.map((warehouse) => (
+              <th key={warehouse}>{warehouse}</th>
+            ))}
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          {data.map((row) => (
+
+            <tr key={row.product}>
+
+              <td className="product-name">
+                {row.product}
+              </td>
+
+              {warehouses.map((warehouse) => {
+
+  const value = row.stock[warehouse];
+
+  return (
+
+    <td key={`${row.product}-${warehouse}`}>
+
+      <div className="tooltip-container">
+
+        <div
+          className={`heat-box ${getColor(value)}`}
+        ></div>
+
+        <div className="tooltip">
+
+          <strong>{row.product}</strong>
+
+          <span>{warehouse}</span>
+
+          <hr />
+
+          <p>Stock : {value}%</p>
+
+          <p>Available : {value} Units</p>
+
+        </div>
 
       </div>
 
-      {/* Heat Map Grid */}
+    </td>
 
-      <div className="grid grid-cols-3 gap-4">
+  );
 
-        {products.map((item) => (
+})}
 
-          <div
-            key={item.name}
-            className={`${item.color} rounded-xl h-24 text-white p-4 flex flex-col justify-between shadow hover:scale-105 transition duration-300`}
-          >
-            <span className="font-semibold">
-              {item.name}
-            </span>
+            </tr>
 
-            <span className="text-2xl font-bold">
-              {item.value}%
-            </span>
-          </div>
+          ))}
 
-        ))}
+        </tbody>
 
-      </div>
+      </table>
 
     </div>
+
   );
+
 }

@@ -1,6 +1,7 @@
 import "./CategoryProgress.css";
 
 export default function CategoryProgress({ categories = [] }) {
+   console.log(categories);
   return (
     <div className="category-card">
 

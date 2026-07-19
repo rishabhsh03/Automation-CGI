@@ -7,7 +7,10 @@ const getDashboardData = async () => {
 
     return data;    
 };
-
+const getPurchaseSales = async () => {
+    return await dashboardRepository.getPurchaseSales();
+};
 module.exports = {
     getDashboardData,
+    getPurchaseSales,
 };

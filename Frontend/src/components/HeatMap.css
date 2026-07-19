@@ -1,0 +1,47 @@
+.tooltip{
+
+    position:absolute;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:.3s;
+
+}
+
+.tooltip-container{
+
+    position:relative;
+
+}
+
+.tooltip-container:hover .tooltip{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+.heat-box{
+    width:24px;
+    height:24px;
+    border-radius:6px;
+    margin:auto;
+}
+
+.green{
+    background:#22c55e;
+}
+
+.yellow{
+    background:#eab308;
+}
+
+.orange{
+    background:#f97316;
+}
+
+.red{
+    background:#ef4444;
+}

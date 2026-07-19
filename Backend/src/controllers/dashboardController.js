@@ -25,7 +25,37 @@ const getDashboard = async (req, res) => {
     }
 
 };
+const getPurchaseSales = async (req,res)=>{
+
+    try{
+
+        const data = await dashboardService.getPurchaseSales();
+
+        res.json({
+
+            success:true,
+
+            data
+
+        });
+
+    }
+
+    catch(error){
+
+        res.status(500).json({
+
+            success:false,
+
+            message:error.message
+
+        });
+
+    }
+
+};
 
 module.exports = {
     getDashboard,
+    getPurchaseSales
 };

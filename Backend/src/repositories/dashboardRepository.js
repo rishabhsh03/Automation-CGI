@@ -53,7 +53,34 @@ const getDashboardData = async () => {
   };
 
 };
+const getPurchaseSales = async () => {
+  const result = await db.query(`
+    SELECT
+            TO_CHAR(created_at,'Mon') AS month,
+
+            SUM(CASE
+                WHEN order_type = 'PURCHASE'
+                THEN total_amount
+                ELSE 0
+            END) AS purchase,
+
+            SUM(CASE
+                WHEN order_type = 'SALE'
+                THEN total_amount
+                ELSE 0
+            END) AS sales
+
+        FROM orders
+
+        GROUP BY month,
+                 EXTRACT(MONTH FROM created_at)
+
+        ORDER BY EXTRACT(MONTH FROM created_at);
+    `);
+    return result.rows;
+}
 
 module.exports = {
   getDashboardData,
+  getPurchaseSales
 };

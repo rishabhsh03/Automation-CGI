@@ -1,37 +1,27 @@
 import "./Inventory.css";
 import { FaPlus, FaSearch } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
-const inventory = [
-  {
-    sku: "CPU001",
-    name: "Intel Core i5-12400",
-    category: "CPU",
-    warehouse: "Warehouse A",
-    quantity: 25,
-    status: "In Stock",
-  },
-  {
-    sku: "GPU001",
-    name: "RTX 4060",
-    category: "GPU",
-    warehouse: "Warehouse A",
-    quantity: 5,
-    status: "Low Stock",
-  },
-  {
-    sku: "SSD001",
-    name: "Samsung 980 Pro",
-    category: "SSD",
-    warehouse: "Warehouse B",
-    quantity: 0,
-    status: "Out Of Stock",
-  },
-  
-];
+
 export default function Inventory() {
 const [showModal, setShowModal] = useState(false);
+const [inventory, setInventory] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:8000/api/inventory")
+        .then((res) => res.json())
+        .then((result) => {
+            if (result.success) {
+                setInventory(result.data);
+            }
+        });
+}, []);
+const getStatus = (qty) => {
+  if (qty === 0) return "Out Of Stock";
+  if (qty <= 10) return "Low Stock";
+  return "In Stock";
+};
+
   return (
     
     <div className="inventory-layout">
@@ -168,13 +158,17 @@ const [showModal, setShowModal] = useState(false);
 
                 <td>
 
+                 {(() => {
+  const status = getStatus(item.quantity);
+
+                return (
                   <span
-                    className={`status ${item.status
-                      .replace(/\s/g, "")
-                      .toLowerCase()}`}
-                  >
-                    {item.status}
+                   className={`status ${status.replace(/\s/g, "").toLowerCase()}`}
+                    >
+                   {status}
                   </span>
+                  );
+              })()}
 
                 </td>
 

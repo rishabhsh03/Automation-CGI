@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -7,6 +8,7 @@ import {
   Tooltip,
   CartesianGrid,
   Legend,
+  LineChart
 } from "recharts";
 
 const data = [
@@ -24,7 +26,27 @@ const data = [
   { month: "Dec", purchase: 8200, sales: 7100 },
 ];
 
+
 export default function PurchaseSalesChart() {
+  const [chartData,setChartData] = useState([]);
+  useEffect(()=>{
+
+    fetch("http://localhost:8000/api/dashboard/purchase-sales")
+
+        .then(res=>res.json())
+
+        .then(result=>{
+
+            if(result.success){
+
+                setChartData(result.data);
+
+            }
+
+        });
+
+},[]);
+<LineChart data={chartData}></LineChart>
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
 
@@ -49,7 +71,7 @@ export default function PurchaseSalesChart() {
 
       <ResponsiveContainer width="100%" height={350}>
 
-        <AreaChart data={data}>
+        <AreaChart data={chartData}>
 
           <defs>
 

@@ -43,7 +43,7 @@ console.log("Categories:", categories);
 
       <div className="chart-container">
 
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={350}>
 
           <BarChart
             data={categories}

@@ -1,6 +1,6 @@
 .inventory{
     padding:30px;
-    background:#F3F4F6;
+    background:#000000;
     min-height:100vh;
 }
 
@@ -44,7 +44,7 @@
     display:flex;
     align-items:center;
     gap:10px;
-    background:white;
+    background:#000000;
     padding:12px;
     border-radius:10px;
     width:350px;
@@ -54,6 +54,7 @@
     border:none;
     outline:none;
     width:100%;
+    background-color: #000000;
 }
 
 .filters{
@@ -75,6 +76,7 @@
 table{
     width:100%;
     border-collapse:collapse;
+    background-color: #000000;
 }
 
 th,
@@ -91,10 +93,22 @@ tbody tr{
     border-bottom:1px solid #E5E7EB;
 }
 
-.status{
-    padding:8px 18px;
-    border-radius:20px;
-    color:white;
+.status {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px 18px;
+    min-width: 120px;
+    min-height: 42px;
+
+    border-radius: 999px;
+
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+
+    white-space: nowrap;
 }
 
 .instock{
@@ -107,6 +121,7 @@ tbody tr{
 
 .outofstock{
     background:#EF4444;
+
 }
 
 .edit-btn{
@@ -265,6 +280,7 @@ tbody tr{
 }
 .inventory-layout {
     display: flex;
+    background-color: #000000;
 }
 
 .inventory-content {
@@ -272,4 +288,15 @@ tbody tr{
     width: calc(100% - 270px);
     padding: 25px;
     min-height: 100vh;
+}
+.instock {
+    background: #22C55E;
+}
+
+.lowstock {
+    background: #F59E0B;
+}
+
+.outofstock {
+    background: #EF4444;
 }

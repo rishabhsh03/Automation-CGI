@@ -1,0 +1,31 @@
+.hero{
+
+    background:#0F172A;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-size:50px;
+
+}
+
+.login-form{
+
+    background:#111827;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-size:40px;
+
+}

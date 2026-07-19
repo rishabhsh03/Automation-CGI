@@ -1,20 +1,21 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-import Dashboard from "./features/dashboard/Dashboard";
-import Inventory from "./features/inventory/Inventory"
+import Login from "./features/auth/Login";
+import Register from "./features/auth/Register";
 
 function App() {
   return (
     <BrowserRouter>
-
       <Routes>
 
-        <Route path="/" element={<Dashboard />} />
+        {/* Default Route */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route path="/inventory" element={<Inventory />} />
+        {/* Authentication */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
       </Routes>
-
     </BrowserRouter>
   );
 }

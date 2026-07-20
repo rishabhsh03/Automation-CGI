@@ -269,52 +269,7 @@ onClick={()=>handleEdit(item)}
 <FaEdit/>
 
 </button>
-{
-showDeleteModal && (
 
-<div className="modal-overlay">
-
-<div className="delete-modal">
-
-<h2>Delete Product</h2>
-
-<p>
-
-Are you sure you want to delete this product?
-
-</p>
-
-<div className="delete-buttons">
-
-<button
-className="cancel-btn"
-onClick={()=>{
-    setShowDeleteModal(false);
-    setDeleteId(null);
-}}
->
-
-Cancel
-
-</button>
-
-<button
-className="confirm-delete-btn"
-onClick={deleteProduct}
->
-
-Delete
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-)
-}
 {!item.in_inventory && (
 <button
 className="delete-btn"
@@ -344,7 +299,45 @@ onClick={()=> {
 </div>
 
 </div>
+{/* products-page */}
+{showDeleteModal && (
 
+<div className="modal-overlay">
+
+    <div className="delete-modal">
+
+        <h2>Delete Product</h2>
+
+        <p>
+            Are you sure you want to delete this product?
+        </p>
+
+        <div className="delete-buttons">
+
+            <button
+                className="cancel-btn"
+                onClick={() => {
+                    setShowDeleteModal(false);
+                    setDeleteId(null);
+                }}
+            >
+                Cancel
+            </button>
+
+            <button
+                className="confirm-delete-btn"
+                onClick={deleteProduct}
+            >
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+)}
 {
 
 showModal && (

@@ -1,78 +1,122 @@
 import "./Sidebar.css";
-import { NavLink } from "react-router-dom";
 import {
-  FaHome,
-  FaBoxes,
-  FaShoppingCart,
-  FaTruck,
-  FaWarehouse,
-  FaUsers,
-  FaChartBar,
-  FaCog,
-  FaSignOutAlt,
+    FaTachometerAlt,
+    FaBoxOpen,
+    FaWarehouse,
+    FaClipboardList,
+    FaTruck,
+    FaChartBar,
+    FaSignOutAlt
 } from "react-icons/fa";
 
+import { NavLink, useNavigate } from "react-router-dom";
+
 export default function Sidebar() {
-  return (
-    <aside className="sidebar">
 
-      {/* Logo */}
+    const navigate = useNavigate();
 
-      <div className="sidebar-menu">
+    const logout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+    };
 
-  <p className="menu-title">MAIN MENU</p>
+    return (
+        <aside className="sidebar">
 
-  <NavLink
-    to="/"
-    className={({ isActive }) =>
-      isActive ? "menu-item active" : "menu-item"
-    }
-  >
-    <FaHome />
-    <span>Dashboard</span>
-  </NavLink>
+            <div className="sidebar-logo">
 
-<NavLink
-  to="/inventory"
-  className={({ isActive }) =>
-    isActive ? "menu-item active" : "menu-item"
-  }
->
-  <FaBoxes />
-  <span>Inventory</span>
-</NavLink>
-  <button className="menu-item">
-    <FaShoppingCart />
-    <span>Orders</span>
-  </button>
+                <div className="logo-circle">
+                    W
+                </div>
 
-  <button className="menu-item">
-    <FaTruck />
-    <span>Purchase</span>
-  </button>
+                <div>
+                    <h2>Warehouse</h2>
+                    <p>Management System</p>
+                </div>
 
-  <button className="menu-item">
-    <FaWarehouse />
-    <span>Warehouse</span>
-  </button>
+            </div>
 
-  <button className="menu-item">
-    <FaUsers />
-    <span>Suppliers</span>
-  </button>
+            <div className="sidebar-menu">
 
-  <button className="menu-item">
-    <FaChartBar />
-    <span>Reports</span>
-  </button>
+                <p className="menu-title">
+                    MAIN MENU
+                </p>
 
-  <button className="menu-item">
-    <FaCog />
-    <span>Settings</span>
-  </button>
+                <NavLink
+                    to="/dashboard"
+                    className={({ isActive }) =>
+                        isActive ? "menu-item active" : "menu-item"
+                    }
+                >
+                    <FaTachometerAlt />
+                    Dashboard
+                </NavLink>
 
-</div>
+                <NavLink
+                    to="/products"
+                    className={({ isActive }) =>
+                        isActive ? "menu-item active" : "menu-item"
+                    }
+                >
+                    <FaBoxOpen />
+                    Products
+                </NavLink>
 
-    </aside>
-  );
+                <NavLink
+                    to="/inventory"
+                    className={({ isActive }) =>
+                        isActive ? "menu-item active" : "menu-item"
+                    }
+                >
+                    <FaWarehouse />
+                    Inventory
+                </NavLink>
+
+                <NavLink
+                    to="/orders"
+                    className={({ isActive }) =>
+                        isActive ? "menu-item active" : "menu-item"
+                    }
+                >
+                    <FaClipboardList />
+                    Orders
+                </NavLink>
+
+                <NavLink
+                    to="/suppliers"
+                    className={({ isActive }) =>
+                        isActive ? "menu-item active" : "menu-item"
+                    }
+                >
+                    <FaTruck />
+                    Suppliers
+                </NavLink>
+
+                <NavLink
+                    to="/reports"
+                    className={({ isActive }) =>
+                        isActive ? "menu-item active" : "menu-item"
+                    }
+                >
+                    <FaChartBar />
+                    Reports
+                </NavLink>
+
+            </div>
+
+            <div className="sidebar-footer">
+
+                <button
+                    className="logout-btn"
+                    onClick={logout}
+                >
+                    <FaSignOutAlt />
+                    Logout
+                </button>
+
+            </div>
+
+        </aside>
+    );
 }

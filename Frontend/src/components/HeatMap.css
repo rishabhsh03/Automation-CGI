@@ -45,3 +45,18 @@
 .red{
     background:#ef4444;
 }
+.stock-table td:not(:first-child),
+.stock-table th:not(:first-child){
+    text-align: center;
+}
+
+.stock-cell{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.status-dot{
+    width:18px;
+    height:18px;
+    border-radius:50%;
+}

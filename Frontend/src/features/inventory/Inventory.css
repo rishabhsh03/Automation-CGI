@@ -1,16 +1,32 @@
+.inventory-layout{
+
+display:flex;
+
+background:#F5F7FB;
+
+}
+
+.inventory-content{
+
+margin-left:270px;
+
+width:calc(100% - 270px);
+
+padding:35px;
+
+background:#F5F7FB;
+
+}
+
 .inventory{
-    padding:30px;
-    background:#000000;
-    min-height:100vh;
-}
 
-.inventory-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
-}
+background:#F5F7FB;
 
+min-height:100vh;
+
+padding:0;
+
+}
 .add-btn{
     background:#22C55E;
     color:white;
@@ -67,26 +83,54 @@
 }
 
 .table-card{
-    background:white;
-    border-radius:15px;
-    padding:20px;
-    overflow:auto;
+
+background:#fff;
+
+border-radius:22px;
+
+padding:25px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+overflow:auto;
+
 }
 
 table{
-    width:100%;
-    border-collapse:collapse;
-    background-color: #000000;
+
+width:100%;
+
+border-collapse:collapse;
+
+background:#fff;
+
 }
 
-th,
+th{
+
+padding:20px;
+
+font-size:15px;
+
+font-weight:700;
+
+color:#64748B;
+
+}
 td{
-    padding:18px;
-    text-align:left;
+
+padding:20px;
+
+font-size:15px;
+
+color:#0F172A;
+
 }
 
 thead{
-    background:#F3F4F6;
+
+background:#F8FAFC;
+
 }
 
 tbody tr{

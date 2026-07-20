@@ -8,9 +8,9 @@ const {
     deleteProducts
 } =require("../controllers/productController");
 
-router.post("/save-products", saveProducts);
-router.get("/get-products", getProducts);
-router.put("/update-products", updateProducts);
-router.delete("/delete-products/:id", deleteProducts);
+router.post("/", saveProducts);
+router.get("/", getProducts);
+router.put("/:id", updateProducts);
+router.delete("/:id", deleteProducts);
 
 module.exports = router

@@ -2,7 +2,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
-
+import ForgotPassword from "./features/auth/ForgotPassword";
+import Dashboard from "./features/dashboard/Dashboard"; // Import Dashboard
+import Inventory from "./features/inventory/Inventory";
+import Products from "./features/product/Products";
 function App() {
   return (
     <BrowserRouter>
@@ -14,6 +17,12 @@ function App() {
         {/* Authentication */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        {/* Dashboard */}
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/inventory" element={<Inventory />} />
+        <Route path="/products" element={<Products />} />
 
       </Routes>
     </BrowserRouter>

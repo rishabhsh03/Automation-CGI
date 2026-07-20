@@ -8,10 +8,15 @@ import SalesActivity from "../../components/SalesActivity";
 import CategoryProgress from "../../components/CategoryProgress";
 import HeatMap from "../../components/HeatMap";
 import ProductChart from "../../components/ProductChart";
-import PurchaseSalesChart from "../../components/PurchaseSalesChart";
+// import PurchaseSalesChart from "../../components/PurchaseSalesChart";
 import InventoryTable from "../inventory/InventoryTable";
 import RecentOrders from "../../components/RecentOrders"; 
 import Warehouse from "../warehouse/Warehouse";
+import {
+  FaBoxes,
+  FaExclamationTriangle,
+
+} from "react-icons/fa";
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState({
     summary: {},
@@ -55,10 +60,12 @@ export default function Dashboard() {
               transition={{delay:0.1}}
             >
 
-          <KpiCards
-            title="Total Products"
-            value={dashboard.summary.totalProducts}
-          />
+         <KpiCards
+    title="Total Products"
+    value={dashboard.summary.totalProducts}
+    icon={<FaBoxes />}
+    color="#3B82F6"
+/>
           </motion.div>
           <motion.div
               initial={{y:30 , opacity:0}}
@@ -67,9 +74,11 @@ export default function Dashboard() {
             >
 
           <KpiCards
-            title="Low Stock"
-            value={dashboard.summary.lowStock}
-          />
+    title="Low Stock"
+    value={dashboard.summary.lowStock}
+    icon={<FaExclamationTriangle />}
+    color="#F59E0B"
+/>
           </motion.div>
             <motion.div
               initial={{y:30 , opacity:0}}
@@ -118,7 +127,7 @@ export default function Dashboard() {
     categories={dashboard.categories}
 />
 
-          <PurchaseSalesChart />
+          {/* <PurchaseSalesChart /> */}
 
         </div>
 
@@ -137,7 +146,7 @@ export default function Dashboard() {
           }}
           transition={{delay:.8}}>
             
-
+          
           {/* <InventoryTable /> */}
           </motion.div>
           <RecentOrders />

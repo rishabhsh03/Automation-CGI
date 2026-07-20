@@ -1,9 +1,46 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../services/authService";
 export default function LoginCard() {
+    
+        const navigate = useNavigate();
+        const [showPassword, setShowPassword] = useState(false);
 
-    const [showPassword, setShowPassword] = useState(false);
+        const [formData, setFormData] =useState({
+            email:"",
+            password:""
+        })
+        const [loading, setLoading] = useState(false);
+        const [error, setError] = useState("");
+
+        const handleLogin = async () => {
+            console.log("Login button clicked")
+            try{
+                setLoading(true);
+                setError("");
+
+                const result = await loginUser(formData);
+                console.log("Backend Response:", result);
+                if(result.success){
+                    localStorage.setItem("token", result.token);
+
+                    localStorage.setItem(
+                        "user",
+                        JSON.stringify(result.user)
+                    );
+                    navigate("/dashboard");
+                }else{
+                    setError(result.message);
+                }
+            }catch(err){
+                console.log(err);
+                setError("Login Failed");
+            }finally{
+                setLoading(false);
+            }
+        };
 
     return (
 
@@ -22,7 +59,11 @@ export default function LoginCard() {
                     Login to continue
 
                 </p>
-
+                    {error && (
+                        <p className="mt-4 text-red-500">
+                            {error}
+                        </p>
+                    )}
                 <div className="mt-10">
 
                     <label className="text-slate-300">
@@ -34,9 +75,13 @@ export default function LoginCard() {
                     <input
 
                         type="email"
-
-                        placeholder="john@gmail.com"
-
+                        name ="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({
+                            ...formData,
+                            email:e.target.value
+                        })
+                    }
                         className="mt-3 w-full rounded-xl bg-slate-800 p-4 text-white outline-none focus:ring-2 focus:ring-blue-500"
 
                     />
@@ -56,9 +101,14 @@ export default function LoginCard() {
                         <input
 
                             type={showPassword ? "text" : "password"}
-
-                            placeholder="********"
-
+                            name="password"
+                            value={formData.password}
+                            onChange={(e) => 
+                                setFormData({
+                                    ...formData,
+                                    password: e.target.value
+                                })
+                            }
                             className="mt-3 w-full rounded-xl bg-slate-800 p-4 text-white outline-none focus:ring-2 focus:ring-blue-500"
 
                         />
@@ -91,22 +141,22 @@ export default function LoginCard() {
 
                     </label>
 
-                    <a href="#" className="text-blue-400">
-
+                    <Link
+                     to="/forgot-password"
+                     className="text-blue-400 hover:text-blue-300"
+                    >
                         Forgot Password?
-
-                    </a>
+                    </Link>
 
                 </div>
 
                 <button
-
+                    onClick={handleLogin}
                     className="mt-8 w-full rounded-xl bg-blue-600 py-4 text-lg font-bold text-white hover:bg-blue-700 transition"
 
                 >
-
-                    Sign In
-
+                    {loading ? "Signing In..." : "Sign In"}
+                    
                 </button>
 
                 <div className="my-8 flex items-center">

@@ -107,7 +107,11 @@ export default function HeatMap() {
         <div
           className={`heat-box ${getColor(value)}`}
         ></div>
-
+        <td>
+    <div className="stock-cell">
+        <div className={`status-dot ${status}`}></div>
+    </div>
+</td>
         <div className="tooltip">
 
           <strong>{row.product}</strong>

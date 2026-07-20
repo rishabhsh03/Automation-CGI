@@ -53,7 +53,23 @@ const addInventory = async (
         );
         return result.rows[0];
 };
+const updateInventory = async (id, quantity) => {
+
+    const result = await db.query(
+        `
+        UPDATE inventory
+        SET quantity = $1
+        WHERE id = $2
+        RETURNING *;
+        `,
+        [quantity, id]
+    );
+
+    return result.rows[0];
+
+};
 module.exports = {
     getInventory,
     addInventory,
+    updateInventory,
 };

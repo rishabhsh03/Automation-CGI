@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import {
     FaChartBar,
     FaFileExcel,
@@ -9,7 +9,15 @@ import {
     FaShoppingCart,
     FaWarehouse
 } from "react-icons/fa";
-
+import {
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    CartesianGrid,
+    Tooltip,
+    XAxis,
+    YAxis
+} from "recharts";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 
@@ -18,36 +26,90 @@ import "./Reports.css";
 export default function Reports() {
 
     const [search, setSearch] = useState("");
+    const [reports, setReports] = useState([]);
+    const [summary, setSummary] = useState({});
+    const [startDate,setStartDate]=useState("");
+    const [endDate,setEndDate]=useState("");
+    const [monthlySales,setMonthlySales] = useState([]);
+    const loadReports = async () => {
 
-    const reports = [
-        {
-            id: 1,
-            report: "Inventory Report",
-            generatedBy: "Admin",
-            date: "20 Jul 2026",
-            status: "Completed"
-        },
-        {
-            id: 2,
-            report: "Sales Report",
-            generatedBy: "Manager",
-            date: "21 Jul 2026",
-            status: "Completed"
-        },
-        {
-            id: 3,
-            report: "Stock Movement",
-            generatedBy: "Admin",
-            date: "22 Jul 2026",
-            status: "Pending"
-        }
-    ];
+    const res = await fetch(
+        "http://localhost:8000/api/report/summary"
+    );
+
+    const result = await res.json();
+
+    if(result.success){
+
+        reports.filter(item =>
+        item.report
+        )
+
+    }
+    loadSummary();
+    loadReports();
+};
+
 
     const filteredReports = reports.filter(item =>
         item.report.toLowerCase().includes(search.toLowerCase()) ||
         item.generatedBy.toLowerCase().includes(search.toLowerCase())
     );
+useEffect(() => {
 
+    const loadSummary = async () => {
+
+        const res = await fetch(
+            "http://localhost:8000/api/report/summary"
+        );
+
+        const result = await res.json();
+
+        if(result.success){
+
+            setSummary(result.data);
+
+        }
+
+    };
+
+    const loadMonthlySales = async () => {
+
+        const res = await fetch(
+            "http://localhost:8000/api/report/monthly-sales"
+        );
+
+        const result = await res.json();
+
+        if(result.success){
+
+            setMonthlySales(result.data);
+
+        }
+
+    };
+
+    loadSummary();
+    loadMonthlySales();
+
+}, []);
+const loadMonthlySales = async()=>{
+
+    const res = await fetch(
+        "http://localhost:8000/api/report/monthly-sales"
+    );
+
+    const result = await res.json();
+
+    if(result.success){
+
+        setMonthlySales(result.data);
+
+    }
+
+};
+
+loadMonthlySales();
     return (
 
         <div className="reports-layout">
@@ -106,7 +168,7 @@ export default function Reports() {
 
                                 <h3>Total Products</h3>
 
-                                <h2>248</h2>
+                                <h2>{summary.totalProducts}</h2>
 
                             </div>
 
@@ -120,7 +182,7 @@ export default function Reports() {
 
                                 <h3>Inventory Value</h3>
 
-                                <h2>₹18.5L</h2>
+                                <h2>₹{Number(summary.inventoryValue).toLocaleString()}</h2>
 
                             </div>
 
@@ -134,7 +196,7 @@ export default function Reports() {
 
                                 <h3>Total Orders</h3>
 
-                                <h2>145</h2>
+                                <h2>{summary.totalOrders}</h2>
 
                             </div>
 
@@ -148,7 +210,7 @@ export default function Reports() {
 
                                 <h3>Total Revenue</h3>
 
-                                <h2>₹54.2L</h2>
+                                <h2>₹{Number(summary.revenue).toLocaleString()}</h2>
 
                             </div>
 
@@ -170,7 +232,11 @@ export default function Reports() {
                                 value={search}
                                 onChange={(e)=>setSearch(e.target.value)}
                             />
-
+                            <input
+type="date"
+value={startDate}
+onChange={(e)=>setStartDate(e.target.value)}
+/>
                         </div>
 
                         <div className="filter-group">
@@ -193,56 +259,97 @@ export default function Reports() {
 
                     </div>
 
-                    {/* Charts */}
+                   {/* Charts */}
 
-                    <div className="charts-grid">
+<div className="charts-grid">
 
-                        <div className="chart-card">
+    <div className="chart-card">
 
-                            <div className="chart-header">
+        <div className="chart-header">
 
-                                <h2>
+            <h2>
+                <FaChartBar />
+                Monthly Sales
+            </h2>
 
-                                    <FaChartBar />
+        </div>
+        <div className="chart-wrapper">
+        <ResponsiveContainer width="100%" height={300}>
 
-                                    Monthly Sales
+            <BarChart
+                data={monthlySales}
+                margin={{
+                    top: 10,
+                    right: 20,
+                    left: 0,
+                    bottom: 5
+                }}
+            >
 
-                                </h2>
+                <CartesianGrid
+                    stroke="#3b4456"
+                    strokeDasharray="3 3"
+                />
 
-                            </div>
+                <XAxis
+                    dataKey="month"
+                    tick={{ fill: "#cbd5e1" }}
+                    axisLine={{ stroke: "#475569" }}
+                    tickLine={{ stroke: "#475569" }}
+                />
 
-                            <div className="chart-placeholder">
+                <YAxis
+                    tick={{ fill: "#cbd5e1" }}
+                    axisLine={{ stroke: "#475569" }}
+                    tickLine={{ stroke: "#475569" }}
+                />
 
-                                Chart will appear here
+                <Tooltip
+                    contentStyle={{
+                        background: "#1e293b",
+                        border: "1px solid #334155",
+                        borderRadius: "10px"
+                    }}
+                    labelStyle={{
+                        color: "#fff"
+                    }}
+                />
 
-                            </div>
+                <Bar
+                    dataKey="sales"
+                    fill="#22c55e"
+                    radius={[8,8,0,0]}
+                />
 
-                        </div>
+            </BarChart>
 
-                        <div className="chart-card">
+        </ResponsiveContainer>
+     </div>
+    </div>
 
-                            <div className="chart-header">
+    <div className="chart-card">
 
-                                <h2>
+        <div className="chart-header">
 
-                                    <FaBoxes />
+            <h2>
 
-                                    Inventory Overview
+                <FaBoxes />
 
-                                </h2>
+                Inventory Overview
 
-                            </div>
+            </h2>
 
-                            <div className="chart-placeholder">
+        </div>
 
-                                Inventory Chart
+        <div className="chart-placeholder">
 
-                            </div>
+            Inventory Chart
 
-                        </div>
+        </div>
 
-                    </div>
+    </div>
 
+</div>
                     {/* Reports Table */}
 
                     <div className="table-card">

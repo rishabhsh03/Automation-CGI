@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import {
     FaPlus,
     FaSearch,
@@ -14,46 +14,107 @@ import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 
 import "./Orders.css";
+const API = "http://localhost:8000/api/orders";
 
 export default function Orders() {
-
+    const [customers, setCustomers] = useState([]);
+    const [customerId, setCustomerId] = useState("");
+    const [status, setStatus] = useState("PENDING");
     const [search, setSearch] = useState("");
+    const [showCreateOrder , setShowCreateOrder] = useState(false);
+    const [orders , setOrders] = useState([]);
+    const [products, setProducts] = useState([]);
 
-    const [orders] = useState([
-        {
-            id: 1,
-            order_no: "ORD-1001",
-            customer: "Dell Technologies",
-            date: "20 Jul 2026",
-            items: 5,
-            total: 45000,
-            status: "Pending"
-        },
-        {
-            id: 2,
-            order_no: "ORD-1002",
-            customer: "HP India",
-            date: "21 Jul 2026",
-            items: 3,
-            total: 18000,
-            status: "Confirmed"
-        },
-        {
-            id: 3,
-            order_no: "ORD-1003",
-            customer: "Lenovo",
-            date: "22 Jul 2026",
-            items: 7,
-            total: 95000,
-            status: "Completed"
+const [orderItems, setOrderItems] = useState([
+    {
+        product_id: "",
+        quantity: 1,
+        unit_price: 0,
+        total_price: 0
+    }
+]);
+useEffect(() => {
+
+    const fetchProducts = async () => {
+
+        try {
+
+            const res = await fetch("http://localhost:8000/api/products");
+
+            const result = await res.json();
+
+            if(result.success){
+
+                setProducts(result.data);
+
+            }
+
+        } catch(error){
+
+            console.error(error);
+
         }
-    ]);
 
-    const filteredOrders = orders.filter(order =>
-        order.order_no.toLowerCase().includes(search.toLowerCase()) ||
-        order.customer.toLowerCase().includes(search.toLowerCase()) ||
-        order.status.toLowerCase().includes(search.toLowerCase())
+    };
+
+    fetchProducts();
+
+}, []);
+    useEffect(() => {
+
+    const fetchCustomers = async () => {
+
+        try {
+
+            const res = await fetch("http://localhost:8000/api/user");
+
+            const result = await res.json();
+
+            if (result.success) {
+
+                setCustomers(result.data);
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    };
+
+    fetchCustomers();
+
+}, []);
+useEffect(() => {
+    const fetchOrders = async () => {
+        try{
+            const res = await fetch(API);
+
+            const result = await res.json();
+                if (result.success){
+                setOrders(result.data);
+                }
+        }catch(error){
+            console.error(error);
+        }
+    };  
+        fetchOrders();
+    }, []);
+  const filteredOrders = orders.filter((order) => {
+
+    return (
+
+        String(order.id).includes(search) ||
+
+        order.customer?.toLowerCase().includes(search.toLowerCase()) ||
+
+        order.status?.toLowerCase().includes(search.toLowerCase())
+
     );
+
+});
 
     const getStatusClass = (status) => {
         switch (status) {
@@ -70,7 +131,70 @@ export default function Orders() {
                 return "";
         }
     };
+const updateQuantity = (index, quantity) => {
 
+    if (quantity < 1) quantity = 1;
+
+    const updatedItems = [...orderItems];
+
+    updatedItems[index].quantity = quantity;
+
+    updatedItems[index].total_price =
+        quantity * updatedItems[index].unit_price;
+
+    setOrderItems(updatedItems);
+
+};
+const updateProduct = (index, productId) => {
+
+    const selectedProduct = products.find(
+        (product) => product.id === Number(productId)
+    );
+
+    const updatedItems = [...orderItems];
+
+    updatedItems[index].product_id = Number(productId);
+
+    updatedItems[index].unit_price = selectedProduct.selling_price;
+
+    updatedItems[index].total_price =
+        selectedProduct.selling_price *
+        updatedItems[index].quantity;
+
+    setOrderItems(updatedItems);
+
+};
+const grandTotal = orderItems.reduce(
+
+    (sum, item) => sum + item.total_price,
+
+    0
+
+);
+const addProduct = () => {
+
+    setOrderItems([
+        ...orderItems,
+        {
+            product_id: "",
+            quantity: 1,
+            unit_price: 0,
+            total_price: 0
+        }
+    ]);
+
+};
+const removeProduct = (index) => {
+
+    if (orderItems.length === 1) {
+        return;
+    }
+
+    setOrderItems(
+        orderItems.filter((_, i) => i !== index)
+    );
+
+};
     return (
 
         <div className="orders-layout">
@@ -95,7 +219,9 @@ export default function Orders() {
 
                         </div>
 
-                        <button className="add-btn">
+                        <button className="add-btn"
+                            onClick={() => setShowCreateOrder(true)}
+                        >
 
                             <FaPlus />
 
@@ -226,7 +352,7 @@ export default function Orders() {
                                 </tr>
 
                             </thead>
-
+                        
                             <tbody>
 
                                 {
@@ -235,15 +361,15 @@ export default function Orders() {
 
                                         <tr key={order.id}>
 
-                                            <td>{order.order_no}</td>
+                                            <td>ORD-{order.id}</td>
 
                                             <td>{order.customer}</td>
 
-                                            <td>{order.date}</td>
+                                            <td>{new Date(order.created_at).toLocaleDateString()}</td>
 
-                                            <td>{order.items}</td>
+                                            <td>-</td>
 
-                                            <td>₹{order.total.toLocaleString()}</td>
+                                            <td>₹{Number(order.total_amount).toLocaleString()}</td>
 
                                             <td>
 
@@ -286,7 +412,165 @@ export default function Orders() {
                         </table>
 
                     </div>
+                  {
+    showCreateOrder && (
 
+        <div className="modal">
+
+            <div className="modal-content">
+
+                <div className="modal-header">
+
+                    <h2>Create Order</h2>
+
+                    <button
+    onClick={() => removeProduct(index)}
+>
+    ❌
+</button>
+
+                </div>
+
+                <div className="form-group">
+
+                    <label>Customer</label>
+
+                    <select
+    value={customerId}
+    onChange={(e) => setCustomerId(e.target.value)}
+>
+
+    <option value="">
+        Select Customer
+    </option>
+
+    {
+        customers.map((customer) => (
+
+            <option
+                className="modal-select"
+                key={customer.id}
+                value={customer.id}
+            >
+                {customer.name}
+            </option>
+
+        ))
+    }
+
+</select>
+
+                </div>
+
+                <div className="form-group">
+    <label>Status</label>
+
+    <select
+        className="modal-select"
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+    >
+        <option value="PENDING">PENDING</option>
+        <option value="APPROVED">APPROVED</option>
+        <option value="DELIVERED">DELIVERED</option>
+    </select>
+</div>
+
+              <div className="products-section">
+
+    <div className="product-header">
+
+        <span>Product</span>
+
+        <span>Qty</span>
+
+        {/* <span>Price</span>
+
+        <span>Total</span> */}
+
+        <span>Action</span>
+
+    </div>
+
+    {orderItems.map((item, index) => (
+
+        <div className="product-row" key={index}>
+
+            <select>
+
+    {products.map(product => (
+
+        <option
+            className="product-select"
+            key={product.id}
+            value={product.id}
+        >
+            {product.name}
+        </option>
+
+    ))}
+
+</select>
+
+            <input
+    type="number"
+    min="1"
+    value={item.quantity}
+    onChange={(e) =>
+        updateQuantity(index, Number(e.target.value))
+    }
+/>
+ 
+<button
+    disabled={orderItems.length === 1}
+    onClick={() => removeProduct(index)}
+>
+    ❌
+</button>
+        </div>
+
+    ))}
+<button
+    className="add-product-btn"
+    onClick={addProduct}
+>
+    + Add Product
+</button>
+
+</div>
+
+                <div className="grand-total">
+
+                    <h3>Grand Total</h3>
+
+                    <h2>₹{grandTotal.toLocaleString()}</h2>
+                </div>
+
+                <div className="modal-footer">
+
+                    <button
+                        className="cancel-btn"
+                        onClick={() => setShowCreateOrder(false)}
+                    >
+                        Cancel
+                    </button>
+
+                    <button className="create-btn">
+
+                        Create Order
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    )
+
+}
+)
                 </div>
 
             </main>

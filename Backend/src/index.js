@@ -1,16 +1,13 @@
 const express = require("express");
+const router = express.Router();
 
-const app = express();
+router.use("/auth", require("./authRoutes"));
+router.use("/dashboard", require("./dashboardRoutes"));
+router.use("/inventory", require("./inventoryRoutes"));
+router.use("/orders", require("./ordersRoutes"));
+router.use("/products", require("./productsRoutes"));
+router.use("/purchase-orders", require("./purchaseOrderRoutes"));
+router.use("/report", require("./reportRoutes"));   // <-- This line is important
+router.use("/user", require("./userRoutes"));
 
-const productRoutes = require("./routes/productsRoutes");
-const dashboardRoutes = require("./routes/dashBoardRoutes");
-const authRoutes = require("./routes/authRoutes")
-app.use(express.json());
-
-const router = require("./routes/route");
-
-app.use("/api", productRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api", authRoutes);
-app.use
-module.exports = app;
+module.exports = router;

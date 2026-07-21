@@ -267,16 +267,11 @@
 
 }
 
-.chart-card{
-
-    background:#1E293B;
-
-    border-radius:20px;
-
-    padding:25px;
-
-    box-shadow:0 12px 30px rgba(0,0,0,.25);
-
+.chart-card {
+    background: #1f2937;
+    border-radius: 16px;
+    padding: 20px;
+    height: 380px;
 }
 
 .chart-header{
@@ -512,4 +507,11 @@ tbody tr:hover{
 
 }
 
+}
+.chart-wrapper {
+    width: 100%;
+    height: 300px;
+    background: #1f2937;
+    border-radius: 12px;
+    padding: 10px;
 }

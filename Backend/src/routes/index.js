@@ -10,7 +10,11 @@ files
     .filter(file => file !== "index.js" && file.endsWith("Routes.js"))
     .forEach(file => {
 
+        console.log("Loading:", file);
+
         const route = require(path.join(__dirname, file));
+
+        console.log("Export:", route);
 
         router.use(
             `/${file.replace("Routes.js", "").toLowerCase()}`,

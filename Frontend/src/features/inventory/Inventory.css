@@ -2,7 +2,7 @@
 
 display:flex;
 
-background:#F5F7FB;
+background:#0F172A;
 
 }
 
@@ -14,13 +14,13 @@ width:calc(100% - 270px);
 
 padding:35px;
 
-background:#F5F7FB;
+background:#0F172A;
 
 }
 
 .inventory{
 
-background:#F5F7FB;
+background:#0F172A;
 
 min-height:100vh;
 

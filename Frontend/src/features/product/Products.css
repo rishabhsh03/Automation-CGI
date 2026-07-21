@@ -377,13 +377,13 @@ color:white;
 }
 tbody tr:nth-child(even) td{
 
-    background:#F9FAFB;
+    background:#1E293B;
 
 }
 
 tbody tr:nth-child(odd) td{
 
-    background:white;
+    background:#1E293B;
 
 }
 .modal-overlay{

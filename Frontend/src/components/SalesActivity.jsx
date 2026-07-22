@@ -1,63 +1,69 @@
 import "./SalesActivity.css";
 import {
-  FaClock,
-  FaTruck,
-  FaCheckCircle,
-  FaUndoAlt,
+    FaClock,
+    FaTruck,
+    FaCheckCircle,
+    FaUndoAlt,
 } from "react-icons/fa";
 
-export default function SalesActivity() {
-  return (
-    <div className="sales-card">
+export default function SalesActivity({ summary = {} }) {
+  console.log("SalesActivity Summary:", summary);
+    return (
+      
+        <div className="sales-card">
 
-      <div className="sales-header">
-        <h2>Sales Activity</h2>
-      </div>
+            <div className="sales-header">
 
-      <div className="sales-grid">
+                <h2>Sales Activity</h2>
 
-        <div className="activity pending">
+            </div>
 
-          <FaClock className="activity-icon pulse" />
+            <div className="sales-grid">
 
-          <h1>12</h1>
+                <div className="activity pending">
 
-          <p>Pending Orders</p>
+                    <FaClock className="activity-icon pulse" />
+
+                    <h1>{summary.pendingOrders || 0}</h1>
+
+                    <p>Pending Orders</p>
+
+                </div>
+
+                <div className="activity ready">
+
+                    <FaTruck className="activity-icon truck" />
+
+                    <h1>{summary.processingOrders || 0}</h1>
+
+                    <p>Processing</p>
+
+                </div>
+
+                <div className="activity delivered">
+
+                    <FaCheckCircle className="activity-icon bounce" />
+
+                    <h1>{summary.deliveredOrders || 0}</h1>
+
+                    <p>Delivered</p>
+
+                </div>
+
+                <div className="activity returned">
+
+                    <FaUndoAlt className="activity-icon rotate" />
+
+                    <h1>{summary.cancelledOrders || 0}</h1>
+
+                    <p>Cancelled</p>
+
+                </div>
+
+            </div>
 
         </div>
 
-        <div className="activity ready">
+    );
 
-          <FaTruck className="activity-icon truck" />
-
-          <h1>8</h1>
-
-          <p>Ready To Ship</p>
-
-        </div>
-
-        <div className="activity delivered">
-
-          <FaCheckCircle className="activity-icon bounce" />
-
-          <h1>145</h1>
-
-          <p>Delivered</p>
-
-        </div>
-
-        <div className="activity returned">
-
-          <FaUndoAlt className="activity-icon rotate" />
-
-          <h1>4</h1>
-
-          <p>Returned</p>
-
-        </div>
-
-      </div>
-
-    </div>
-  );
 }

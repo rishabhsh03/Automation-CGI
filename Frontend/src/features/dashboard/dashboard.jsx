@@ -3,7 +3,8 @@ import "./Dashboard.css";
 import { motion } from "framer-motion";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
-import KpiCards from "../../components/kpiCards";
+import Modal from "../../components/Modal";
+import KPICards from "../../components/KPICards";
 import SalesActivity from "../../components/SalesActivity";
 import CategoryProgress from "../../components/CategoryProgress";
 import HeatMap from "../../components/HeatMap";
@@ -12,15 +13,19 @@ import ProductChart from "../../components/ProductChart";
 import InventoryTable from "../inventory/InventoryTable";
 import RecentOrders from "../../components/RecentOrders";
 import Warehouse from "../warehouse/Warehouse";
-import { FaBoxes, FaExclamationTriangle, FaShoppingCart } from "react-icons/fa";
+
+import "../../components/KPICards.css";
+
 
 export default function Dashboard() {
-  const [dashboard, setDashboard] = useState({
-    summary: {},
-    categories: [],
-  });
-  const [loading, setLoading] = useState(true);
-
+   
+    const [dashboard, setDashboard] = useState({
+        summary: {},
+        categories: [],
+    });
+    const [loading, setLoading] = useState(true);
+    const [openModal, setOpenModal] = useState(false);
+    
   useEffect(() => {
     fetch("http://localhost:8000/api/dashboard")
       .then((res) => res.json())
@@ -41,111 +46,83 @@ export default function Dashboard() {
       </div>
     );
   }
+const hour = new Date().getHours();
 
-  return (
-    <div className="dashboard-container">
-      <Sidebar />
+const greeting =
+    hour < 12
+        ? "Good Morning"
+        : hour < 17
+        ? "Good Afternoon"
+        : "Good Evening";
+        console.log("Dashboard Summary:", dashboard.summary);
+ return (
+   <div className="dashboard-container">
+     <Sidebar />
 
-      <motion.main className="dashboard-content">
-        <Navbar />
+     <motion.main
+       className="dashboard-content"
+       initial={{ opacity: 0 }}
+       animate={{ opacity: 1 }}
+     >
+       <Navbar />
 
-        <div className="dash-header">
-          <h1>Dashboard</h1>
-          <button className="export-btn">Export</button>
-        </div>
+       {/* ================= KPI ================= */}
+       <KPICards summary={dashboard.summary} />
 
-        {/* KPI row */}
-       <div className="kpi-card products">
+      
+       {/* ================= CHARTS ================= */}
 
-    <div className="kpi-header">
+       <div className="dashboard-grid">
+         <div className="dashboard-card large">
+           <h2>Sales Activity</h2>
 
-        <div className="kpi-title">
+           <SalesActivity summary={dashboard.summary} />
+         </div>
 
-            <div className="kpi-icon">
-                <FaBoxes/>
-            </div>
+         <div className="dashboard-card">
+           <h2>Inventory Categories</h2>
 
-            Total Products
+           <CategoryProgress categories={dashboard.categories} />
+         </div>
+       </div>
 
-        </div>
+       {/* ================= SECOND ROW ================= */}
 
-        <FaInfoCircle className="info-icon"/>
+       <div className="dashboard-grid">
+         <div className="dashboard-card">
+           <h2>Product Distribution</h2>
 
-    </div>
+           <ProductChart categories={dashboard.categories} />
+         </div>
 
-    <div className="kpi-value">
+         <div className="dashboard-card">
+           <HeatMap />
+         </div>
+       </div>
 
-        <h2>245</h2>
+       {/* ================= TABLES ================= */}
 
-        <span className="kpi-change up">
-            +8%
-        </span>
+       <div className="dashboard-grid">
+         <div className="dashboard-card">
+           <h2>Inventory</h2>
 
-    </div>
+           <InventoryTable />
+         </div>
 
-    <div className="kpi-footer">
+         <div className="dashboard-card">
+           <h2>Recent Orders</h2>
 
-        Compared to last month
-
-    </div>
-
-</div>
-
-        {/* Main visual row: trend / category / heatmap */}
-        <div className="row-three">
-          <motion.div
-            className="card trend-card"
-            initial={{ y: -40, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            <SalesActivity />
-          </motion.div>
-
-          <motion.div
-            className="card channel-card"
-            initial={{ y: 40, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <CategoryProgress categories={dashboard.categories} />
-          </motion.div>
-
-          <motion.div
-            className="card heatmap-card"
-            initial={{ y: 40, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            <HeatMap />
-          </motion.div>
-        </div>
-
-        {/* Product chart row */}
-        <div className="row-two">
-          <div className="card chart-card">
-            <ProductChart categories={dashboard.categories} />
-          </div>
-        </div>
-
-        {/* Tables row */}
-        <div className="row-two">
-          <motion.div
-            className="card table-card"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8 }}
-          >
-            <InventoryTable />
-          </motion.div>
-
-          <div className="card table-card">
-            <RecentOrders />
-          </div>
-        </div>
-      </motion.main>
-
-      <Warehouse />
-    </div>
-  );
+           <RecentOrders />
+         </div>
+       </div>
+     <Modal
+       isOpen={openModal}
+       onClose={() => setOpenModal(false)}
+       title="Create New Order"
+     >
+       <p style={{ color: "#94a3b8" }}>Order form will go here.</p>
+     </Modal>
+     </motion.main>
+   </div>
+ );
 }

@@ -1,24 +1,59 @@
+/* ============================
+   KPI CARD
+============================ */
+
 .kpi-card{
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 
-    background:#ffffff;
+    position: relative;
+    overflow: hidden;
 
-    border-radius:20px;
+    background: #1e293b;
+    border-radius: 20px;
+    padding: 22px;
 
-    padding:25px;
+    transition: .3s;
+}
+.kpi-card::before{
 
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    content:"";
 
-    transition:.3s;
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:4px;
+
+    background:linear-gradient(
+        90deg,
+        #3b82f6,
+        #22c55e
+    );
 
 }
 
 .kpi-card:hover{
 
-    transform:translateY(-5px);
+    transform:translateY(-8px);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.35);
+
+    border-color:#3b82f6;
 
 }
 
-.kpi-header{
+/* ============================
+   HEADER
+============================ */
+
+.kpi-card-header{
 
     display:flex;
 
@@ -28,33 +63,17 @@
 
 }
 
-.kpi-title{
-
-    color:#64748B;
-
-    font-size:18px;
-
-    margin:0;
-
-}
-
-.kpi-value{
-
-    margin-top:15px;
-
-    font-size:50px;
-
-    color:#0F172A;
-
-}
+/* ============================
+   ICON
+============================ */
 
 .kpi-icon{
 
-    width:65px;
+    width:60px;
 
-    height:65px;
+    height:60px;
 
-    border-radius:18px;
+    border-radius:16px;
 
     display:flex;
 
@@ -64,6 +83,94 @@
 
     color:white;
 
-    font-size:30px;
+    font-size:24px;
+
+    box-shadow:0 8px 18px rgba(0,0,0,.25);
+
+}
+
+/* ============================
+   CHANGE
+============================ */
+
+.kpi-change{
+
+    background:rgba(34,197,94,.15);
+
+    color:#22c55e;
+
+    padding:6px 12px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+/* ============================
+   VALUE
+============================ */
+
+.kpi-value{
+
+    margin-top:24px;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color:white;
+
+}
+
+/* ============================
+   TITLE
+============================ */
+
+.kpi-title{
+
+    margin-top:10px;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    color:#f8fafc;
+
+}
+
+/* ============================
+   SUBTITLE
+============================ */
+
+.kpi-subtitle{
+
+    margin-top:6px;
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+
+@media(max-width:768px){
+
+    .kpi-card{
+
+        padding:18px;
+
+    }
+
+    .kpi-value{
+
+        font-size:28px;
+
+    }
 
 }

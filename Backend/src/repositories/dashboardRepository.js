@@ -17,7 +17,41 @@ const getDashboardData = async () => {
   const totalOrders = await db.query(`
       SELECT COUNT(*) FROM orders
   `);
+const pendingOrders = await db.query(`
+    SELECT COUNT(*)
+    FROM orders
+    WHERE status = 'PENDING'
+`);
 
+const processingOrders = await db.query(`
+    SELECT COUNT(*)
+    FROM orders
+    WHERE status = 'PROCESSING'
+`);
+
+const shippedOrders = await db.query(`
+    SELECT COUNT(*)
+    FROM orders
+    WHERE status = 'SHIPPED'
+`);
+
+const deliveredOrders = await db.query(`
+    SELECT COUNT(*)
+    FROM orders
+    WHERE status = 'DELIVERED'
+`);
+
+const cancelledOrders = await db.query(`
+    SELECT COUNT(*)
+    FROM orders
+    WHERE status = 'CANCELLED'
+`);
+
+const revenue = await db.query(`
+    SELECT COALESCE(SUM(total_amount),0) AS revenue
+    FROM orders
+    WHERE status='DELIVERED'
+`);
   const totalSuppliers = await db.query(`
       SELECT COUNT(*) FROM suppliers
   `);
@@ -32,22 +66,29 @@ const getDashboardData = async () => {
 
   return {
 
-    summary: {
+   summary: {
 
-      totalProducts:
-        Number(totalProducts.rows[0].count),
+    totalProducts: Number(totalProducts.rows[0].count),
 
-      lowStock:
-        Number(lowStock.rows[0].count),
+    lowStock: Number(lowStock.rows[0].count),
 
-      totalOrders:
-        Number(totalOrders.rows[0].count),
+    totalOrders: Number(totalOrders.rows[0].count),
 
-      totalSuppliers:
-        Number(totalSuppliers.rows[0].count),
+    totalSuppliers: Number(totalSuppliers.rows[0].count),
 
-    },
+    pendingOrders: Number(pendingOrders.rows[0].count),
 
+    processingOrders: Number(processingOrders.rows[0].count),
+
+    shippedOrders: Number(shippedOrders.rows[0].count),
+
+    deliveredOrders: Number(deliveredOrders.rows[0].count),
+
+    cancelledOrders: Number(cancelledOrders.rows[0].count),
+
+    revenue: Number(revenue.rows[0].revenue),
+
+},
     categories: categories.rows,
 
   };

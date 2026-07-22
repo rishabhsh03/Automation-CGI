@@ -1,31 +1,81 @@
+import { useEffect, useState } from "react";
+
 export default function RecentOrders() {
-  return (
-    <div className="bg-white rounded-xl shadow p-6">
-      <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
 
-      <table className="w-full">
-        <thead>
-          <tr>
-            <th>Order</th>
-            <th>Status</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
+    const [orders, setOrders] = useState([]);
 
-        <tbody>
-          <tr>
-            <td>#1001</td>
-            <td>Pending</td>
-            <td>₹25,000</td>
-          </tr>
+    useEffect(() => {
 
-          <tr>
-            <td>#1002</td>
-            <td>Delivered</td>
-            <td>₹12,500</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  );
+        fetch("http://localhost:8000/api/orders/recent")
+            .then(res => res.json())
+            .then(result => {
+
+                if(result.success){
+
+                    setOrders(result.data);
+
+                }
+
+            });
+
+    }, []);
+
+    return (
+
+        <div className="bg-white rounded-xl shadow p-6">
+
+            <h2 className="text-xl font-semibold mb-4">
+
+                Recent Orders
+
+            </h2>
+
+            <table className="w-full">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Order</th>
+
+                        <th>Customer</th>
+
+                        <th>Status</th>
+
+                        <th>Amount</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {orders.map(order=>(
+
+                        <tr key={order.id}>
+
+                            <td>ORD-{order.id}</td>
+
+                            <td>{order.customer}</td>
+
+                            <td>{order.status}</td>
+
+                            <td>
+
+                                ₹{Number(order.total_amount).toLocaleString()}
+
+                            </td>
+
+                        </tr>
+
+                    ))}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    );
+
 }

@@ -1,10 +1,10 @@
 import "./InventoryTable.css";
 import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function InventoryTable() {
 
   const [inventory, setInventory] = useState([]);
-
+   const navigate = useNavigate();
   useEffect(() => {
     fetch("http://localhost:8000/api/inventory")
       .then((res) => res.json())
@@ -27,7 +27,9 @@ export default function InventoryTable() {
 
       <div className="table-header">
         <h2>Inventory Summary</h2>
-        <button>View All</button>
+        <button onClick={() => navigate("/inventory")}>
+    View All
+</button>
       </div>
 
       <table>

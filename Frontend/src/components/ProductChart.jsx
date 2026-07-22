@@ -45,29 +45,32 @@ console.log("Categories:", categories);
 
         <ResponsiveContainer width="100%" height={350}>
 
-          <BarChart
-            data={categories}
-            margin={{
-              top: 20,
-              right: 20,
-              left: 0,
-              bottom: 5,
-            }}
-          >
+  <BarChart
+    data={categories}
+    margin={{
+        top: 10,
+        right: 20,
+        left: 10,
+        bottom: 90
+    }}
+>
 
             <CartesianGrid
               strokeDasharray="3 3"
               stroke="#374151"
             />
 
-            <XAxis
-              dataKey="category"
-              stroke="#CBD5E1"
-              angle={-30}
-              textAnchor="end"
-              interval={0}
-              height={70}
-            />
+   <XAxis
+    dataKey="category"
+    interval={0}
+    angle={-35}
+    textAnchor="end"
+    height={80}
+    tick={{
+        fill:"#cbd5e1",
+        fontSize:12
+    }}
+/>
 
             <YAxis
               stroke="#CBD5E1"
@@ -75,11 +78,11 @@ console.log("Categories:", categories);
 
             <Tooltip />
 
-            <Bar
-              dataKey="total"
-              fill="#3B82F6"
-              radius={[8, 8, 0, 0]}
-            />
+           <Bar
+    dataKey="count"
+    fill="#3b82f6"
+    radius={[6,6,0,0]}
+/>
 
           </BarChart>
 

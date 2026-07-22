@@ -33,11 +33,17 @@ export default function Inventory() {
 
         const result = await res.json();
 
-        if(result.success){
+console.log(result);
 
-            setInventory(result.data);
+if (result.success && Array.isArray(result.data)) {
 
-        }
+    setInventory(result.data);
+
+} else {
+
+    console.error(result);
+
+}
 
     };
 

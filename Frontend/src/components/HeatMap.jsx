@@ -86,60 +86,55 @@ export default function HeatMap() {
 
         <tbody>
 
-          {data.map((row) => (
+    {data.map((row) => (
 
-            <tr key={row.product}>
+        <tr key={row.product}>
 
-              <td className="product-name">
+            <td className="product-name">
                 {row.product}
-              </td>
+            </td>
 
-              {warehouses.map((warehouse) => {
+            {warehouses.map((warehouse) => {
 
-  const value = row.stock[warehouse];
+                const value = row.stock[warehouse];
 
-  return (
+                return (
 
-    <td key={`${row.product}-${warehouse}`}>
+                    <td key={`${row.product}-${warehouse}`}>
 
-      <div className="tooltip-container">
+                        <div className="tooltip-container">
 
-        <div
-          className={`heat-box ${getColor(value)}`}
-        ></div>
-        <td>
-    <div className="stock-cell">
-        <div className={`status-dot ${status}`}></div>
-    </div>
-</td>
-        <div className="tooltip">
+                            <div
+                                className={`heat-box ${getColor(value)}`}
+                            ></div>
 
-          <strong>{row.product}</strong>
+                            <div className="tooltip">
 
-          <span>{warehouse}</span>
+                                <strong>{row.product}</strong>
 
-          <hr />
+                                <span>{warehouse}</span>
 
-          <p>Stock : {value}%</p>
+                                <hr />
 
-          <p>Available : {value} Units</p>
+                                <p>Stock : {value}%</p>
 
-        </div>
+                                <p>Available : {value} Units</p>
 
-      </div>
+                            </div>
 
-    </td>
+                        </div>
 
-  );
+                    </td>
 
-})}
+                );
 
-            </tr>
+            })}
 
-          ))}
+        </tr>
 
-        </tbody>
+    ))}
 
+</tbody>
       </table>
 
     </div>

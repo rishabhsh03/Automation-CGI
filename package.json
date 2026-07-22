@@ -1,5 +1,29 @@
 {
   "dependencies": {
     "three": "^0.185.1"
-  }
+  },
+  "name": "automation-cgi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  },
+  "scripts": {
+    "frontend": "cd Frontend && npm run dev",
+    "backend": "cd Backend && npm run dev",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rishabhsh03/Automation-CGI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/rishabhsh03/Automation-CGI/issues"
+  },
+  "homepage": "https://github.com/rishabhsh03/Automation-CGI#readme"
 }

@@ -163,7 +163,28 @@ const deleteOrder = async (req, res) => {
     }
 
 };
+const getRecentOrders = async (req, res) => {
 
+    try {
+
+        const orders =
+            await orderRepository.getRecentOrders();
+
+        res.json({
+            success: true,
+            data: orders
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+
+    }
+
+};
 module.exports = {
 
     createOrder,
@@ -174,6 +195,8 @@ module.exports = {
 
     updateOrderStatus,
 
-    deleteOrder
+    deleteOrder,
+
+    getRecentOrders
 
 };

@@ -36,6 +36,12 @@ export default function Orders() {
       total_price: 0,
     },
   ]);
+  const [orderSummary, setOrderSummary] = useState({
+  totalOrders: 0,
+  pendingOrders: 0,
+  deliveredOrders: 0,
+  revenue: 0,
+});
   const fetchOrders = async () => {
     try {
       const res = await fetch(API);
@@ -44,11 +50,35 @@ export default function Orders() {
       console.log("API Response:", result);
       if (result.success) {
         setOrders(result.data);
+        const totalOrders = result.data.length;
+
+const pendingOrders = result.data.filter(
+  (order) => order.status === "PENDING"
+).length;
+
+const deliveredOrders = result.data.filter(
+  (order) => order.status === "DELIVERED"
+).length;
+
+const revenue = result.data
+  .filter((order) => order.status === "DELIVERED")
+  .reduce(
+    (sum, order) => sum + Number(order.total_amount),
+    0
+  );
+
+setOrderSummary({
+  totalOrders,
+  pendingOrders,
+  deliveredOrders,
+  revenue,
+});
       }
     } catch (error) {
       console.error(error);
     }
   };
+  
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -242,7 +272,7 @@ export default function Orders() {
               <div>
                 <h3>Total Orders</h3>
 
-                <h2>126</h2>
+                <h2>{orderSummary.totalOrders}</h2>
               </div>
             </div>
 
@@ -252,7 +282,7 @@ export default function Orders() {
               <div>
                 <h3>Pending</h3>
 
-                <h2>18</h2>
+                <h2>{orderSummary.pendingOrders}</h2>
               </div>
             </div>
 
@@ -262,7 +292,7 @@ export default function Orders() {
               <div>
                 <h3>Completed</h3>
 
-                <h2>92</h2>
+                <h2>{orderSummary.deliveredOrders}</h2>
               </div>
             </div>
 
@@ -272,7 +302,9 @@ export default function Orders() {
               <div>
                 <h3>Revenue</h3>
 
-                <h2>₹12.4L</h2>
+                <h2>
+  ₹{orderSummary.revenue.toLocaleString("en-IN")}
+</h2>
               </div>
             </div>
           </div>

@@ -9,5 +9,5 @@ router.use("/products", require("./productsRoutes"));
 router.use("/purchase-orders", require("./purchaseOrderRoutes"));
 router.use("/report", require("./reportRoutes"));   // <-- This line is important
 router.use("/user", require("./userRoutes"));
-
+router.use("/suppliers", supplierRoutes);
 module.exports = router;

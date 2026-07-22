@@ -61,7 +61,47 @@
 
     };
 
-    module.exports = {
-        getReportSummary,
-        getMonthlySales,
+const generateReport = async (filters) => {
+
+    if (filters.reportType === "inventory") {
+
+        const result = await db.query(`
+
+            SELECT
+
+                p.name,
+
+                w.name AS warehouse,
+
+                i.quantity,
+
+                i.status
+
+            FROM inventory i
+
+            JOIN products p
+            ON p.id=i.product_id
+
+            JOIN locations l
+            ON l.id=i.location_id
+
+            JOIN warehouses w
+            ON w.id=l.warehouse_id
+
+            ORDER BY p.name
+
+        `);
+
+        return result.rows;
+
+    }
+
+};
+
+
+
+module.exports = {
+    getReportSummary,
+    getMonthlySales,
+    generateReport,
     };

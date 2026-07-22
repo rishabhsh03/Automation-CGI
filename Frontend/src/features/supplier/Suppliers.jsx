@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import {
     FaPlus,
     FaSearch,
@@ -15,38 +15,49 @@ import Navbar from "../../components/Navbar";
 import "./Suppliers.css";
 
 export default function Supplier() {
-
+    console.log("✅ supplierRoutes loaded");
     const [search, setSearch] = useState("");
+    const [suppliers, setSuppliers] = useState([]);
+   
+   const filteredSuppliers = suppliers.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase()) ||
+    (item.contact_info || "")
+        .toLowerCase()
+        .includes(search.toLowerCase())
+);
+   const supplierSummary = {
+    totalSuppliers: suppliers.length,
 
-    const [suppliers] = useState([
-        {
-            id: 1,
-            name: "Intel Corporation",
-            email: "sales@intel.com",
-            phone: "+91 9876543210",
-            city: "Bangalore"
-        },
-        {
-            id: 2,
-            name: "AMD India",
-            email: "support@amd.com",
-            phone: "+91 9876543200",
-            city: "Hyderabad"
-        },
-        {
-            id: 3,
-            name: "NVIDIA Pvt Ltd",
-            email: "sales@nvidia.com",
-            phone: "+91 9876543299",
-            city: "Pune"
-        }
-    ]);
+    contactInfo: suppliers.filter(
+        (supplier) =>
+            supplier.contact_info &&
+            supplier.contact_info.trim() !== ""
+    ).length,
 
-    const filteredSuppliers = suppliers.filter(item =>
-        item.name.toLowerCase().includes(search.toLowerCase()) ||
-        item.email.toLowerCase().includes(search.toLowerCase()) ||
-        item.city.toLowerCase().includes(search.toLowerCase())
-    );
+    averageDelivery:
+        suppliers.length > 0
+            ? (
+                  suppliers.reduce(
+                      (sum, supplier) =>
+                          sum + Number(supplier.avg_delivery_date),
+                      0
+                  ) / suppliers.length
+              ).toFixed(1)
+            : 0,
+};
+useEffect(() => {
+
+    fetch("http://localhost:8000/api/suppliers")
+        .then((res) => res.json())
+        .then((result) => {
+
+            if (result.success) {
+                setSuppliers(result.data);
+            }
+
+        });
+
+}, []);
 
     return (
 
@@ -94,7 +105,7 @@ export default function Supplier() {
 
                                 <h3>Total Suppliers</h3>
 
-                                <h2>28</h2>
+                                <h2>{supplierSummary.totalSuppliers}</h2>
 
                             </div>
 
@@ -106,10 +117,8 @@ export default function Supplier() {
 
                             <div>
 
-                                <h3>Email Contacts</h3>
-
-                                <h2>28</h2>
-
+<h3>Contact Info</h3>
+<h2>{supplierSummary.contactInfo}</h2>
                             </div>
 
                         </div>
@@ -120,10 +129,8 @@ export default function Supplier() {
 
                             <div>
 
-                                <h3>Active</h3>
-
-                                <h2>24</h2>
-
+                               <h3>Avg Delivery</h3>
+<h2>{supplierSummary.averageDelivery} Days</h2>
                             </div>
 
                         </div>
@@ -157,23 +164,15 @@ export default function Supplier() {
 
                         <table>
 
-                            <thead>
-
-                                <tr>
-
-                                    <th>Name</th>
-
-                                    <th>Email</th>
-
-                                    <th>Phone</th>
-
-                                    <th>City</th>
-
-                                    <th>Action</th>
-
-                                </tr>
-
-                            </thead>
+                           <thead>
+<tr>
+    <th>Name</th>
+    <th>Contact Info</th>
+    <th>Avg Delivery</th>
+    <th>Organization</th>
+    <th>Action</th>
+</tr>
+</thead>
 
                             <tbody>
 
@@ -183,13 +182,9 @@ export default function Supplier() {
 
                                         <tr key={item.id}>
 
-                                            <td>{item.name}</td>
-
-                                            <td>{item.email}</td>
-
-                                            <td>{item.phone}</td>
-
-                                            <td>{item.city}</td>
+                                           <td>{item.contact_info}</td>
+<td>{item.avg_delivery_date} Days</td>
+<td>{item.organization_id}</td>
 
                                             <td>
 

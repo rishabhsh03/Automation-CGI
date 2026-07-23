@@ -5,17 +5,17 @@ export default function InventoryTable({search = ""}) {
 
   const [inventory, setInventory] = useState([]);
    const navigate = useNavigate();
-  useEffect(() => {
-    fetch("http://localhost:8000/api/inventory")
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
-          setInventory(result.data);
-          console.log(inventory);
-        }
-      })
-      .catch(console.error);
-  }, []);
+useEffect(() => {
+  fetch("http://localhost:8000/api/inventory")
+    .then((res) => res.json())
+    .then((result) => {
+      if (result.success) {
+        console.log(result.data); // Latest data
+        setInventory(result.data);
+      }
+    })
+    .catch(console.error);
+}, []);
 
   const getStatus = (qty) => {
     if (qty === 0) return "Out Of Stock";

@@ -1,15 +1,59 @@
-export default function Navbar() {
-  return (
-    <header className="bg-white rounded-2xl shadow-sm px-8 py-4">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-800">
-          Hello, Rishabh!
-        </h1>
+import "./Navbar.css";
 
-        <p className="text-gray-500">
-          Welcome back 👋
-        </p>
-      </div>
-    </header>
-  );
+export default function Navbar() {
+
+    const hour = new Date().getHours();
+
+    const greeting =
+        hour < 12
+            ? "Good Morning"
+            : hour < 17
+            ? "Good Afternoon"
+            : "Good Evening";
+
+    return (
+
+        <header className="navbar">
+
+            <div className="navbar-left">
+
+                <h1>
+
+                    {greeting},
+
+                    <span> Rishabh 👋</span>
+
+                </h1>
+
+                <p>
+                    Warehouse Management Dashboard
+                </p>
+
+            </div>
+
+            <div className="navbar-right">
+
+                <div className="profile">
+
+                    <img
+                        src="https://ui-avatars.com/api/?name=Rishabh&background=22c55e&color=fff"
+                        alt="profile"
+                    />
+
+                    <div>
+
+                        <h4>Rishabh</h4>
+
+                        <span>Administrator</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+    );
+
 }

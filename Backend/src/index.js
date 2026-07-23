@@ -10,4 +10,5 @@ router.use("/purchase-orders", require("./purchaseOrderRoutes"));
 router.use("/report", require("./reportRoutes"));   // <-- This line is important
 router.use("/user", require("./userRoutes"));
 router.use("/suppliers", supplierRoutes);
+router.use("/report", reportRoutes);
 module.exports = router;

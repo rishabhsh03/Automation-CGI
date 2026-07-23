@@ -1,80 +1,73 @@
-const reportRepository = require("../repositories/reportRepository");
+const reportService = require("../services/reportService");
+
 const getReportSummary = async (req, res) => {
 
-    try{
+    try {
 
-        const data = await reportRepository.getReportSummary();
+        const data = await reportService.getReportSummary();
 
-        res.json({
-            success:true,
+        return res.json({
+            success: true,
             data
         });
 
-    }catch(error){
+    } catch (error) {
 
-        res.status(500).json({
-            success:false,
-            message:error.message
+        return res.status(500).json({
+            success: false,
+            message: error.message
         });
 
     }
 
 };
-const getMonthlySales = async (req,res)=>{
 
-    try{
+const getMonthlySales = async (req, res) => {
 
-        const data = await reportRepository.getMonthlySales();
+    try {
 
-        res.json({
-            success:true,
+        const data = await reportService.getMonthlySales();
+
+        return res.json({
+            success: true,
             data
         });
 
-    }catch(error){
+    } catch (error) {
 
-        res.status(500).json({
-            success:false,
-            message:error.message
+        return res.status(500).json({
+            success: false,
+            message: error.message
         });
 
     }
 
 };
-const reportService = require("../services/reportService");
 
 const generateReport = async (req, res) => {
 
     try {
 
-        const data =
-            await reportService.generateReport(req.body);
+        const data = await reportService.generateReport(req.body);
 
-        res.json({
-
+        return res.json({
             success: true,
-
             data
-
         });
 
     } catch (error) {
 
-        res.status(500).json({
-
+        return res.status(500).json({
             success: false,
-
             message: error.message
-
         });
 
     }
 
 };
 
-
 module.exports = {
     getReportSummary,
     getMonthlySales,
-    generateReport,
+    generateReport
 };

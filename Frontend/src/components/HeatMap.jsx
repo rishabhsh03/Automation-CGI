@@ -15,7 +15,7 @@ export default function HeatMap({ data = [] }) {
   return (
     <div className="heatmap-card">
       <div className="heatmap-header">
-        <p>Warehouse Stock Health</p>
+        <h2>Warehouse Stock Health</h2>
       </div>
 
       <table className="heatmap-table">
@@ -45,9 +45,9 @@ export default function HeatMap({ data = [] }) {
                 return (
                   <td key={`${product}-${warehouse}`}>
                     <div className="tooltip-container">
-                      <div className={`heat-box ${getColor(qty)}`}>{qty}</div>
+                      {/* <div className={`heat-box ${getColor(qty)}`}>{qty}</div>
 
-                      <div className={`heat-box ${getColor(qty)}`}>{qty}</div>
+                      <div className={`heat-box ${getColor(qty)}`}>{qty}</div> */}
 
                       <div className="tooltip">
                         <strong>{product}</strong>

@@ -37,7 +37,7 @@ export default function Sidebar({ search,setSearch})
     </div>
 
 </div>
-
+{/* 
 <div className="sidebar-search">
 
 
@@ -48,7 +48,7 @@ export default function Sidebar({ search,setSearch})
         onChange={(e) => setSearch(e.target.value)}
     />
    
-</div>
+</div> */}
             <div className="sidebar-menu">
 
                 <p className="menu-title">

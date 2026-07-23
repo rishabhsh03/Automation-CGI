@@ -31,7 +31,7 @@ export default function Sidebar({ search,setSearch})
         W
     </div>
 
-    <div>
+    <div className="Web">
         <h2>Warehouse</h2>
         <p>Management System</p>
     </div>

@@ -270,8 +270,9 @@
 .chart-card {
     background: #1f2937;
     border-radius: 16px;
-    padding: 20px;
+    padding: 5px;
     height: 380px;
+
 }
 
 .chart-header{
@@ -514,4 +515,54 @@ tbody tr:hover{
     background: #1f2937;
     border-radius: 12px;
     padding: 10px;
+}
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-weight:600;
+    color:#fff;
+}
+
+.green{
+    background:#22c55e;
+}
+
+.red{
+    background:#ef4444;
+}
+
+.yellow{
+    background:#f59e0b;
+}
+
+.blue{
+    background:#3b82f6;
+}
+.loading-report{
+
+display:flex;
+align-items:center;
+justify-content:center;
+gap:15px;
+padding:40px;
+
+}
+
+.spinner{
+
+width:30px;
+height:30px;
+border-radius:50%;
+border:4px solid #ddd;
+border-top-color:#22c55e;
+animation:spin 1s linear infinite;
+
+}
+
+@keyframes spin{
+
+to{
+transform:rotate(360deg);
+}
+
 }

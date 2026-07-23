@@ -87,7 +87,7 @@ const updateSupplier = async (id, supplierData) => {
     } = supplierData;
 
     const result = await db.query(`
-        UPDATE suplliers
+        UPDATE suppliers
         SET
             name = $1,
             contact_person = $2,
@@ -96,7 +96,7 @@ const updateSupplier = async (id, supplierData) => {
             city = $5,
             address = $6,
             avg_delivery_date = $7,
-            status = $8,
+            status = $8
         WHERE id = $9
         RETURNING *;    
         `,
@@ -105,7 +105,6 @@ const updateSupplier = async (id, supplierData) => {
             contact_person,
             email,
             phone,
-            city,
             city,
             address,
             avg_delivery_date,

@@ -61,11 +61,7 @@ if (result.success) {
       </div>
     );
   }
-  const hour = new Date().getHours();
-
-  const greeting =
-    hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
-  console.log("Dashboard Summary:", dashboard.summary);
+  
 
   return (
     <div className="dashboard-container">

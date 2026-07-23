@@ -127,7 +127,10 @@ if (result.success && Array.isArray(result.data)) {
 
 <div className="inventory-layout">
 
-<Sidebar/>
+<Sidebar
+    search={search}
+    setSearch={setSearch}
+/>
 
 <main className="inventory-content">
 

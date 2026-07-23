@@ -16,6 +16,8 @@ padding:35px;
 
 background:#0F172A;
 
+color: white;
+
 }
 
 .inventory{
@@ -44,7 +46,8 @@ padding:0;
 }
 
 .stat-card{
-    background:white;
+    background:#1E293B;
+    color: white;
     padding:20px;
     border-radius:15px;
     box-shadow:0 5px 15px rgba(0,0,0,.08);

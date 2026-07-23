@@ -45,3 +45,18 @@
 .red{
     background:#ef4444;
 }
+.heat-box{
+    width:45px;
+    height:42px;
+    
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+
+    font-weight:700;
+    color:#fff;
+
+    margin:auto;
+}

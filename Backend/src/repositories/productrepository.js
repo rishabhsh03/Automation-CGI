@@ -1,21 +1,29 @@
 const db = require("../models/db");
 
 const getProducts = async () => {
-    const result = await db.query(`
-        SELECT
-            p.*,
-            EXISTS (
-                SELECT 1
-                FROM inventory i
-                WHERE i.product_id = p.id
-            ) AS in_inventory
-        FROM products p
-        ORDER BY p.id;
-    `);
+const result = await db.query(`
+    SELECT
+        p.id,
+        p.sku,
+        p.name,
+        p.category,
+        i.selling_price,
 
+        EXISTS (
+            SELECT 1
+            FROM inventory inv
+            WHERE inv.product_id = p.id
+        ) AS in_inventory
+
+    FROM products p
+
+    LEFT JOIN inventory i
+    ON i.product_id = p.id
+
+    ORDER BY p.id;
+`);
     return result.rows;
-};
-
+}
 const getProductById = async (id) => {
     const result = await db.query(
         `

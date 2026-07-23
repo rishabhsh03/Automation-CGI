@@ -1,7 +1,7 @@
 import "./InventoryTable.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-export default function InventoryTable() {
+export default function InventoryTable({search = ""}) {
 
   const [inventory, setInventory] = useState([]);
    const navigate = useNavigate();
@@ -11,6 +11,7 @@ export default function InventoryTable() {
       .then((result) => {
         if (result.success) {
           setInventory(result.data);
+          console.log(inventory);
         }
       })
       .catch(console.error);
@@ -21,7 +22,17 @@ export default function InventoryTable() {
     if (qty <= 10) return "Low Stock";
     return "In Stock";
   };
+const filteredInventory = inventory.filter((item) => {
 
+    const searchText = search.toLowerCase();
+
+    return (
+        (item.name ?? "").toLowerCase().includes(searchText) ||
+        (item.category ?? "").toLowerCase().includes(searchText) ||
+        (item.sku ?? "").toLowerCase().includes(searchText)
+    );
+
+});
   return (
     <div className="inventory-table-card">
 
@@ -45,7 +56,7 @@ export default function InventoryTable() {
 
         <tbody>
 
-          {inventory.slice(0,6).map((item) => {
+          {filteredInventory.slice(0, 5).map((item) => {
 
             const status = getStatus(item.quantity);
 
@@ -72,7 +83,7 @@ export default function InventoryTable() {
                 </td>
 
               </tr>
-
+              
             );
 
           })}

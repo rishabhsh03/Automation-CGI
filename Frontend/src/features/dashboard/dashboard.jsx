@@ -12,32 +12,47 @@ import ProductChart from "../../components/ProductChart";
 // import PurchaseSalesChart from "../../components/PurchaseSalesChart";
 import InventoryTable from "../inventory/InventoryTable";
 import RecentOrders from "../../components/RecentOrders";
-import Warehouse from "../warehouse/Warehouse";
 
 import "../../components/KPICards.css";
 
-
 export default function Dashboard() {
-   
-    const [dashboard, setDashboard] = useState({
-        summary: {},
-        categories: [],
-    });
-    const [loading, setLoading] = useState(true);
-    const [openModal, setOpenModal] = useState(false);
-    
-  useEffect(() => {
-    fetch("http://localhost:8000/api/dashboard")
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
-          setDashboard(result.data);
-        }
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
+ const [dashboard, setDashboard] = useState({
+  summary: {},
+  categories: [],
+  heatmap: [],
+  recentOrders: [],
+  purchaseSales: []
+});
 
+  const [loading, setLoading] = useState(true);
+
+
+  const [openModal, setOpenModal] = useState(false);
+  const [search, setSearch] = useState("");
+
+
+  // -------------------------
+  // useEffect
+  // -------------------------
+  useEffect(() => {
+    const loadDashboard = async () => {
+      try {
+      const response = await fetch("http://localhost:8000/api/dashboard");
+
+const result = await response.json();
+
+if (result.success) {
+  setDashboard(result.data);
+}
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDashboard();
+  }, []);
   if (loading) {
     return (
       <div className="dash-loading">
@@ -46,83 +61,76 @@ export default function Dashboard() {
       </div>
     );
   }
-const hour = new Date().getHours();
+  const hour = new Date().getHours();
 
-const greeting =
-    hour < 12
-        ? "Good Morning"
-        : hour < 17
-        ? "Good Afternoon"
-        : "Good Evening";
-        console.log("Dashboard Summary:", dashboard.summary);
- return (
-   <div className="dashboard-container">
-     <Sidebar />
+  const greeting =
+    hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
+  console.log("Dashboard Summary:", dashboard.summary);
 
-     <motion.main
-       className="dashboard-content"
-       initial={{ opacity: 0 }}
-       animate={{ opacity: 1 }}
-     >
-       <Navbar />
+  return (
+    <div className="dashboard-container">
+      <Sidebar
+    search={search}
+    setSearch={setSearch}
+/>
 
-       {/* ================= KPI ================= */}
-       <KPICards summary={dashboard.summary} />
+      <motion.main
+        className="dashboard-content"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <Navbar/>
 
-      
-       {/* ================= CHARTS ================= */}
+        {/* ================= KPI ================= */}
+        <KPICards summary={dashboard.summary} />
 
-       <div className="dashboard-grid">
-         <div className="dashboard-card large">
-           <h2>Sales Activity</h2>
+        {/* ================= CHARTS ================= */}
 
-           <SalesActivity summary={dashboard.summary} />
-         </div>
+        {/* Product Chart */}
+<div className="dashboard-grid single">
 
-         <div className="dashboard-card">
-           <h2>Inventory Categories</h2>
+  <div className="dashboard-card">
 
-           <CategoryProgress categories={dashboard.categories} />
-         </div>
-       </div>
+    <ProductChart categories={dashboard.categories} />
 
-       {/* ================= SECOND ROW ================= */}
+  </div>
 
-       <div className="dashboard-grid">
-         <div className="dashboard-card">
-           <h2>Product Distribution</h2>
+</div>
 
-           <ProductChart categories={dashboard.categories} />
-         </div>
+{/* HeatMap */}
+<div className="dashboard-grid single">
 
-         <div className="dashboard-card">
-           <HeatMap />
-         </div>
-       </div>
+  <div className="dashboard-card">
 
-       {/* ================= TABLES ================= */}
+    <HeatMap data={dashboard.heatmap} />
 
-       <div className="dashboard-grid">
-         <div className="dashboard-card">
-           <h2>Inventory</h2>
+  </div>
 
-           <InventoryTable />
-         </div>
+</div>
 
-         <div className="dashboard-card">
-           <h2>Recent Orders</h2>
+        {/* ================= TABLES ================= */}
 
-           <RecentOrders />
-         </div>
-       </div>
-     <Modal
-       isOpen={openModal}
-       onClose={() => setOpenModal(false)}
-       title="Create New Order"
-     >
-       <p style={{ color: "#94a3b8" }}>Order form will go here.</p>
-     </Modal>
-     </motion.main>
-   </div>
- );
+        <div className="dashboard-grid">
+          <div className="dashboard-card">
+            <h2>Inventory</h2>
+
+            <InventoryTable search={search} />
+          </div>
+
+          <div className="dashboard-card">
+            <h2>Recent Orders</h2>
+
+           <RecentOrders orders={dashboard.recentOrders} />
+          </div>
+        </div>
+        <Modal
+          isOpen={openModal}
+          onClose={() => setOpenModal(false)}
+          title="Create New Order"
+        >
+          <p style={{ color: "#94a3b8" }}>Order form will go here.</p>
+        </Modal>
+      </motion.main>
+    </div>
+  );
 }

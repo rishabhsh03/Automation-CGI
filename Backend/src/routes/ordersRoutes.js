@@ -13,8 +13,8 @@ const  {
 
 router.post("/", createOrder);
 router.get("/", getOrders);
+router.get("/recent", getRecentOrders);
 router.get("/:id", getOrderById);
 router.put("/:id", updateOrderStatus);
 router.delete("/:id", deleteOrder);
-router.get("/recent", getRecentOrders);
 module.exports= router;

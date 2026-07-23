@@ -28,6 +28,7 @@ export default function Orders() {
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState("");
+  const [customerName, setCustomerName] = useState("");
   const [orderItems, setOrderItems] = useState([
     {
       product_id: "",
@@ -37,48 +38,55 @@ export default function Orders() {
     },
   ]);
   const [orderSummary, setOrderSummary] = useState({
-  totalOrders: 0,
-  pendingOrders: 0,
-  deliveredOrders: 0,
-  revenue: 0,
-});
+    totalOrders: 0,
+    pendingOrders: 0,
+    deliveredOrders: 0,
+    revenue: 0,
+  });
   const fetchOrders = async () => {
     try {
-      const res = await fetch(API);
 
-      const result = await res.json();
-      console.log("API Response:", result);
-      if (result.success) {
-        setOrders(result.data);
-        const totalOrders = result.data.length;
+        const res = await fetch("http://localhost:8000/api/orders");
 
-const pendingOrders = result.data.filter(
-  (order) => order.status === "PENDING"
-).length;
+        const result = await res.json();
 
-const deliveredOrders = result.data.filter(
-  (order) => order.status === "DELIVERED"
-).length;
+        if (result.success) {
 
-const revenue = result.data
-  .filter((order) => order.status === "DELIVERED")
-  .reduce(
-    (sum, order) => sum + Number(order.total_amount),
-    0
-  );
+            setOrders(result.data);
 
-setOrderSummary({
-  totalOrders,
-  pendingOrders,
-  deliveredOrders,
-  revenue,
-});
-      }
+            const totalOrders = result.data.length;
+
+            const pendingOrders = result.data.filter(
+                order => order.status === "PENDING"
+            ).length;
+
+            const deliveredOrders = result.data.filter(
+                order => order.status === "DELIVERED"
+            ).length;
+
+            const revenue = result.data
+                .filter(order => order.status === "DELIVERED")
+                .reduce(
+                    (sum, order) => sum + Number(order.total_amount),
+                    0
+                );
+
+            setOrderSummary({
+                totalOrders,
+                pendingOrders,
+                deliveredOrders,
+                revenue
+            });
+
+        }
+
     } catch (error) {
-      console.error(error);
+
+        console.error(error);
+
     }
-  };
-  
+};
+
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -158,26 +166,28 @@ setOrderSummary({
     setOrderItems(updatedItems);
   };
   const updateProduct = (index, productId) => {
-    const selectedProduct = products.find(
-      (product) => product.id === Number(productId),
-    );
+    const product = products.find((p) => p.id === Number(productId));
 
-    const updatedItems = [...orderItems];
+    if (!product) return;
 
-    updatedItems[index].product_id = Number(productId);
+    const updated = [...orderItems];
 
-    updatedItems[index].unit_price = selectedProduct.selling_price;
+    updated[index].product_id = product.id;
 
-    updatedItems[index].total_price =
-      selectedProduct.selling_price * updatedItems[index].quantity;
+    updated[index].unit_price = Number(product.selling_price);
 
-    setOrderItems(updatedItems);
+    updated[index].total_price =
+      Number(product.selling_price) * Number(updated[index].quantity);
+
+    setOrderItems(updated);
   };
   const grandTotal = orderItems.reduce(
     (sum, item) => sum + item.total_price,
 
     0,
   );
+  console.log("Order Items:", orderItems);
+  console.log("Grand Total:", grandTotal);
   const addProduct = () => {
     setOrderItems([
       ...orderItems,
@@ -240,6 +250,52 @@ setOrderSummary({
   };
   console.log("Orders State:", orders);
   console.log("Filtered Orders:", filteredOrders);
+  const handleCreateOrder = async () => {
+    try {
+      const res = await fetch(API, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          customer_name: customerName,
+          status,
+          total_amount: grandTotal,
+          organization_id: 1,
+          items: orderItems
+        }),
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        alert("Order Created");
+
+        setShowCreateOrder(false);
+
+        fetchOrders();
+
+        setCustomerName("");
+
+        setStatus("PENDING");
+
+        setOrderItems([
+          {
+            product_id: "",
+            quantity: 1,
+            unit_price: 0,
+            total_price: 0,
+          },
+        ]);
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="orders-layout">
       <Sidebar />
@@ -302,9 +358,7 @@ setOrderSummary({
               <div>
                 <h3>Revenue</h3>
 
-                <h2>
-  ₹{orderSummary.revenue.toLocaleString("en-IN")}
-</h2>
+                <h2>₹{orderSummary.revenue.toLocaleString("en-IN")}</h2>
               </div>
             </div>
           </div>
@@ -361,7 +415,7 @@ setOrderSummary({
                   <tr key={order.id}>
                     <td>ORD-{order.id}</td>
 
-                    <td>{order.customer}</td>
+                    <td>{order.customer_name}</td>
 
                     <td>{new Date(order.created_at).toLocaleDateString()}</td>
 
@@ -409,24 +463,14 @@ setOrderSummary({
                 </div>
 
                 <div className="form-group">
-                  <label>Customer</label>
+                  <label>Customer Name</label>
 
-                  <select
-                    value={customerId}
-                    onChange={(e) => setCustomerId(e.target.value)}
-                  >
-                    <option value="">Select Customer</option>
-
-                    {customers.map((customer) => (
-                      <option
-                        className="modal-select"
-                        key={customer.id}
-                        value={customer.id}
-                      >
-                        {customer.name}
-                      </option>
-                    ))}
-                  </select>
+                  <input
+                    type="text"
+                    placeholder="Enter Customer Name"
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                  />
                 </div>
 
                 <div className="form-group">
@@ -458,13 +502,14 @@ setOrderSummary({
 
                   {orderItems.map((item, index) => (
                     <div className="product-row" key={index}>
-                      <select>
+                      <select
+                        value={item.product_id}
+                        onChange={(e) => updateProduct(index, e.target.value)}
+                      >
+                        <option value="">Select Product</option>
+
                         {products.map((product) => (
-                          <option
-                            className="product-select"
-                            key={product.id}
-                            value={product.id}
-                          >
+                          <option key={product.id} value={product.id}>
                             {product.name}
                           </option>
                         ))}
@@ -506,7 +551,9 @@ setOrderSummary({
                     Cancel
                   </button>
 
-                  <button className="create-btn">Create Order</button>
+                  <button className="create-btn" onClick={handleCreateOrder}>
+                    Create Order
+                  </button>
                 </div>
               </div>
             </div>

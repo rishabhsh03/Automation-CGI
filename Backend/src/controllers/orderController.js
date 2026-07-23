@@ -1,25 +1,25 @@
-const orderRepository = require("../repositories/orderRepository");
-   //Create Order
-const createOrder = async (req , res) => {
-    console.log("1. Request received");
+const orderService = require("../services/orderService");
+
+const createOrder = async (req, res) => {
+
     try {
-         console.log("2. Calling repository");
-        const order = await orderRepository.createOrder(req.body);
-                console.log("3. Repository returned");
 
-        return res.status(201).json({
-            success:true,
-            message:"Order created successfully",
-            data:order
-        });
-    }catch(error){
-        console.error(error);
+        const data = await orderService.createOrder(req.body);
 
-        return res.status(500).json({
-            success:false,
-            message:error.message
+        res.status(201).json({
+            success: true,
+            data
         });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
     }
+
 };
 
      //GET order
@@ -27,7 +27,7 @@ const createOrder = async (req , res) => {
 const getOrders = async (req , res) => {
       console.log("===== GET /api/orders HIT =====");
     try{
-        const orders = await orderRepository.getOrders();
+        const orders = await orderService.getOrders();
 
         return res.status(200).json({
             success:true,
@@ -56,7 +56,7 @@ const getOrderById = async (req, res) => {
                 console.log("ID:", id);
 
 
-        const order = await orderRepository.getOrderById(id);
+        const order = await orderService.getOrderById(id);
 
                 console.log("Order:", order);
 
@@ -95,7 +95,7 @@ const updateOrderStatus = async (req, res) => {
 
         const { status } = req.body;
 
-        const order = await orderRepository.updateOrderStatus(id, status);
+        const order = await orderService.updateOrderStatus(id, status);
 
         if (!order) {
 
@@ -135,7 +135,7 @@ const deleteOrder = async (req, res) => {
 
         const { id } = req.params;
 
-        const order = await orderRepository.deleteOrder(id);
+        const order = await orderService.deleteOrder(id);
 
         if (!order) {
 
@@ -168,7 +168,7 @@ const getRecentOrders = async (req, res) => {
     try {
 
         const orders =
-            await orderRepository.getRecentOrders();
+            await orderService.getRecentOrders();
 
         res.json({
             success: true,

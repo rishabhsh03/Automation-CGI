@@ -10,8 +10,9 @@ import {
 } from "react-icons/fa";
 
 import { NavLink, useNavigate } from "react-router-dom";
-
-export default function Sidebar() {
+import { FaSearch } from "react-icons/fa";
+export default function Sidebar({ search,setSearch}) 
+        {
 
     const navigate = useNavigate();
 
@@ -24,19 +25,30 @@ export default function Sidebar() {
     return (
         <aside className="sidebar">
 
-            <div className="sidebar-logo">
+           <div className="sidebar-logo">
 
-                <div className="logo-circle">
-                    W
-                </div>
+    <div className="logo-circle">
+        W
+    </div>
 
-                <div>
-                    <h2>Warehouse</h2>
-                    <p>Management System</p>
-                </div>
+    <div>
+        <h2>Warehouse</h2>
+        <p>Management System</p>
+    </div>
 
-            </div>
+</div>
 
+<div className="sidebar-search">
+
+
+    <input
+        type="text"
+        placeholder="Search Inventory..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+    />
+   
+</div>
             <div className="sidebar-menu">
 
                 <p className="menu-title">

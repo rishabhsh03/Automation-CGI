@@ -9,7 +9,7 @@ const createOrder = async (orderData) => {
         await client.query("BEGIN");
 
         const {
-            customer_id,
+            customer_name,
             organization_id,
             status,
             total_amount,
@@ -21,7 +21,7 @@ const createOrder = async (orderData) => {
             `
             INSERT INTO orders
             (
-                customer_id,
+                customer_name,
                 status,
                 organization_id,
                 total_amount
@@ -31,7 +31,7 @@ const createOrder = async (orderData) => {
             RETURNING *;
             `,
             [
-                customer_id,
+                customer_name,
                 status,
                 organization_id,
                 total_amount
@@ -88,33 +88,29 @@ const createOrder = async (orderData) => {
 
 const getOrders = async () => {
 
-    const result = await db.query(
-        `
+    const result = await db.query(`
+
         SELECT
 
-            o.id,
+            id,
 
-            u.name AS customer,
+            customer_name,
 
-            o.status,
+            status,
 
-            o.total_amount,
+            total_amount,
 
-            o.created_at
+            created_at
 
-        FROM orders o
+        FROM orders
 
-        JOIN users u
-        ON u.id = o.customer_id
+        ORDER BY id DESC;
 
-        ORDER BY o.created_at DESC;
-        `
-    );
+    `);
 
     return result.rows;
 
 };
-
 const getOrderById = async (id) => {
        console.log("Repository: Searching", id);
 
@@ -197,6 +193,23 @@ const deleteOrder = async (id) => {
     }
 
 };
+const getRecentOrders = async () => {
+
+    const result = await db.query(`
+        SELECT
+            id,
+            customer_name,
+            status,
+            total_amount,
+            created_at
+        FROM orders
+        ORDER BY id DESC
+        LIMIT 5;
+    `);
+
+    return result.rows;
+
+};
 
 module.exports = {
 
@@ -208,6 +221,8 @@ module.exports = {
 
     updateOrderStatus,
 
-    deleteOrder
+    deleteOrder,
+
+    getRecentOrders 
 
 };

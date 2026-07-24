@@ -112,7 +112,7 @@ const getOrders = async () => {
 
 };
 const getOrderById = async (id) => {
-       console.log("Repository: Searching", id);
+    //    console.log("Repository: Searching", id);
 
 
     const result = await db.query(

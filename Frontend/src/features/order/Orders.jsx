@@ -621,16 +621,23 @@ export default function Orders() {
                   <option>CANCELLED</option>
                 </select>
               </div>
-              <button
-                className="btn-cancel"
-                onClick={() => setEditModalOpen(false)}
-              >
-                Cancel
-              </button>
+              <div className="edit-order-footer">
 
-              <button className="btn-update" onClick={handleUpdateOrder}>
-                Update
-              </button>
+  <button
+    className="cancel-btn"
+    onClick={() => setEditModalOpen(false)}
+  >
+    Cancel
+  </button>
+
+  <button
+    className="update-btn"
+    onClick={handleUpdateOrder}
+  >
+    Update
+  </button>
+
+</div>
             </div>
           )}
         </Modal>

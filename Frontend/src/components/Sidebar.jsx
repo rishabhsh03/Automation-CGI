@@ -1,4 +1,5 @@
 import "./Sidebar.css";
+
 import {
     FaTachometerAlt,
     FaBoxOpen,
@@ -10,16 +11,20 @@ import {
 } from "react-icons/fa";
 
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
-export default function Sidebar({ search,setSearch}) 
-        {
+export default function Sidebar() {
 
     const navigate = useNavigate();
 
     const logout = () => {
+
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("user");
+
         navigate("/login");
+
     };
 
     return (

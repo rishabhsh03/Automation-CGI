@@ -32,17 +32,7 @@ export default function Modal({
                 </div>
 
                 <div className="modal-footer">
-                    <button
-                        className="btn-cancel"
-                        onClick={onClose}
-                        type="button"
-                    >
-                        Cancel
-                    </button>
-
-                    <button className="btn-save" type="button">
-                        Save
-                    </button>
+                  
                 </div>
             </div>
         </div>,

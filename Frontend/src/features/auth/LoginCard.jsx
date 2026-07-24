@@ -7,7 +7,7 @@ export default function LoginCard() {
     
         const navigate = useNavigate();
         const [showPassword, setShowPassword] = useState(false);
-
+        const [rememberMe, setRememberMe] = useState(false);
         const [formData, setFormData] =useState({
             email:"",
             password:""
@@ -24,12 +24,18 @@ export default function LoginCard() {
                 const result = await loginUser(formData);
                 console.log("Backend Response:", result);
                 if(result.success){
-                    localStorage.setItem("token", result.token);
 
-                    localStorage.setItem(
-                        "user",
-                        JSON.stringify(result.user)
-                    );
+    if (rememberMe) {
+
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("user", JSON.stringify(result.user));
+
+    } else {
+
+        sessionStorage.setItem("token", result.token);
+        sessionStorage.setItem("user", JSON.stringify(result.user));
+
+    }
                     navigate("/dashboard");
                 }else{
                     setError(result.message);
@@ -135,9 +141,13 @@ export default function LoginCard() {
 
                     <label className="flex gap-2 text-slate-300">
 
-                        <input type="checkbox"/>
+                      <input
+    type="checkbox"
+    checked={rememberMe}
+    onChange={(e) => setRememberMe(e.target.checked)}
+/>
 
-                        Remember Me
+<label>Remember Me</label>
 
                     </label>
 

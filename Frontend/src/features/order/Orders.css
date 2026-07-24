@@ -597,3 +597,72 @@ tbody tr:hover{
     background:#111827;
     color:#fff;
 }
+.edit-order-footer{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-top:30px;
+
+}
+
+.cancel-btn{
+
+    padding:10px 22px;
+
+    background:#fff;
+
+    color:#374151;
+
+    border:1px solid #d1d5db;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.cancel-btn:hover{
+
+    background:#f3f4f6;
+
+}
+
+.update-btn{
+
+    padding:10px 22px;
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.update-btn:hover{
+
+    background:#1d4ed8;
+
+}

@@ -8,13 +8,13 @@ const {
     updatePurchaseOrderStatus,
     cancelPurchaseOrder
 } = require("../controllers/purchaseOrderController");
-console.log({
-    createPurchaseOrder,
-    getPurchaseOrders,
-    getPurchaseOrderById,
-    updatePurchaseOrderStatus,
-    cancelPurchaseOrder
-});
+// console.log({
+//     createPurchaseOrder,
+//     getPurchaseOrders,
+//     getPurchaseOrderById,
+//     updatePurchaseOrderStatus,
+//     cancelPurchaseOrder
+// });
 router.post("/", createPurchaseOrder);
 router.get("/",getPurchaseOrders);
 router.get("/:id",getPurchaseOrderById);

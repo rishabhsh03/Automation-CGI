@@ -3,6 +3,8 @@ const authRepository = require("../repositories/authRepository");
 const jwt = require("jsonwebtoken");
 const otpGenerator = require("otp-generator");
 const transport = require("./mailService");
+const { default: VerifyOTP } = require("../../../Frontend/src/features/auth/VerifyOTP");
+require("dotenv").config();
 const registerUser = async ({
 
     name,
@@ -79,6 +81,8 @@ const forgotPassword = async (email) => {
         lowerCaseAlphabets:false,
         specialChars:false
     });
+    console.log("OTP: ", otp);
+    
     await authRepository.saveOTP(email,otp);
 
     await transport.sendMail({
@@ -91,8 +95,22 @@ const forgotPassword = async (email) => {
         html:`<h2>Your OTP is ${otp}</h2>`
     });
 }
+const verifyOTP = async (email, otp) => {
+
+    const record = await authRepository.verifyOTP(email, otp);
+
+    if (!record) {
+        throw new Error("Invalid or Expired OTP");
+    }
+
+    await authRepository.deleteOTP(email);
+
+    return true;
+
+};
 module.exports ={ 
 registerUser,
 loginUser,
-forgotPassword
+forgotPassword,
+verifyOTP,
 }

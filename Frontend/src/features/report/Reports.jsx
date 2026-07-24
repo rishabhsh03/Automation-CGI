@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import "./Reports.css";
 
 import Sidebar from "../../components/Sidebar";
@@ -54,17 +54,19 @@ export default function Reports() {
 
   const loadSummary = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/report/summary");
+        const res = await fetch("http://localhost:8000/api/report/summary");
 
-      const result = await res.json();
+        const result = await res.json();
 
-      if (result.success) {
-        setSummary(result.data);
-      }
+        console.log("Summary:", result);
+
+        if (result.success) {
+            setSummary(result.data);
+        }
     } catch (err) {
-      console.error(err);
+        console.error(err);
     }
-  };
+};
   const loadMonthlySales = async () => {
     try {
       const res = await fetch("http://localhost:8000/api/report/monthly-sales");
@@ -78,93 +80,91 @@ export default function Reports() {
       console.error(err);
     }
   };
-  const generateReport = async () => {
+  const generateReport = useCallback(async () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/api/report", {
-        method: "POST",
+        const res = await fetch("http://localhost:8000/api/report", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                reportType,
+                fromDate,
+                toDate,
+                warehouse,
+                status,
+            }),
+        });
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+        const result = await res.json();
 
-        body: JSON.stringify({
-          reportType,
+        if (result.success) {
+            setReportData(result.data);
+        }
 
-          fromDate,
-
-          toDate,
-
-          warehouse,
-
-          status,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (result.success) {
-        setReportData(result.data);
-      }
     } catch (err) {
-      console.error(err);
+        console.error(err);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
-  useEffect(() => {
+    
+}, [reportType, fromDate, toDate, warehouse, status]);
+useEffect(() => {
     loadSummary();
-
     loadMonthlySales();
-  }, []);
-
-  useEffect(() => {
+}, []);
+useEffect(() => {
     generateReport();
-  }, [reportType]);
-  const filteredData = useMemo(() => {
+}, [generateReport]);
+ const filteredData = useMemo(() => {
+
     let data = [...reportData];
 
     // Search
-
     if (search.trim()) {
-      const text = search.toLowerCase();
 
-      data = data.filter((item) =>
-        Object.values(item).some((value) =>
-          String(value ?? "").replaceAll("_", " "),
-        ),
-      );
+        const text = search.toLowerCase();
+
+        data = data.filter(item =>
+
+            Object.values(item).some(value =>
+
+                String(value ?? "")
+                    .replaceAll("_", " ")
+                    .toLowerCase()
+                    .includes(text)
+
+            )
+
+        );
+
     }
 
     // Date Filter
-
     if (fromDate && toDate) {
-      data = data.filter((item) => {
-        if (
-          (reportType === "inventory" ||
-            reportType === "orders" ||
-            reportType === "purchase") &&
-          fromDate &&
-          toDate
-        ) {
-          data = data.filter((item) => {
+
+        data = data.filter(item => {
+
             const value = item.created_at || item.updated_at;
 
             if (!value) return true;
 
             const date = new Date(value);
 
-            return date >= new Date(fromDate) && date <= new Date(toDate);
-          });
-        }
+            return (
+                date >= new Date(fromDate) &&
+                date <= new Date(toDate)
+            );
 
-        return date >= new Date(fromDate) && date <= new Date(toDate);
-      });
+        });
+
     }
 
     return data;
-  }, [reportData, search, fromDate, toDate]);
+
+}, [reportData, search, fromDate, toDate]);
   const exportExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(filteredData);
 
@@ -351,12 +351,13 @@ export default function Reports() {
                 onChange={(e) => setToDate(e.target.value)}
               />
 
-              <button
+              {/* <button
                 className="generate-btn"
                 onClick={generateReport}
                 disabled={loading}
-              />
-              {loading ? "Generating..." : "Generate Report"}
+              >
+                {loading ? "Generating..." : "Generate Report"}
+              </button> */}
             </div>
           </div>
           {/* Monthly Sales Chart */}
@@ -368,7 +369,7 @@ export default function Reports() {
               </h2>
             </div>
 
-            <ResponsiveContainer width="100%" height={350}>
+            <ResponsiveContainer width="100%" height={330}>
               <BarChart data={monthlySales}>
                 <CartesianGrid strokeDasharray="3 3" />
 
@@ -545,7 +546,9 @@ ${item.status === "Damaged" ? "blue" : ""}
                       <td>₹{Number(item.total_amount).toLocaleString()}</td>
 
                       <td>
-                        <span className={`status ${item.status?.toLowerCase() || ""}`}>
+                        <span
+                          className={`status ${item.status?.toLowerCase() || ""}`}
+                        >
                           {item.status}
                         </span>
                       </td>

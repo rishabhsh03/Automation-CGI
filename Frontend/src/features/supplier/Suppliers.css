@@ -47,23 +47,34 @@
 .add-btn{
 
     display:flex;
+
     align-items:center;
+
     gap:10px;
 
-    background:#22C55E;
-    color:#fff;
+    padding:12px 22px;
+
+    background:#22c55e;
+
+    color:white;
 
     border:none;
-    padding:14px 24px;
 
-    border-radius:12px;
+    border-radius:10px;
 
     cursor:pointer;
 
     font-size:15px;
+
     font-weight:600;
 
     transition:.3s;
+
+}
+
+.add-btn:hover{
+
+    background:#16a34a;
 
 }
 

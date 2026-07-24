@@ -25,7 +25,7 @@ const createOrder = async (req, res) => {
      //GET order
 
 const getOrders = async (req , res) => {
-      console.log("===== GET /api/orders HIT =====");
+    //   console.log("===== GET /api/orders HIT =====");
     try{
         const orders = await orderService.getOrders();
 
@@ -47,18 +47,18 @@ const getOrders = async (req , res) => {
 
 const getOrderById = async (req, res) => {
     
-        console.log("Controller: getOrderById");
+        // console.log("Controller: getOrderById");
 
     try {
 
         const { id } = req.params;
 
-                console.log("ID:", id);
+                // console.log("ID:", id);
 
 
         const order = await orderService.getOrderById(id);
 
-                console.log("Order:", order);
+                // console.log("Order:", order);
 
 
         if (!order) {

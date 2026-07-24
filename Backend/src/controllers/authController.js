@@ -2,7 +2,7 @@ const authService = require("../services/authService");
 
 const register = async (req, res) => {
 
-    console.log("REGISTER BODY:", req.body);
+    // console.log("REGISTER BODY:", req.body);
 
     try {
 
@@ -28,7 +28,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
 
-    console.log("BODY =>", req.body);
+    // console.log("BODY =>", req.body);
 
     try {
 
@@ -57,7 +57,9 @@ const forgotPassword = async (req, res) => {
 
     try {
 
-        await authService.forgotPassword(req.body.email);
+        const result = await authService.forgotPassword(req.body.email);
+        console.log("Result: ", result);
+        
 
         res.json({
             success: true,

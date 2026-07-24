@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-console.log("Inventory Routes Loaded");
+// console.log("Inventory Routes Loaded");
 
 router.post("/", (req, res, next) => {
-    console.log("POST /api/inventory HIT");
+    // console.log("POST /api/inventory HIT");
     next();
 });
 

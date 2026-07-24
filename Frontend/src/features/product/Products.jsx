@@ -101,14 +101,22 @@ export default function Products() {
 
     const saveProduct = async ()=>{
         
-        if (Number(product.reorder_qty) < 0){
-            alert
-        }
+      if (Number(product.reorder_threshold) < 0) {
+        alert("Reorder Threshold cannot be negative.");
+        return;
+    }
+
+    if (Number(product.reorder_qty) < 0) {
+        alert("Reorder Quantity cannot be negative.");
+        return;
+    }
+
+
         const url = editing
     ? `${API}/${product.id}`
     : API;
         const method = editing ? "PUT" : "POST";
-
+        
         const res = await fetch(url,{
 
             method,
@@ -416,6 +424,8 @@ category:e.target.value
 
 type="number"
 
+min="0"
+
 placeholder="Reorder Threshold"
 
 value={product.reorder_threshold}
@@ -433,6 +443,8 @@ reorder_threshold:e.target.value
 <input
 
 type="number"
+
+min="0"
 
 placeholder="Reorder Qty"
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   FaPlus,
   FaSearch,
@@ -33,44 +33,55 @@ export default function Supplier() {
   });
 
   console.log("Suppliers:", suppliers);
-  const filteredSuppliers = suppliers.filter((item) => {
+  const filteredSuppliers = suppliers.filter(item => {
 
-    const searchText = search.toLowerCase();
+    const text = search.toLowerCase();
 
-    return (
-        (item.name ?? "").toLowerCase().includes(searchText) ||
-        (item.contact_person ?? "").toLowerCase().includes(searchText) ||
-        (item.email ?? "").toLowerCase().includes(searchText) ||
-        (item.phone ?? "").toLowerCase().includes(searchText) ||
-        (item.city ?? "").toLowerCase().includes(searchText)
+    return [
+
+        item.name,
+
+        item.contact_person,
+
+        item.email,
+
+        item.phone,
+
+        item.city
+
+    ].some(value =>
+
+        value?.toLowerCase().includes(text)
+
     );
-
+    
 });
-  const supplierSummary = {
+const supplierSummary = useMemo(() => ({
+
     totalSuppliers: suppliers.length,
 
     activeSuppliers: suppliers.filter(
-      (supplier) => supplier.status === "ACTIVE",
+        s => s.status === "ACTIVE"
     ).length,
 
     inactiveSuppliers: suppliers.filter(
-      (supplier) => supplier.status === "INACTIVE",
+        s => s.status === "INACTIVE"
     ).length,
 
-    averageDelivery: (
-      suppliers.reduce((sum, supplier) => sum + supplier.avg_delivery_date, 0) /
-      suppliers.length
-    ).toFixed(1),
-  };
-  useEffect(() => {
-    fetch("http://localhost:8000/api/supplier")
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
-          setSuppliers(result.data);
-        }
-      });
-  }, []);
+    contactInfo: suppliers.filter(
+        s => s.email && s.phone
+    ).length,
+
+    averageDelivery: suppliers.length
+        ? (
+            suppliers.reduce(
+                (sum,s)=>sum+Number(s.avg_delivery_date),
+                0
+            ) / suppliers.length
+        ).toFixed(1)
+        : 0
+
+}), [suppliers]);
   const loadSuppliers = async () => {
     try {
       const res = await fetch("http://localhost:8000/api/supplier");
@@ -156,6 +167,34 @@ const handleSubmit = async () => {
     }
 
 };
+const openAddModal = () => {
+
+    setEditingId(null);
+
+    setFormData({
+        name: "",
+        contact_person: "",
+        email: "",
+        phone: "",
+        city: "",
+        address: "",
+        avg_delivery_date: "",
+        status: "ACTIVE",
+        organization_id: 1
+    });
+
+    setShowModal(true);
+
+};
+const editSupplier = (item) => {
+
+    setEditingId(item.id);
+
+    setFormData(item);
+
+    setShowModal(true);
+
+};
   return (
     <div className="supplier-layout">
       <Sidebar />
@@ -167,66 +206,60 @@ const handleSubmit = async () => {
           {/* Header */}
 
           <div className="supplier-header">
-            <div>
-              <h1>Suppliers</h1>
 
-              <p>Manage supplier information</p>
-            </div>
+    <div>
 
-            <button
-              className="add-btn"
-              onClick={() => {
-                setEditingId(null);
+        <h1>Suppliers</h1>
 
-                setFormData({
-                  name: "",
-                  contact_person: "",
-                  email: "",
-                  phone: "",
-                  city: "",
-                  address: "",
-                  avg_delivery_date: "",
-                  status: "ACTIVE",
-                  organization_id: 1,
-                });
+        <p>Manage supplier information</p>
 
-                setShowModal(true);
-              }}
-            />
-          </div>
+    </div>
 
-          {/* KPI Cards */}
+    <button
+        className="add-btn"
+        onClick={openAddModal}
+    >
 
-          <div className="supplier-cards">
-            <div className="supplier-card">
-              <FaBuilding />
+        <FaPlus />
 
-              <div>
-                <h3>Total Suppliers</h3>
+        Add Supplier
 
-                <h2>{supplierSummary.totalSuppliers}</h2>
-              </div>
-            </div>
+    </button>
 
-            <div className="supplier-card">
-              <FaEnvelope />
+</div>
 
-              <div>
-                <h3>Contact Info</h3>
-                <h2>{supplierSummary.contactInfo}</h2>
-              </div>
-            </div>
+        {/* KPI Cards */}
 
-            <div className="supplier-card">
-              <FaPhone />
+<div className="supplier-cards">
 
-              <div>
-                <h3>Avg Delivery</h3>
-                <h2>{supplierSummary.averageDelivery} Days</h2>
-              </div>
-            </div>
-          </div>
+    <div className="supplier-card">
+        <FaBuilding className="card-icon" />
 
+        <div>
+            <h3>Total Suppliers</h3>
+            <h2>{supplierSummary.totalSuppliers}</h2>
+        </div>
+    </div>
+
+    <div className="supplier-card">
+        <FaEnvelope className="card-icon" />
+
+        <div>
+            <h3>Contact Info</h3>
+            <h2>{supplierSummary.contactInfo}</h2>
+        </div>
+    </div>
+
+    <div className="supplier-card">
+        <FaPhone className="card-icon" />
+
+        <div>
+            <h3>Avg Delivery</h3>
+            <h2>{supplierSummary.averageDelivery} Days</h2>
+        </div>
+    </div>
+
+</div> 
           {/* Search */}
 
           <div className="toolbar">
@@ -269,24 +302,30 @@ const handleSubmit = async () => {
                     <td>{item.status}</td>
 
                     <td>
-                      <div className="action-buttons">
-                        <button
-                          className="edit-btn"
-                          onClick={() => {
-                            setEditingId(item.id);
 
-                            setFormData(item);
+<div className="action-buttons">
 
-                            setShowModal(true);
-                          }}
-                        />
+<button
+className="edit-btn"
+onClick={()=>editSupplier(item)}
+>
 
-                        <button
-    className="delete-btn"
-    onClick={() => handleDelete(item.id)}
-/>
-                      </div>
-                    </td>
+<FaEdit/>
+
+</button>
+
+<button
+className="delete-btn"
+onClick={()=>handleDelete(item.id)}
+>
+
+<FaTrash/>
+
+</button>
+
+</div>
+
+</td>
                   </tr>
                 ))}
               </tbody>

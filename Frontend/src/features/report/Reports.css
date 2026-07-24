@@ -227,9 +227,9 @@
 }
 
 .filter-group{
-
+    color: white;
     display:flex;
-
+    
     gap:15px;
 
 }
@@ -564,5 +564,50 @@ animation:spin 1s linear infinite;
 to{
 transform:rotate(360deg);
 }
+}
+.generate-btn{
+
+    background:#22c55e;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 24px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.generate-btn:hover{
+
+    background:#16a34a;
+
+}
+
+.generate-btn:disabled{
+
+    background:#94a3b8;
+
+    cursor:not-allowed;
+
+}
+.generate-btn:hover{
+
+    background:#16a34a;
 
 }

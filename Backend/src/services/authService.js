@@ -3,7 +3,6 @@ const authRepository = require("../repositories/authRepository");
 const jwt = require("jsonwebtoken");
 const otpGenerator = require("otp-generator");
 const transport = require("./mailService");
-const { default: VerifyOTP } = require("../../../Frontend/src/features/auth/VerifyOTP");
 require("dotenv").config();
 const registerUser = async ({
 

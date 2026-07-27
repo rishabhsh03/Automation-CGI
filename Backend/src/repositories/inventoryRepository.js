@@ -1,5 +1,5 @@
 const db = require("../models/db");
-const { get } = require("../routes/dashBoardRoutes");
+const { get } = require("../routes/dashboardRoutes");
 
 const getInventory = async () => {
 

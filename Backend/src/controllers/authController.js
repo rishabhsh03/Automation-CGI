@@ -78,9 +78,28 @@ const forgotPassword = async (req, res) => {
     }
 
 };
+const verifyOTP = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
 
+        await authService.verifyOTP(email, otp);
+
+        res.status(200).json({
+            success: true,
+            message: "OTP verified successfully",
+        });
+    } catch (error) {
+        console.error(error);
+
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
 module.exports = {
     register,
     login,
     forgotPassword,
+    verifyOTP,
 };

@@ -11,6 +11,7 @@ import Suppliers from "./features/supplier/Suppliers";
 import Reports from "./features/report/Reports";
 import ProtectedRoute from "./components/ProtectedRoute";
 import VerifyOTP from "./features/auth/VerifyOTP";
+
 function App() {
   return (
     <BrowserRouter>
@@ -25,13 +26,13 @@ function App() {
         <Route path="/verify-otp" element={<VerifyOTP />} />
         {/* Dashboard */}
         <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+    path="/dashboard"
+    element={
+        <ProtectedRoute>
+            <Dashboard />
+        </ProtectedRoute>
+    }
+/>
   <Route
     path="/inventory"
     element={

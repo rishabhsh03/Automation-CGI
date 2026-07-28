@@ -69,33 +69,6 @@ const addProduct = async (
     return result.rows[0];
 };
 
-const updateProduct = (index, productId) => {
-
-    const product = products.find(
-        p => p.id === Number(productId)
-    );
-
-    if (!product) return;
-
-    setOrderItems(prev =>
-        prev.map((item, i) => {
-
-            if (i !== index) return item;
-
-            const quantity = Number(item.quantity);
-
-            return {
-                ...item,
-                product_id: product.id,
-                unit_price: Number(product.selling_price),
-                total_price:
-                    quantity * Number(product.selling_price)
-            };
-
-        })
-    );
-
-};
 
 const deleteProduct = async (id) => {
 

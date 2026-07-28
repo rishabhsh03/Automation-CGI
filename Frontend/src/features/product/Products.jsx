@@ -30,8 +30,14 @@ export default function Products() {
     });
 
     const loadProducts = () => {
-
-        fetch(API)
+        const token = 
+        localStorage.getItem("token") ||
+        sessionStorage.getItem("token");
+        fetch(API,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
 
             .then(res => res.json())
 
@@ -116,13 +122,16 @@ export default function Products() {
     ? `${API}/${product.id}`
     : API;
         const method = editing ? "PUT" : "POST";
-        
+        const token = 
+        localStorage.getItem("token") ||
+        sessionStorage.getItem("token");
         const res = await fetch(url,{
 
             method,
 
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                Authorization: `Bearer ${token}`
             },
 
             body:JSON.stringify(product)
@@ -147,11 +156,14 @@ export default function Products() {
 
     };
 const deleteProduct = async (Id) => {
-
+    const token = localStorage.getItem("token")
     const res = await fetch(
     `${API}/${deleteId}`,
     {
-        method: "DELETE"
+        method: "DELETE",
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
     }
 );
 

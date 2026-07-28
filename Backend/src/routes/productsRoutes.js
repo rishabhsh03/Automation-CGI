@@ -6,11 +6,40 @@ const {
     getProducts,
     updateProducts,
     deleteProducts
-} =require("../controllers/productController");
+} = require("../controllers/productController");
 
-router.post("/", saveProducts);
-router.get("/", getProducts);
-router.put("/:id", updateProducts);
-router.delete("/:id", deleteProducts);
+const authenticate = require("../middlewares/authMiddleware");
+const authorize = require("../middlewares/roleMiddleware");
 
-module.exports = router
+// Any logged-in user
+router.get(
+    "/",
+    authenticate,
+    getProducts
+);
+
+// Only ADMIN and WAREHOUSE_MANAGER can add products
+router.post(
+    "/",
+    authenticate,
+    authorize("ADMIN", "WAREHOUSE_MANAGER"),
+    saveProducts
+);
+
+// Only ADMIN and WAREHOUSE_MANAGER can update products
+router.put(
+    "/:id",
+    authenticate,
+    authorize("ADMIN", "WAREHOUSE_MANAGER"),
+    updateProducts
+);
+
+// Only ADMIN can delete products
+router.delete(
+    "/:id",
+    authenticate,
+    authorize("ADMIN"),
+    deleteProducts
+);
+
+module.exports = router;

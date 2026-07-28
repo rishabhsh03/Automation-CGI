@@ -22,17 +22,30 @@ const getReportSummary = async () => {
             FROM purchaseorders;
         `);
 
-  const lowStock = await db.query(`
-            SELECT COUNT(*) AS low_stock
-            FROM inventory
-            WHERE available_quantity <= reorder_level;
-        `);
-
-  const inventoryValue = await db.query(`
-            SELECT COALESCE(SUM(available_quantity * unit_cost),0) AS inventory_value
-            FROM inventory;
-        `);
-
+const lowStock = await db.query(`
+    SELECT COUNT(*) AS low_stock
+    FROM inventory
+    WHERE
+        (
+            quantity
+            - reserved_quantity
+            - damaged_quantity
+        ) <= reorder_level;
+`);
+const inventoryValue = await db.query(`
+    SELECT
+        COALESCE(
+            SUM(
+                (
+                    quantity
+                    - reserved_quantity
+                    - damaged_quantity
+                ) * unit_cost
+            ),
+            0
+        ) AS inventory_value
+    FROM inventory;
+`);
   return {
     totalProducts: totalProducts.rows[0].total_products,
     totalOrders: totalOrders.rows[0].total_orders,

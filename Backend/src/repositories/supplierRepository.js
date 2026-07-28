@@ -28,8 +28,8 @@ const getSupplierById = async (id) => {
         [id]
     ); 
 }
-
 const addSupplier = async (supplierData) => {
+
     const {
         name,
         contact_person,
@@ -42,7 +42,8 @@ const addSupplier = async (supplierData) => {
         organization_id
     } = supplierData;
 
-    const rsult = db.query(`
+    const result = await db.query(
+        `
         INSERT INTO suppliers
         (
             name,
@@ -56,24 +57,24 @@ const addSupplier = async (supplierData) => {
             organization_id
         )
         VALUES
-            ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-            RETURNING *;
+        ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+        RETURNING *;
         `,
-            [
-                name,
-                contact_person,
-                email,
-                phone,
-                city,
-                address,
-                avg_delivery_date,
-                status,
-                organization_id
-            ]
-        );
-        return  result.rows[0];
-};
+        [
+            name,
+            contact_person,
+            email,
+            phone,
+            city,
+            address,
+            avg_delivery_date,
+            status,
+            organization_id
+        ]
+    );
 
+    return result.rows[0];
+};
 const updateSupplier = async (id, supplierData) => {
     const {
         name,
@@ -115,7 +116,7 @@ const updateSupplier = async (id, supplierData) => {
     return result.rows[0];
 }
 const deleteSuppliers = async (id) => {
-    const rsult = await db.query(`
+    const result = await db.query(`
         DELETE FROM suppliers
         WHERE id = $1
         RETURNING *;

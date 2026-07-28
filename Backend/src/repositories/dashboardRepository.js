@@ -113,13 +113,15 @@ const heatmap = await db.query(`
 `);
 const recentOrders = await db.query(`
     SELECT
-        id,
-        customer_name,
-        status,
-        total_amount,
-        created_at
-    FROM orders
-    ORDER BY id DESC
+        o.id,
+        u.name AS customer_name,
+        o.status,
+        o.total_amount,
+        o.created_at
+    FROM orders o
+    LEFT JOIN users u
+        ON o.customer_id = u.id
+    ORDER BY o.id DESC
     LIMIT 5;
 `);
    return {

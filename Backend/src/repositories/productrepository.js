@@ -69,38 +69,32 @@ const addProduct = async (
     return result.rows[0];
 };
 
-const updateProduct = async (
-    id,
-    sku,
-    name,
-    category,
-    reorder_threshold,
-    reorder_qty
-) => {
+const updateProduct = (index, productId) => {
 
-    const result = await db.query(
-        `
-        UPDATE products
-        SET
-            sku = $1,
-            name = $2,
-            category = $3,
-            reorder_threshold = $4,
-            reorder_qty = $5
-        WHERE id = $6
-        RETURNING *;
-        `,
-        [
-            sku,
-            name,
-            category,
-            reorder_threshold,
-            reorder_qty,
-            id
-        ]
+    const product = products.find(
+        p => p.id === Number(productId)
     );
 
-    return result.rows[0];
+    if (!product) return;
+
+    setOrderItems(prev =>
+        prev.map((item, i) => {
+
+            if (i !== index) return item;
+
+            const quantity = Number(item.quantity);
+
+            return {
+                ...item,
+                product_id: product.id,
+                unit_price: Number(product.selling_price),
+                total_price:
+                    quantity * Number(product.selling_price)
+            };
+
+        })
+    );
+
 };
 
 const deleteProduct = async (id) => {
@@ -116,11 +110,29 @@ const deleteProduct = async (id) => {
 
     return result.rows[0];
 };
+const updateQuantity = (index, quantity) => {
 
+    setOrderItems(prev =>
+        prev.map((item, i) => {
+
+            if (i !== index) return item;
+
+            return {
+                ...item,
+                quantity,
+                total_price:
+                    quantity * Number(item.unit_price)
+            };
+
+        })
+    );
+
+};
 module.exports = {
     getProducts,
     getProductById,
     addProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    updateQuantity
 };

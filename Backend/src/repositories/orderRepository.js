@@ -9,7 +9,7 @@ const createOrder = async (orderData) => {
         await client.query("BEGIN");
 
         const {
-            customer_name,
+            customer_id,
             organization_id,
             status,
             total_amount,
@@ -21,7 +21,7 @@ const createOrder = async (orderData) => {
             `
             INSERT INTO orders
             (
-                customer_name,
+                customer_id,
                 status,
                 organization_id,
                 total_amount
@@ -31,7 +31,7 @@ const createOrder = async (orderData) => {
             RETURNING *;
             `,
             [
-                customer_name,
+                customer_id,
                 status,
                 organization_id,
                 total_amount
@@ -89,27 +89,20 @@ const createOrder = async (orderData) => {
 const getOrders = async () => {
 
     const result = await db.query(`
-
         SELECT
-
-            id,
-
-            customer_name,
-
-            status,
-
-            total_amount,
-
-            created_at
-
-        FROM orders
-
-        ORDER BY id DESC;
-
+            o.id,
+            o.customer_id,
+            u.name AS customer_name,
+            o.status,
+            o.total_amount,
+            o.created_at
+        FROM orders o
+        LEFT JOIN users u
+            ON u.id = o.customer_id
+        ORDER BY o.id DESC;
     `);
 
     return result.rows;
-
 };
 const getOrderById = async (id) => {
     //    console.log("Repository: Searching", id);
@@ -197,20 +190,21 @@ const getRecentOrders = async () => {
 
     const result = await db.query(`
         SELECT
-            id,
-            customer_name,
-            status,
-            total_amount,
-            created_at
-        FROM orders
-        ORDER BY id DESC
+            o.id,
+            o.customer_id,
+            u.name AS customer_name,
+            o.status,
+            o.total_amount,
+            o.created_at
+        FROM orders o
+        LEFT JOIN users u
+            ON o.customer_id = u.id
+        ORDER BY o.id DESC
         LIMIT 5;
     `);
 
     return result.rows;
-
 };
-
 module.exports = {
 
     createOrder,
@@ -223,6 +217,6 @@ module.exports = {
 
     deleteOrder,
 
-    getRecentOrders 
+    getRecentOrders,
 
 };

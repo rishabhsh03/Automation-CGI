@@ -7,8 +7,8 @@ router.use("/inventory", require("./inventoryRoutes"));
 router.use("/orders", require("./ordersRoutes"));
 router.use("/products", require("./productsRoutes"));
 router.use("/purchase-orders", require("./purchaseOrderRoutes"));
-router.use("/report", require("./reportRoutes"));   // <-- This line is important
 router.use("/user", require("./userRoutes"));
-router.use("/suppliers", supplierRoutes);
-router.use("/report", reportRoutes);
+router.use("/suppliers", require("./supplierRoutes"));
+router.use("/report", require("./reportRoutes"));
+
 module.exports = router;

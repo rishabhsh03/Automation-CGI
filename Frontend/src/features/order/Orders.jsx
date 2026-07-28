@@ -28,7 +28,6 @@ export default function Orders() {
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState("");
-  const [customerName, setCustomerName] = useState("");
   const [orderItems, setOrderItems] = useState([
     {
       product_id: "",
@@ -126,7 +125,7 @@ export default function Orders() {
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
       String(order.id).includes(search) ||
-      order.customer?.toLowerCase().includes(search.toLowerCase()) ||
+      order.customer_name?.toLowerCase().includes(search.toLowerCase()) ||
       order.status?.toLowerCase().includes(search.toLowerCase());
 
     const matchesStatus = statusFilter === "" || order.status === statusFilter;
@@ -154,33 +153,42 @@ export default function Orders() {
         return "";
     }
   };
-  const updateQuantity = (index, quantity) => {
-    if (quantity < 1) quantity = 1;
+const updateQuantity = (index, quantity) => {
+  if (quantity < 1) quantity = 1;
 
-    const updatedItems = [...orderItems];
+  setOrderItems((prev) =>
+    prev.map((item, i) => {
+      if (i !== index) return item;
 
-    updatedItems[index].quantity = quantity;
+      return {
+        ...item,
+        quantity,
+        total_price: quantity * Number(item.unit_price),
+      };
+    })
+  );
+};
+const updateProduct = (index, productId) => {
+  const product = products.find(
+    (p) => p.id === Number(productId)
+  );
 
-    updatedItems[index].total_price = quantity * updatedItems[index].unit_price;
+  if (!product) return;
 
-    setOrderItems(updatedItems);
-  };
-  const updateProduct = (index, productId) => {
-    const product = products.find((p) => p.id === Number(productId));
+  setOrderItems((prev) =>
+    prev.map((item, i) => {
+      if (i !== index) return item;
 
-    if (!product) return;
-
-    const updated = [...orderItems];
-
-    updated[index].product_id = product.id;
-
-    updated[index].unit_price = Number(product.selling_price);
-
-    updated[index].total_price =
-      Number(product.selling_price) * Number(updated[index].quantity);
-
-    setOrderItems(updated);
-  };
+      return {
+        ...item,
+        product_id: product.id,
+        unit_price: Number(product.selling_price),
+        total_price:
+          Number(product.selling_price) * Number(item.quantity),
+      };
+    })
+  );
+};
   const grandTotal = orderItems.reduce(
     (sum, item) => sum + item.total_price,
 
@@ -260,7 +268,7 @@ export default function Orders() {
         },
 
         body: JSON.stringify({
-          customer_name: customerName,
+          customer_id: customerId,
           status,
           total_amount: grandTotal,
           organization_id: 1,
@@ -277,7 +285,7 @@ export default function Orders() {
 
         fetchOrders();
 
-        setCustomerName("");
+        setCustomerId("");
 
         setStatus("PENDING");
 
@@ -464,13 +472,18 @@ export default function Orders() {
 
                 <div className="form-group">
                   <label>Customer Name</label>
+<select
+    value={customerId}
+    onChange={(e) => setCustomerId(Number(e.target.value))}
+>
+    <option value="">Select Customer</option>
 
-                  <input
-                    type="text"
-                    placeholder="Enter Customer Name"
-                    value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
-                  />
+    {customers.map((customer) => (
+        <option key={customer.id} value={customer.id}>
+            {customer.name}
+        </option>
+    ))}
+</select>
                 </div>
 
                 <div className="form-group">
@@ -572,9 +585,9 @@ export default function Orders() {
                 <strong>Order ID:</strong> ORD-{selectedOrder.id}
               </p>
 
-              <p>
-                <strong>Customer:</strong> {selectedOrder.customer}
-              </p>
+             <p>
+    <strong>Customer:</strong> {selectedOrder.customer_name}
+</p>
 
               <p>
                 <strong>Status:</strong> {selectedOrder.status}

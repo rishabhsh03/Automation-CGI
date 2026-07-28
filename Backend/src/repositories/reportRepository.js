@@ -117,19 +117,18 @@ const getOrdersReport = async () => {
 
     const result = await db.query(`
         SELECT
-            id,
-            customer_name,
-            total_amount,
-            status,
-            created_at
-
-        FROM orders
-
-        ORDER BY created_at DESC;
+            o.id,
+            u.name AS customer_name,
+            o.total_amount,
+            o.status,
+            o.created_at
+        FROM orders o
+        LEFT JOIN users u
+            ON u.id = o.customer_id
+        ORDER BY o.created_at DESC;
     `);
 
     return result.rows;
-
 };
 const getSalesReport = async () => {
 

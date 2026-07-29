@@ -525,7 +525,7 @@ ${item.status === "Damaged" ? "blue" : ""}
                       <td>{item.total_orders}</td>
 
                       <td>
-                        ₹
+                        
                         {Number(item.revenue).toLocaleString("en-IN", {
                           style: "currency",
                           currency: "INR",

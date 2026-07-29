@@ -8,7 +8,37 @@ import {
   FaEnvelope,
   FaBuilding,
 } from "react-icons/fa";
+const getPerformance = (days) => {
+    if (days <= 3) {
+        return {
+            text: "Excellent",
+            color: "#22c55e",
+            icon: "🟢"
+        };
+    }
 
+    if (days <= 7) {
+        return {
+            text: "Good",
+            color: "#3b82f6",
+            icon: "🔵"
+        };
+    }
+
+    if (days <= 14) {
+        return {
+            text: "Average",
+            color: "#f59e0b",
+            icon: "🟡"
+        };
+    }
+
+    return {
+        text: "Poor",
+        color: "#ef4444",
+        icon: "🔴"
+    };
+};
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 
@@ -82,6 +112,9 @@ const supplierSummary = useMemo(() => ({
         : 0
 
 }), [suppliers]);
+const performance = getPerformance(
+    Number(supplierSummary.averageDelivery)
+);
   const loadSuppliers = async () => {
     try {
       const res = await fetch("http://localhost:8000/api/supplier");
@@ -232,6 +265,7 @@ const editSupplier = (item) => {
 
 <div className="supplier-cards">
 
+    {/* Total Suppliers */}
     <div className="supplier-card">
         <FaBuilding className="card-icon" />
 
@@ -241,6 +275,7 @@ const editSupplier = (item) => {
         </div>
     </div>
 
+    {/* Contact Info */}
     <div className="supplier-card">
         <FaEnvelope className="card-icon" />
 
@@ -250,16 +285,22 @@ const editSupplier = (item) => {
         </div>
     </div>
 
+    {/* Avg Delivery */}
     <div className="supplier-card">
         <FaPhone className="card-icon" />
 
         <div>
             <h3>Avg Delivery</h3>
+
             <h2>{supplierSummary.averageDelivery} Days</h2>
+
+            <span className={`badge ${performance.text.toLowerCase()}`}>
+                {performance.text}
+            </span>
         </div>
     </div>
 
-</div> 
+</div>
           {/* Search */}
 
           <div className="toolbar">

@@ -534,3 +534,28 @@ tbody tr:hover{
     color:white;
 
 }
+.badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge.excellent {
+    background: #22c55e;
+}
+
+.badge.good {
+    background: #3b82f6;
+}
+
+.badge.average {
+    background: #f59e0b;
+}
+
+.badge.poor {
+    background: #ef4444;
+}

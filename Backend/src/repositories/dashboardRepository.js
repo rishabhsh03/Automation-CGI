@@ -124,42 +124,76 @@ const recentOrders = await db.query(`
     ORDER BY o.id DESC
     LIMIT 5;
 `);
-   return {
 
+const purchaseOrders = await db.query(`
+    SELECT COUNT(*)
+    FROM purchaseorders;
+`);
+const inventoryCost = await db.query(`
+    SELECT
+        COALESCE(
+            SUM(quantity * COALESCE(unit_cost, 0)),
+            0
+        ) AS inventory_cost
+    FROM inventory;
+`);
+const inventorySellingValue = await db.query(`
+    SELECT
+        COALESCE(
+            SUM(quantity * COALESCE(selling_price, 0)),
+            0
+        ) AS inventory_selling_value
+    FROM inventory;
+`);
+const potentialProfit = Number(
+    (
+        Number(inventorySellingValue.rows[0].inventory_selling_value) -
+        Number(inventoryCost.rows[0].inventory_cost)
+    ).toFixed(2)
+);
+  return {
     summary: {
 
-        totalProducts: Number(totalProducts.rows[0].count),
+    totalProducts: Number(totalProducts.rows[0].count),
 
-        lowStock: Number(lowStock.rows[0].count),
+    lowStock: Number(lowStock.rows[0].count),
 
-        totalOrders: Number(totalOrders.rows[0].count),
+    totalOrders: Number(totalOrders.rows[0].count),
 
-        totalSuppliers: Number(totalSuppliers.rows[0].count),
+    totalSuppliers: Number(totalSuppliers.rows[0].count),
 
-        pendingOrders: Number(pendingOrders.rows[0].count),
+    pendingOrders: Number(pendingOrders.rows[0].count),
 
-        processingOrders: Number(processingOrders.rows[0].count),
+    processingOrders: Number(processingOrders.rows[0].count),
 
-        shippedOrders: Number(shippedOrders.rows[0].count),
+    shippedOrders: Number(shippedOrders.rows[0].count),
 
-        deliveredOrders: Number(deliveredOrders.rows[0].count),
+    deliveredOrders: Number(deliveredOrders.rows[0].count),
 
-        cancelledOrders: Number(cancelledOrders.rows[0].count),
+    cancelledOrders: Number(cancelledOrders.rows[0].count),
 
-        revenue: Number(revenue.rows[0].revenue)
+    revenue: Number(revenue.rows[0].revenue),
 
-    },
+    inventoryCost: Number(
+        inventoryCost.rows[0].inventory_cost
+    ),
 
+    inventorySellingValue: Number(
+        inventorySellingValue.rows[0].inventory_selling_value
+    ),
+
+    potentialProfit,
+
+    purchaseOrders: Number(
+        purchaseOrders.rows[0].count
+    )
+
+},
     categories: categories.rows,
-
     heatmap: heatmap.rows,
-
-    recentOrders: recentOrders.rows,
-
-
+    recentOrders: recentOrders.rows
 };
-    
-    };
+};
     module.exports = {
     getDashboardData,
     };

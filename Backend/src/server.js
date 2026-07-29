@@ -14,7 +14,9 @@ const routes = require("./routes");
 app.use("/api", routes);
 
 const PORT = process.env.PORT || 8000;
+const aiRoutes = require("./routes/aiRoutes");
 
+app.use("/api/ai", aiRoutes);
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

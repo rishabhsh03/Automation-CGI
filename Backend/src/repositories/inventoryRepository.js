@@ -211,8 +211,52 @@ const updateInventory = async (
     return result.rows[0];
 
 };
+const getLowStockProducts = async () => {
+
+    const result = await db.query(`
+        SELECT
+
+            i.id,
+
+            p.id AS product_id,
+
+            p.sku,
+
+            p.name,
+
+            p.category,
+
+            i.quantity,
+
+            i.reorder_level,
+
+            i.reorder_quantity,
+
+            (
+                i.quantity
+                - i.reserved_quantity
+                - i.damaged_quantity
+            ) AS available_quantity
+
+        FROM inventory i
+
+        JOIN products p
+            ON p.id = i.product_id
+
+        WHERE (
+            i.quantity
+            - i.reserved_quantity
+            - i.damaged_quantity
+        ) <= i.reorder_level
+
+        ORDER BY available_quantity ASC;
+    `);
+
+    return result.rows;
+};
 module.exports = {
     getInventory,
     addInventory,
     updateInventory,
+    getLowStockProducts
 };

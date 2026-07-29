@@ -1,5 +1,6 @@
 const INTENTS = require("./intents");
 const keywords = require("./keywords");
+const entityExtractor = require("./entityExtractor");
 
 class IntentAnalyzer {
 
@@ -26,6 +27,13 @@ class IntentAnalyzer {
         const match = prompt.match(/^(find|search|show)\s+(.+)$/i);
 
         if (match) {
+            const entities = entityExtractor.extract(prompt, intent);
+
+return {
+    intent,
+    confidence: 1,
+    entities
+};
 
             return {
                 intent: INTENTS.SEARCH_PRODUCT,

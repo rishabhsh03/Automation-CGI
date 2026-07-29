@@ -1,64 +1,48 @@
+const INTENTS = require("./intents");
+const keywords = require("./keywords");
+
 class IntentAnalyzer {
-
-    constructor() {
-        this.intentMap = {
-            LOW_STOCK: [
-                "low stock",
-                "reorder",
-                "below reorder",
-                "reorder level",
-                "restock"
-            ],
-
-            OUT_OF_STOCK: [
-                "out of stock",
-                "no stock",
-                "stock finished"
-            ],
-
-            INVENTORY: [
-                "inventory",
-                "stock",
-                "available quantity"
-            ],
-
-            SUPPLIER: [
-                "supplier",
-                "vendor"
-            ],
-
-            PURCHASE_ORDER: [
-                "purchase order",
-                "po"
-            ],
-
-            DASHBOARD: [
-                "dashboard",
-                "summary",
-                "overview"
-            ]
-        };
-    }
 
     analyze(prompt) {
 
         const text = prompt.toLowerCase();
 
-        for (const [intent, keywords] of Object.entries(this.intentMap)) {
+        // Step 1: Detect predefined intents
+        for (const [intent, words] of Object.entries(keywords)) {
 
-            if (keywords.some(keyword => text.includes(keyword))) {
-                return{ 
+            if (words.some(word => text.includes(word))) {
+
+                return {
                     intent,
-                    confidence:1
-                }
+                    confidence: 1,
+                    entities: {}
+                };
+
             }
 
         }
 
-        return {
-        intent: "GENERAL",
-        confidence: 0
+        // Step 2: Product search
+        const match = prompt.match(/^(find|search|show)\s+(.+)$/i);
+
+        if (match) {
+
+            return {
+                intent: INTENTS.SEARCH_PRODUCT,
+                confidence: 1,
+                entities: {
+                    product: match[2].trim()
+                }
+            };
+
         }
+
+        return {
+            intent: INTENTS.GENERAL,
+            confidence: 0,
+            entities: {}
+        };
+
     }
 
 }

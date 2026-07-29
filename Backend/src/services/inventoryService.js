@@ -62,12 +62,17 @@ const updateInventory = async (id, data) => {
 const getLowStockProducts = async () => {
     return await inventoryRepository.getLowStockProducts();
 };
+const searchProduct = async (product) => {
 
+    return await inventoryRepository.searchProduct(product);
+
+};
 module.exports = {
 
     getInventory,
     addInventory,
     updateInventory,
-    getLowStockProducts
+    getLowStockProducts,
+    searchProduct
 
 };

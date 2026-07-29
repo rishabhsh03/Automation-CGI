@@ -254,9 +254,39 @@ const getLowStockProducts = async () => {
 
     return result.rows;
 };
+const searchProduct = async (product) => {
+
+    const result = await db.query(`
+        SELECT
+            i.id,
+            p.sku,
+            p.name,
+            p.category,
+            i.quantity,
+            i.reserved_quantity,
+            i.damaged_quantity,
+            (
+                i.quantity
+                - COALESCE(i.reserved_quantity, 0)
+                - COALESCE(i.damaged_quantity, 0)
+            ) AS available_quantity,
+            i.reorder_level,
+            i.reorder_quantity
+        FROM inventory i
+        JOIN products p
+        ON p.id = i.product_id
+        WHERE
+            LOWER(p.name) LIKE LOWER($1)
+            OR LOWER(p.sku) LIKE LOWER($1)
+        ORDER BY p.name;
+    `, [`%${product}%`]);
+
+    return result.rows;
+};
 module.exports = {
     getInventory,
     addInventory,
     updateInventory,
-    getLowStockProducts
+    getLowStockProducts,
+    searchProduct
 };

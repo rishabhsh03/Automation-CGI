@@ -1,0 +1,52 @@
+.ai-layout{
+    display:flex;
+    height:100vh;
+    background:#f5f7fb;
+}
+
+.ai-content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+.chat-container{
+    flex:1;
+    margin:20px;
+    background:white;
+    border-radius:15px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+.chat-header{
+    flex-shrink:0;
+}
+
+.empty-state{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.chat-input{
+    flex-shrink:0;
+    display:flex;
+    gap:15px;
+    padding:20px;
+    border-top:1px solid #eee;
+    background:white;
+}
+
+.chat-input input{
+    flex:1;
+    padding:14px;
+}
+
+.chat-input button{
+    width:120px;
+}

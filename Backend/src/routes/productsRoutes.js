@@ -10,7 +10,8 @@ const {
 
 const authenticate = require("../middlewares/authMiddleware");
 const authorize = require("../middlewares/roleMiddleware");
-
+console.log("authenticate =", authenticate);
+console.log("typeof authenticate =", typeof authenticate);
 // Any logged-in user
 router.get(
     "/",

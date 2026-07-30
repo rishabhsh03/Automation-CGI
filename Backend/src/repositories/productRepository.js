@@ -7,7 +7,7 @@ const result = await db.query(`
         p.sku,
         p.name,
         p.category,
-        i.selling_price,
+        p.selling_price,
 
         EXISTS (
             SELECT 1
@@ -101,11 +101,37 @@ const updateQuantity = (index, quantity) => {
     );
 
 };
+const searchProduct = async (req , res) => {
+        const result = await db.query(
+            `
+            SELECT 
+            id,
+            sku,
+            name,
+            category,
+            purchase_price,
+            selling_price,
+            product_type,
+            reorder_threshold,
+            reorder_qty,
+            specs
+        FROM products
+        WHERE 
+             name ILIKE $1
+             OR sku ILIKE $1
+             OR category ILIKE $1
+        ORDER BY name;
+            `,
+        [`%&{keyword}%`]
+        );
+    returnresult.rows;
+}
 module.exports = {
     getProducts,
     getProductById,
     addProduct,
     updateProduct,
     deleteProduct,
-    updateQuantity
+    updateQuantity,
+    searchProduct
 };

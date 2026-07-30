@@ -6,20 +6,46 @@ class EntityExtractor {
 
         switch (intent) {
 
-            case "SEARCH_PRODUCT": {
+            case "SEARCH_PRODUCT":
 
-                const match = prompt.match(/(?:find|search|locate)\s+(.+)/i);
+                // SKU
+                let match = prompt.match(/sku\s+([a-zA-Z0-9-_]+)/i);
 
                 if (match) {
-                    entities.product = match[1].trim();
+
+                    entities.type = "sku";
+                    entities.value = match[1];
+
+                    return entities;
                 }
 
-                break;
-            }
+                // Category
+                match = prompt.match(/(?:category|products?)\s+([a-zA-Z]+)/i);
+
+                if (match) {
+
+                    entities.type = "category";
+                    entities.value = match[1];
+
+                    return entities;
+                }
+
+                // Product Name
+                match = prompt.match(/(?:find|search|show)\s+(.+)/i);
+
+                if (match) {
+
+                    entities.type = "name";
+                    entities.value = match[1];
+
+                }
+
+                return entities;
+
+            default:
+                return {};
 
         }
-
-        return entities;
 
     }
 

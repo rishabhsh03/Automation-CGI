@@ -1,0 +1,53 @@
+.chat-input{
+
+    display:flex;
+
+    gap:15px;
+
+    padding:20px;
+
+    border-top:1px solid #ececec;
+
+    background:white;
+
+}
+
+.chat-input input{
+
+    flex:1;
+
+    padding:14px 18px;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    outline:none;
+
+}
+
+.chat-input input:focus{
+
+    border-color:#2563eb;
+
+}
+
+.chat-input button{
+
+    width:120px;
+
+    border:none;
+
+    background:#2563eb;
+
+    color:white;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+}

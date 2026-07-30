@@ -11,6 +11,7 @@ import Suppliers from "./features/supplier/Suppliers";
 import Reports from "./features/report/Reports";
 import ProtectedRoute from "./components/ProtectedRoute";
 import VerifyOTP from "./features/auth/VerifyOTP";
+import AI from "./pages/AI/AI";
 
 function App() {
   return (
@@ -77,8 +78,17 @@ function App() {
         </ProtectedRoute>
     }
 />
+<Route
+
+    path="/ai"
+
+    element={<AI/>}
+
+/>
       </Routes>
     </BrowserRouter>
+
+    
   );
 }
 

@@ -4,7 +4,6 @@ const authenticate = (req, res, next) => {
 
     const authHeader = req.headers.authorization;
 
-    console.log("Authorization:", authHeader);
 
     if (!authHeader) {
         console.log("No Authorization Header");
@@ -17,7 +16,6 @@ const authenticate = (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
-    console.log("Token:", token);
 
     try {
 

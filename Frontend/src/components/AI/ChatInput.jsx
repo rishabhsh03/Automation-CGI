@@ -1,11 +1,32 @@
-export default function ChatInput() {
-    console.log("ChatInput Rendered");
+import "./ChatInput.css";
+
+export default function ChatInput({
+    input,
+    setInput,
+    onSend,
+}) {
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            onSend();
+        }
+    };
 
     return (
-        <div style={{ background: "red", padding: "20px" }}>
-            <h2>ChatInput Works</h2>
-            <input placeholder="Type here..." />
-            <button>Send</button>
+        <div className="chat-input">
+
+            <input
+                type="text"
+                value={input}
+                placeholder="Ask Warehouse AI..."
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+            />
+
+            <button onClick={onSend}>
+                Send
+            </button>
+
         </div>
     );
 }

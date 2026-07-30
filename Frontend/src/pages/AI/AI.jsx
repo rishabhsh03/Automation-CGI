@@ -31,7 +31,7 @@ const handleSend = () =>{
                 <div className="chat-container">
 
                     <ChatHeader />
-
+                <div className="chat-body">
                     <EmptyState
                         onSuggestionClick={(text) => {
                             setInput(text);
@@ -45,7 +45,7 @@ const handleSend = () =>{
                     />
 
                 </div>
-
+            </div>
             </main>
 
         </div>

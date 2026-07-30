@@ -1,12 +1,13 @@
-.sidebar {
-    width: 270px;
-    height: 100vh;
-    background:#0F172A;
-    position: fixed;
-    top: 0;
-    left: 0;
+.sidebar{
+    width:270px;
+    min-width:270px;
+    height:100vh;
 
-    overflow-y: auto;
+    background:#0F172A;
+
+    overflow-y:auto;
+
+    flex-shrink:0;
 }
 /* Logo */
 

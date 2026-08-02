@@ -36,12 +36,16 @@ const filteredInventory = inventory.filter((item) => {
   return (
     <div className="inventory-table-card">
 
-      <div className="table-header">
-        <h2>Inventory Summary</h2>
-        <button onClick={() => navigate("/inventory")}>
-    View All
-</button>
-      </div>
+    <div className="table-header">
+    <h2>Inventory Summary</h2>
+
+    <button
+        className="view-all-btn"
+        onClick={() => navigate("/inventory")}
+    >
+        View All
+    </button>
+</div>
 
       <table>
 

@@ -1,22 +1,46 @@
 const INTENTS = {
 
+    // Product
+
+    SEARCH_PRODUCT: "SEARCH_PRODUCT",
+
+    GET_PRODUCT_PRICE: "GET_PRODUCT_PRICE",
+
+    GET_PRODUCT_DETAILS: "GET_PRODUCT_DETAILS",
+
+    // Inventory
+
+    INVENTORY: "INVENTORY",
+
+    AVAILABLE_STOCK: "AVAILABLE_STOCK",
+
     LOW_STOCK: "LOW_STOCK",
 
     OUT_OF_STOCK: "OUT_OF_STOCK",
 
-    INVENTORY: "INVENTORY",
-
-    SEARCH_PRODUCT: "SEARCH_PRODUCT",
-
-    AVAILABLE_STOCK: "AVAILABLE_STOCK",
+    // Supplier
 
     SUPPLIER: "SUPPLIER",
 
+    // Orders
+
     PURCHASE_ORDER: "PURCHASE_ORDER",
+
+    SALES_ORDER: "SALES_ORDER",
+
+    // Dashboard
 
     DASHBOARD: "DASHBOARD",
 
-    GENERAL: "GENERAL"
+    // Conversation
+
+    GREETING: "GREETING",
+
+    HELP: "HELP",
+
+    GENERAL: "GENERAL",
+
+    UNKNOWN: "UNKNOWN"
 
 };
 

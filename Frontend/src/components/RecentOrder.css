@@ -1,0 +1,21 @@
+.recent-orders{
+    background:#1E293B;
+    border-radius:20px;
+    padding:24px;
+    color:white;
+}
+
+.recent-orders table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.recent-orders td{
+    padding:14px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
+    color:#F8FAFC;
+}
+
+.recent-orders h2{
+    margin-bottom:20px;
+}

@@ -1,232 +1,288 @@
-/* Layout */
+/* ===========================
+   PRODUCTS LAYOUT
+=========================== */
 
 .products-layout{
     display:flex;
-    background:#0F172A;
+    min-height:100vh;
+    background:#0f172a;
 }
 
 .products-content{
-    margin-left:270px;
-    width:calc(100% - 270px);
-    min-height:100vh;
+    flex:1;
+    padding:28px;
+    overflow:auto;
+}
+
+.page-content{
+    flex:1;
     padding:30px;
+    overflow-x:hidden;
 }
-
-/* Page */
-
-.products-page{
-    margin-top:25px;
-}
-
-/* Header */
+/* ===========================
+   HEADER
+=========================== */
 
 .products-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:30px;
+    gap:20px;
 }
 
 .products-header h1{
-    color:white;
-    font-size:34px;
+    color:#f8fafc;
+    font-size:30px;
+    font-weight:700;
     margin:0;
 }
 
 .products-header p{
-    color:#94A3B8;
-    margin-top:8px;
+    color:#94a3b8;
+    margin-top:6px;
 }
 
-/* Add Button */
+/* ===========================
+   ADD BUTTON
+=========================== */
 
 .add-btn{
     display:flex;
     align-items:center;
     gap:10px;
-    background:#22C55E;
-    color:white;
+
+    padding:12px 20px;
+
     border:none;
-    padding:14px 22px;
+
     border-radius:12px;
-    cursor:pointer;
-    font-size:15px;
+
+    background:#22c55e;
+
+    color:white;
+
     font-weight:600;
-    transition:.3s;
+
+    cursor:pointer;
+
+    transition:.25s;
 }
 
 .add-btn:hover{
-    background:#16A34A;
+
+    background:#16a34a;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 12px 25px rgba(34,197,94,.25);
+
 }
 
-/* Toolbar */
+/* ===========================
+   TOOLBAR
+=========================== */
 
 .toolbar{
+
     display:flex;
+
     justify-content:space-between;
-    margin-bottom:25px;
+
+    align-items:center;
+
 }
 
-/* Search */
-
 .search-box{
-    width:350px;
+
     display:flex;
+
     align-items:center;
+
     gap:12px;
-    background:#1E293B;
-    padding:14px 18px;
+
+    width:350px;
+
+    background:#1e293b;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    padding:12px 18px;
+
     border-radius:12px;
+
 }
 
 .search-box svg{
-    color:#94A3B8;
+
+    color:#94a3b8;
+
 }
 
 .search-box input{
-    width:100%;
-    background:none;
+
+    flex:1;
+
     border:none;
+
     outline:none;
+
+    background:transparent;
+
     color:white;
+
     font-size:15px;
+
 }
 
-/* Table */
+.search-box input::placeholder{
+
+    color:#64748b;
+
+}
+
+/* ===========================
+   TABLE CARD
+=========================== */
 
 .table-card{
-    background:#1E293B;
-    border-radius:20px;
+
+    background:#1e293b;
+
+    border-radius:18px;
+
     overflow:hidden;
-    margin-top:20px;
+
+    border:1px solid rgba(255,255,255,.06);
+
+    box-shadow:0 12px 35px rgba(0,0,0,.25);
+
 }
 
-table{
+.table-card table{
+
     width:100%;
+
     border-collapse:collapse;
+
 }
 
-thead{
-    background:#0F172A;
+.table-card thead{
+
+    background:#273549;
+
 }
 
-th{
+.table-card th{
 
     padding:18px;
 
-    color:white;
-
-    font-size:15px;
-
     text-align:left;
 
-    font-weight:600;
+    color:#cbd5e1;
+
+    font-size:14px;
+
+    letter-spacing:.5px;
+
+    text-transform:uppercase;
 
 }
 
-td{
+.table-card td{
 
-    padding:16px 18px;
+    padding:18px;
 
-    color:#111827;
+    color:#f8fafc;
 
-    background:white;
-
-    border-bottom:1px solid #E5E7EB;
-
-    vertical-align:middle;
+    border-top:1px solid rgba(255,255,255,.06);
 
 }
 
-tbody tr{
+.table-card tbody tr{
 
-    transition:.25s;
-
-}
-
-tbody tr:hover{
-
-    background:#F8FAFC;
+    transition:.2s;
 
 }
 
-tbody tr:hover td{
+.table-card tbody tr:hover{
 
-    background:#F8FAFC;
+    background:#334155;
 
 }
+/* ===========================
+   ACTION BUTTONS
+=========================== */
 
-/* Action Buttons */
+.action-buttons{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
 
 .edit-btn,
 .delete-btn{
-gap: 12px;
-
-width:42px;
-
-height:42px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-border:none;
-
-border-radius:10px;
-
-cursor:pointer;
-
-color:white;
-
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:.25s ease;
+    font-size:15px;
 }
+
 .edit-btn{
-    background:#3B82F6;
-    
+    background:#2563eb;
+    color:#fff;
 }
 
 .edit-btn:hover{
-    background:#2563EB;
+    background:#1d4ed8;
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(37,99,235,.35);
 }
 
 .delete-btn{
-    background:#EF4444;
+    background:#dc2626;
+    color:#fff;
 }
 
 .delete-btn:hover{
-    background:#DC2626;
+    background:#b91c1c;
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(220,38,38,.35);
 }
 
-/* Modal */
+/* ===========================
+   MODAL OVERLAY
+=========================== */
 
 .modal-overlay{
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.6);
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.75);
+    backdrop-filter:blur(5px);
     display:flex;
-    justify-content:center;
     align-items:center;
-    z-index:1000;
+    justify-content:center;
+    z-index:999;
 }
+
+/* ===========================
+   MODAL
+=========================== */
+
 .modal{
-
-    width:500px;
-
-    background:#1E293B;
-
-    border-radius:20px;
-
-    padding:30px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:18px;
-
+    width:520px;
+    max-width:95%;
+    background:#1e293b;
+    border-radius:18px;
+    padding:28px;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 25px 60px rgba(0,0,0,.45);
     animation:popup .25s ease;
-
 }
 
 @keyframes popup{
@@ -234,51 +290,63 @@ color:white;
     from{
 
         opacity:0;
-
-        transform:scale(.9);
+        transform:translateY(20px) scale(.96);
 
     }
 
     to{
 
         opacity:1;
-
-        transform:scale(1);
+        transform:translateY(0) scale(1);
 
     }
 
 }
 
 .modal h2{
-    color:white;
-    margin:0;
+    color:#fff;
+    margin-bottom:24px;
 }
+
+/* ===========================
+   FORM INPUTS
+=========================== */
 
 .modal input{
 
     width:100%;
 
-    padding:14px;
+    padding:14px 16px;
 
-    background:#0F172A;
+    margin-bottom:16px;
 
-    border:1px solid #334155;
+    border-radius:12px;
 
-    border-radius:10px;
+    border:1px solid rgba(255,255,255,.08);
 
-    color:white;
+    background:#0f172a;
+
+    color:#fff;
+
+    font-size:15px;
 
     outline:none;
+
+    transition:.25s;
 
 }
 
 .modal input:focus{
 
-    border-color:#22C55E;
+    border-color:#22c55e;
+
+    box-shadow:0 0 0 4px rgba(34,197,94,.15);
 
 }
 
-/* Buttons */
+/* ===========================
+   MODAL BUTTONS
+=========================== */
 
 .modal-buttons{
 
@@ -286,65 +354,240 @@ color:white;
 
     justify-content:flex-end;
 
-    gap:15px;
+    gap:12px;
+
+    margin-top:12px;
 
 }
 
 .save-btn{
 
-    background:#22C55E;
+    padding:12px 22px;
 
-    color:white;
+    background:#22c55e;
 
     border:none;
 
-    padding:12px 25px;
-
     border-radius:10px;
 
+    color:#fff;
+
+    font-weight:600;
+
     cursor:pointer;
+
+    transition:.25s;
 
 }
 
 .save-btn:hover{
 
-    background:#16A34A;
+    background:#16a34a;
 
 }
 
 .cancel-btn{
 
-    background:#EF4444;
+    padding:12px 22px;
 
-    color:white;
+    background:#334155;
 
     border:none;
 
-    padding:12px 25px;
-
     border-radius:10px;
 
+    color:#fff;
+
     cursor:pointer;
+
+    transition:.25s;
 
 }
 
 .cancel-btn:hover{
 
-    background:#DC2626;
+    background:#475569;
 
 }
 
-/* Responsive */
+/* ===========================
+   DELETE MODAL
+=========================== */
 
-@media(max-width:992px){
+.delete-modal{
+
+    width:420px;
+
+    background:#1e293b;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    text-align:center;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.delete-modal h2{
+
+    color:#fff;
+
+    margin-bottom:12px;
+
+}
+
+.delete-modal p{
+
+    color:#94a3b8;
+
+    margin-bottom:28px;
+
+}
+
+.delete-buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+}
+
+.confirm-delete-btn{
+
+    padding:12px 24px;
+
+    background:#dc2626;
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.confirm-delete-btn:hover{
+
+    background:#b91c1c;
+
+}
+/* ===========================
+   TABLE IMPROVEMENTS
+=========================== */
+
+.table-card tbody tr:nth-child(even){
+    background:rgba(255,255,255,.015);
+}
+
+.table-card tbody tr:hover{
+    background:#334155;
+    transition:.25s;
+}
+
+.table-card td:first-child{
+    font-weight:600;
+    color:#22c55e;
+}
+
+.table-card td:nth-child(2){
+    font-weight:600;
+}
+
+.table-card td{
+    vertical-align:middle;
+}
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+.table-card{
+    overflow:auto;
+}
+
+.table-card::-webkit-scrollbar{
+    height:10px;
+    width:10px;
+}
+
+.table-card::-webkit-scrollbar-track{
+    background:#0f172a;
+}
+
+.table-card::-webkit-scrollbar-thumb{
+    background:#475569;
+    border-radius:20px;
+}
+
+.table-card::-webkit-scrollbar-thumb:hover{
+    background:#64748b;
+}
+
+/* ===========================
+   INPUT PLACEHOLDER
+=========================== */
+
+.modal input::placeholder{
+    color:#64748b;
+}
+
+/* ===========================
+   BUTTON ACTIVE
+=========================== */
+
+.add-btn:active,
+.save-btn:active,
+.cancel-btn:active,
+.edit-btn:active,
+.delete-btn:active,
+.confirm-delete-btn:active{
+
+    transform:scale(.96);
+
+}
+
+/* ===========================
+   SMOOTH TRANSITIONS
+=========================== */
+
+button,
+input,
+table,
+tr,
+td,
+th{
+    transition:.25s ease;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:1200px){
 
 .products-content{
 
-    margin-left:0;
-
-    width:100%;
+    padding:20px;
 
 }
+
+.search-box{
+
+    width:280px;
+
+}
+
+}
+
+@media(max-width:900px){
 
 .products-header{
 
@@ -352,13 +595,17 @@ color:white;
 
     align-items:flex-start;
 
-    gap:20px;
+    gap:18px;
 
 }
 
 .toolbar{
 
     flex-direction:column;
+
+    align-items:stretch;
+
+    gap:15px;
 
 }
 
@@ -374,77 +621,121 @@ color:white;
 
 }
 
-}
-tbody tr:nth-child(even) td{
+.table-card table{
 
-    background:#1E293B;
-
-}
-
-tbody tr:nth-child(odd) td{
-
-    background:#1E293B;
+    min-width:850px;
 
 }
-.modal-overlay{
-    position: fixed;
-    inset: 0;
-    /* background: rgba(0,0,0,.65); */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+
+.modal{
+
+    width:95%;
+
 }
 
-.delete-modal{
-    width: 420px;
-    background: #1E293B;
-    border-radius: 18px;
-    padding: 30px;
-    box-shadow: 0 20px 50px rgba(0,0,0,.35);
-    animation: popup .25s ease;
 }
 
-.delete-modal h2{
-    color: white;
-    margin: 0 0 15px;
-    font-size: 24px;
+@media(max-width:600px){
+
+.products-content{
+
+    padding:15px;
+
 }
 
-.delete-modal p{
-    color: #CBD5E1;
-    margin-bottom: 30px;
-    line-height: 1.6;
+.products-header h1{
+
+    font-size:24px;
+
+}
+
+.products-header p{
+
+    font-size:14px;
+
+}
+
+.add-btn{
+
+    width:100%;
+
+    justify-content:center;
+
+}
+
+.action-buttons{
+
+    justify-content:center;
+
+}
+
+.modal{
+
+    padding:22px;
+
+}
+
+.modal-buttons{
+
+    flex-direction:column;
+
+}
+
+.save-btn,
+.cancel-btn{
+
+    width:100%;
+
 }
 
 .delete-buttons{
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
+
+    flex-direction:column;
+
 }
 
+.confirm-delete-btn,
 .cancel-btn{
-    background: #64748B;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 10px;
-    cursor: pointer;
+
+    width:100%;
+
 }
 
-.cancel-btn:hover{
-    background: #475569;
 }
 
-.confirm-delete-btn{
-    background: #EF4444;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 10px;
-    cursor: pointer;
+/* ===========================
+   OPTIONAL GLASS EFFECT
+=========================== */
+
+.table-card,
+.modal,
+.delete-modal{
+
+    backdrop-filter:blur(18px);
+
 }
 
-.confirm-delete-btn:hover{
-    background: #DC2626;
+/* ===========================
+   SHADOWS
+=========================== */
+
+.table-card{
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.25);
+
+}
+
+.modal{
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.45);
+
+}
+
+.delete-modal{
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.45);
+
 }

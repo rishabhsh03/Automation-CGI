@@ -1,58 +1,59 @@
+const KEYWORDS = require("./keywords");
 const INTENTS = require("./intents");
-const keywords = require("./keywords");
-const entityExtractor = require("./entityExtractor");
 
-class IntentAnalyzer {
+function normalizeMessage(message) {
+    return message
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s]/g, "");
+}
 
-    analyze(prompt) {
+function analyzeIntent(message) {
 
-        const text = prompt.toLowerCase();
+    const normalizedMessage = normalizeMessage(message);
 
-        // Step 1: Detect predefined intents
-        for (const [intent, words] of Object.entries(keywords)) {
+    const matches = [];
 
-            if (words.some(word => text.includes(word))) {
+    for (const [intent, config] of Object.entries(KEYWORDS)) {
 
-                return {
-                    intent,
-                    confidence: 1,
-                    entities: {}
-                };
+        const keywords = config.keywords || config;
 
+        let score = 0;
+        const matchedKeywords = [];
+
+        for (const keyword of keywords) {
+
+            if (normalizedMessage.includes(keyword.toLowerCase())) {
+                score++;
+                matchedKeywords.push(keyword);
             }
 
         }
 
-        // Step 2: Product search
-        const match = prompt.match(/^(find|search|show)\s+(.+)$/i);
-
-        if (match) {
-            const entities = entityExtractor.extract(prompt, intent);
-
-return {
-    intent,
-    confidence: 1,
-    entities
-};
-
-            return {
-                intent: INTENTS.SEARCH_PRODUCT,
-                confidence: 1,
-                entities: {
-                    product: match[2].trim()
-                }
-            };
-
+        if (score > 0) {
+            matches.push({
+                intent,
+                score,
+                matchedKeywords
+            });
         }
 
+    }
+
+    matches.sort((a, b) => b.score - a.score);
+
+    if (matches.length === 0) {
+
         return {
-            intent: INTENTS.GENERAL,
-            confidence: 0,
-            entities: {}
+            intent: INTENTS.UNKNOWN,
+            score: 0,
+            matchedKeywords: []
         };
 
     }
 
+    return matches[0];
+
 }
 
-module.exports = new IntentAnalyzer();
+module.exports = analyzeIntent;

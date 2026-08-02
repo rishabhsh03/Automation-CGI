@@ -1,50 +1,47 @@
-const INTENTS = require("./intents");
+const INTENTS = {
 
-module.exports = {
+    // Product
 
-    [INTENTS.LOW_STOCK]: [
-        "low stock",
-        "reorder",
-        "below reorder",
-        "restock",
-        "need reorder"
-    ],
+    SEARCH_PRODUCT: "SEARCH_PRODUCT",
 
-    [INTENTS.OUT_OF_STOCK]: [
-        "out of stock",
-        "stock finished",
-        "no stock",
-        "zero stock"
-    ],
+    GET_PRODUCT_PRICE: "GET_PRODUCT_PRICE",
 
-    [INTENTS.INVENTORY]: [
-        "inventory",
-        "stock",
-        "available quantity"
-    ],
+    GET_PRODUCT_DETAILS: "GET_PRODUCT_DETAILS",
 
-    [INTENTS.SEARCH_PRODUCT]: [
-        "find",
-        "search",
-        "locate",
-        "show product",
-        "product"
-    ],
+    // Inventory
 
-    [INTENTS.SUPPLIER]: [
-        "supplier",
-        "vendor"
-    ],
+    INVENTORY: "INVENTORY",
 
-    [INTENTS.PURCHASE_ORDER]: [
-        "purchase order",
-        "po"
-    ],
+    AVAILABLE_STOCK: "AVAILABLE_STOCK",
 
-    [INTENTS.DASHBOARD]: [
-        "dashboard",
-        "summary",
-        "overview"
-    ]
+    LOW_STOCK: "LOW_STOCK",
+
+    OUT_OF_STOCK: "OUT_OF_STOCK",
+
+    // Supplier
+
+    SUPPLIER: "SUPPLIER",
+
+    // Orders
+
+    PURCHASE_ORDER: "PURCHASE_ORDER",
+
+    SALES_ORDER: "SALES_ORDER",
+
+    // Dashboard
+
+    DASHBOARD: "DASHBOARD",
+
+    // Conversation
+
+    GREETING: "GREETING",
+
+    HELP: "HELP",
+
+    GENERAL: "GENERAL",
+
+    UNKNOWN: "UNKNOWN"
 
 };
+
+module.exports = INTENTS;

@@ -130,7 +130,6 @@ module.exports = {
     getProducts,
     getProductById,
     addProduct,
-    updateProduct,
     deleteProduct,
     updateQuantity,
     searchProduct

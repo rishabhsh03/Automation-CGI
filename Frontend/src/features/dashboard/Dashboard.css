@@ -4,24 +4,17 @@
 
 .dashboard-container {
     display: flex;
-    background: #0f172a;
     min-height: 100vh;
+    background: #0f172a;
 }
 
-.dashboard-content{
-
-    margin-left:270px;              /* Sidebar width */
-
-    width:calc(100% - 270px);
-
-    min-height:100vh;
-
-    padding:30px;
-
-    overflow-x:hidden;
-
-    box-sizing:border-box;
-
+.dashboard-content {
+    flex: 1;
+    min-height: 100vh;
+    padding: 32px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 /* ===========================================
    HEADER

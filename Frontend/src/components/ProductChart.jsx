@@ -38,13 +38,14 @@ export default function ProductChart({ categories = [] }) {
       </div>
 
       <div className="chart-container">
-        <ResponsiveContainer width="150%" height={350}>
+        <ResponsiveContainer width="100%" height={350}>
           <BarChart
             data={chartData}
             margin={{
               top: 20,
-              right: 460,
-              bottom: 20,
+              right: 20,
+              left:10,
+              bottom: 70,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />

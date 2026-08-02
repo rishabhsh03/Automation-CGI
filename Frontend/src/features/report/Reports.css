@@ -8,10 +8,10 @@
 }
 
 .reports-content{
-    margin-left:270px;
-    width:calc(100% - 270px);
+    flex:1;
     min-height:100vh;
     padding:30px;
+    overflow-x:hidden;
 }
 
 .reports-page{

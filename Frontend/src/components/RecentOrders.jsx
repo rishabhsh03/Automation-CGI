@@ -1,13 +1,28 @@
 export default function RecentOrders({ orders }) {
   return (
-    <div className="bg-white rounded-xl shadow p-6">
-      <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
+    <div
+      style={{
+        background: "#1E293B",
+        borderRadius: "20px",
+        padding: "24px",
+        color: "white",
+      }}
+    >
+      <h2
+        style={{
+          fontSize: "22px",
+          fontWeight: "600",
+          marginBottom: "20px",
+        }}
+      >
+        Recent Orders
+      </h2>
 
-      <table className="w-full">
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <tbody>
           {orders.map((order) => (
             <tr key={order.id}>
-              <td>ORD-{order.id}</td>
+              <td style={{ padding: "12px 0" }}>ORD-{order.id}</td>
               <td>{order.customer_name}</td>
               <td>{order.status}</td>
               <td>₹{Number(order.total_amount).toLocaleString()}</td>

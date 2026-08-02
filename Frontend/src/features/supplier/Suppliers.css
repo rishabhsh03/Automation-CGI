@@ -8,10 +8,10 @@
 }
 
 .supplier-content{
-    margin-left:270px;
-    width:calc(100% - 270px);
+    flex:1;
     min-height:100vh;
     padding:30px;
+    overflow-x:hidden;
 }
 
 .supplier-page{
@@ -221,53 +221,41 @@
 =========================== */
 
 .table-card{
-
     background:#1E293B;
-
     border-radius:20px;
-
-    overflow:hidden;
-
-    box-shadow:0 15px 35px rgba(0,0,0,.25);
-
+    overflow-x:auto;
+    overflow-y:hidden;
 }
 
-table{
-
+.table-card table{
     width:100%;
-
     border-collapse:collapse;
-
+    background:#1E293B;
 }
 
-thead{
-
+.table-card thead{
     background:#0F172A;
-
 }
 
-th{
+.table-card tbody{
+    background:#1E293B;
+}
 
-    padding:18px;
+.table-card tr{
+    background:#1E293B;
+}
 
+.table-card th{
+    padding:16px 20px;
     color:#CBD5E1;
-
-    text-align:left;
-
-    font-size:14px;
-
     font-weight:600;
-
 }
 
-td{
-
-    padding:18px;
-
-    color:white;
-
+.table-card td{
+    padding:16px 20px;
+    color:#F8FAFC;
+    background:#1E293B;
     border-top:1px solid rgba(255,255,255,.05);
-
 }
 
 tbody tr{
@@ -411,11 +399,10 @@ tbody tr:hover{
     width:100%;
 
 }
-
-.table-card{
-
-    overflow-x:auto;
-
+.table-card table{
+    width:100%;
+    min-width:1200px;   /* adjust to your columns */
+    border-collapse:collapse;
 }
 
 }

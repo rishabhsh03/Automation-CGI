@@ -1,121 +1,67 @@
 .inventory-table-card{
-
     background:#1E293B;
-
-    border-radius:18px;
-
-    padding:20px;
-
-    color:white;
-
-    box-shadow:0 10px 25px rgba(0,0,0,.3);
-
+    border-radius:20px;
+    overflow-x:auto;
+    overflow-y:hidden;
 }
+
+.inventory-table-card table{
+    width:100%;
+    border-collapse:collapse;
+    background:#1E293B;
+}
+
+.inventory-table-card thead{
+    background:#0F172A;
+}
+
+.inventory-table-card tbody{
+    background:#1E293B;
+}
+
+.inventory-table-card tr{
+    background:#1E293B;
+}
+
+.inventory-table-card th{
+    padding:16px 20px;
+    color:#CBD5E1;
+}
+
+.inventory-table-card td{
+    padding:16px 20px;
+    color:#F8FAFC;
+    background:#1E293B;
+}
+/* Header */
 
 .table-header{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
-    margin-bottom:18px;
-
+    margin-bottom:20px;
 }
 
-.table-header h2{
+/* View All Button */
 
-    font-size:20px;
-
-}
-
-.table-header button{
-
+.view-all-btn{
     background:#2563EB;
-
     color:white;
-
     border:none;
-
-    padding:8px 14px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-}
-
-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-}
-
-thead{
-
-    background:#111827;
-
-}
-
-th{
-
-    padding:14px;
-
-    text-align:left;
-
-    color:#CBD5E1;
-
-}
-
-td{
-
-    padding:14px;
-
-    border-bottom:1px solid #334155;
-
-}
-
-tbody tr:hover{
-
-    background:#273549;
-
-}
-
-.status{
-
-    padding:5px 12px;
-
-    border-radius:20px;
-
-    font-size:13px;
-
+    padding:10px 18px;
+    border-radius:10px;
+    font-size:14px;
     font-weight:600;
-
+    cursor:pointer;
+    transition:all .25s ease;
 }
 
-.status.instock{
-
-    background:#22C55E;
-
-    color:white;
-
+.view-all-btn:hover{
+    background:#1D4ED8;
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(37,99,235,.35);
 }
 
-.status.lowstock{
-
-    background:#F59E0B;
-
-    color:white;
-
-}
-
-.status.outofstock{
-
-    background:#EF4444;
-
-    color:white;
-
+.view-all-btn:active{
+    transform:translateY(0);
 }

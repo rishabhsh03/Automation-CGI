@@ -27,25 +27,30 @@ export default function Inventory() {
 
     }, []);
 
-    const loadInventory = async () => {
-
+const loadInventory = async () => {
+    try {
         const res = await fetch("http://localhost:8000/api/inventory");
+
+        if (!res.ok) {
+            throw new Error(`HTTP Error: ${res.status}`);
+        }
 
         const result = await res.json();
 
-console.log(result);
+        console.log(result);
 
-if (result.success && Array.isArray(result.data)) {
+        if (result.success && Array.isArray(result.data)) {
+            setInventory(result.data);
+        } else {
+            console.error(result);
+            setInventory([]);
+        }
 
-    setInventory(result.data);
-
-} else {
-
-    console.error(result);
-
-}
-
-    };
+    } catch (err) {
+        console.error("Inventory API Error:", err);
+        setInventory([]);
+    }
+};
 
     const getStatus = (qty)=>{
 

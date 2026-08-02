@@ -1,54 +1,71 @@
-class EntityExtractor {
+function extractEntities(message) {
 
-    extract(prompt, intent) {
+    const entities = {
+        product: null,
+        category: null,
+        supplier: null,
+        quantity: null
+    };
 
-        const entities = {};
+    const text = message.toLowerCase();
 
-        switch (intent) {
+    // ---------- Quantity ----------
+    const quantityMatch = text.match(/\d+/);
 
-            case "SEARCH_PRODUCT":
+    if (quantityMatch) {
+        entities.quantity = Number(quantityMatch[0]);
+    }
 
-                // SKU
-                let match = prompt.match(/sku\s+([a-zA-Z0-9-_]+)/i);
+    // ---------- Product ----------
+    const productPatterns = [
+        /rtx\s?\d{3,4}/i,
+        /gtx\s?\d{3,4}/i,
+        /ryzen\s?\d/i,
+        /intel\s?i[3579]/i,
+        /ssd/i,
+        /hdd/i,
+        /ram/i,
+        /motherboard/i,
+        /keyboard/i,
+        /mouse/i,
+        /monitor/i
+    ];
 
-                if (match) {
+    for (const pattern of productPatterns) {
 
-                    entities.type = "sku";
-                    entities.value = match[1];
+        const match = message.match(pattern);
 
-                    return entities;
-                }
-
-                // Category
-                match = prompt.match(/(?:category|products?)\s+([a-zA-Z]+)/i);
-
-                if (match) {
-
-                    entities.type = "category";
-                    entities.value = match[1];
-
-                    return entities;
-                }
-
-                // Product Name
-                match = prompt.match(/(?:find|search|show)\s+(.+)/i);
-
-                if (match) {
-
-                    entities.type = "name";
-                    entities.value = match[1];
-
-                }
-
-                return entities;
-
-            default:
-                return {};
-
+        if (match) {
+            entities.product = match[0];
+            break;
         }
 
     }
 
+    // ---------- Category ----------
+
+    const categories = [
+        "gpu",
+        "cpu",
+        "ram",
+        "ssd",
+        "hdd",
+        "keyboard",
+        "mouse",
+        "monitor"
+    ];
+
+    for (const category of categories) {
+
+        if (text.includes(category)) {
+            entities.category = category;
+            break;
+        }
+
+    }
+
+    return entities;
+
 }
 
-module.exports = new EntityExtractor();
+module.exports = extractEntities;

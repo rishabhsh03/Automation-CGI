@@ -325,17 +325,7 @@ tbody tr{
     background:#DC2626;
 
 }
-.inventory-layout {
-    display: flex;
-    background-color: #000000;
-}
 
-.inventory-content {
-    margin-left: 270px;   /* same width as sidebar */
-    width: calc(100% - 270px);
-    padding: 25px;
-    min-height: 100vh;
-}
 .instock {
     background: #22C55E;
 }

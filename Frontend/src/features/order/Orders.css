@@ -4,14 +4,15 @@
 
 .orders-layout{
     display:flex;
+    min-height:100vh;
     background:#0F172A;
 }
 
 .orders-content{
-    margin-left:270px;
-    width:calc(100% - 270px);
+    flex:1;
     min-height:100vh;
     padding:30px;
+    overflow-x:hidden;
 }
 
 .orders-page{

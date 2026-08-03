@@ -1,199 +1,295 @@
-    const db = require("../models/db");
+const db = require("../models/db");
 
-    const getDashboardData = async () => {
+const getDashboardData = async () => {
 
-    const totalProducts = await db.query(`
-        SELECT COUNT(*) FROM products
-    `);
+    console.time("Dashboard total");
 
-    const lowStock = await db.query(`
-        SELECT COUNT(*)
-        FROM inventory i
-        JOIN products p
-        ON i.product_id = p.id
-        WHERE i.quantity <= p.reorder_threshold
-    `);
+    const [
+        productStats,
+        orderStats,
+        supplierStats,
+        categories,
+        heatmap,
+        recentOrders,
+        purchaseOrders,
+        inventoryValues
+    ] = await Promise.all([
 
-    const totalOrders = await db.query(`
-        SELECT COUNT(*) FROM orders
-    `);
-    const pendingOrders = await db.query(`
-        SELECT COUNT(*)
-        FROM orders
-        WHERE status = 'PENDING'
-    `);
+        // =========================================
+        // 1. PRODUCT + LOW STOCK
+        // =========================================
 
-    const processingOrders = await db.query(`
-        SELECT COUNT(*)
-        FROM orders
-        WHERE status = 'PROCESSING'
-    `);
+        db.query(`
+            SELECT
+                (SELECT COUNT(*) FROM products) AS total_products,
 
-    const shippedOrders = await db.query(`
-        SELECT COUNT(*)
-        FROM orders
-        WHERE status = 'SHIPPED'
-    `);
+                (
+                    SELECT COUNT(*)
+                    FROM inventory i
+                    JOIN products p
+                        ON p.id = i.product_id
+                    WHERE i.quantity <= p.reorder_threshold
+                ) AS low_stock;
+        `),
 
-    const deliveredOrders = await db.query(`
-        SELECT COUNT(*)
-        FROM orders
-        WHERE status = 'DELIVERED'
-    `);
+        // =========================================
+        // 2. ALL ORDER STATS IN ONE QUERY
+        // =========================================
 
-    const cancelledOrders = await db.query(`
-        SELECT COUNT(*)
-        FROM orders
-        WHERE status = 'CANCELLED'
-    `);
+        db.query(`
+            SELECT
+                COUNT(*) AS total_orders,
 
-    const revenue = await db.query(`
-        SELECT COALESCE(SUM(total_amount),0) AS revenue
-        FROM orders
-        WHERE status='DELIVERED'
-    `);
-    const totalSuppliers = await db.query(`
-        SELECT COUNT(*) FROM suppliers
-    `);
+                COUNT(*) FILTER (
+                    WHERE status = 'PENDING'
+                ) AS pending_orders,
 
-    const categories = await db.query(`
-        SELECT category,
+                COUNT(*) FILTER (
+                    WHERE status = 'PROCESSING'
+                ) AS processing_orders,
+
+                COUNT(*) FILTER (
+                    WHERE status = 'SHIPPED'
+                ) AS shipped_orders,
+
+                COUNT(*) FILTER (
+                    WHERE status = 'DELIVERED'
+                ) AS delivered_orders,
+
+                COUNT(*) FILTER (
+                    WHERE status = 'CANCELLED'
+                ) AS cancelled_orders,
+
+                COALESCE(
+                    SUM(total_amount) FILTER (
+                        WHERE status = 'DELIVERED'
+                    ),
+                    0
+                ) AS revenue
+
+            FROM orders;
+        `),
+
+        // =========================================
+        // 3. SUPPLIERS
+        // =========================================
+
+        db.query(`
+            SELECT COUNT(*) AS total_suppliers
+            FROM suppliers;
+        `),
+
+        // =========================================
+        // 4. CATEGORIES
+        // =========================================
+
+        db.query(`
+            SELECT
+                category,
                 COUNT(*) AS total
-        FROM products
-        GROUP BY category
-        ORDER BY total DESC
-    `);
-const heatmap = await db.query(`
-    WITH top_products AS (
+            FROM products
+            GROUP BY category
+            ORDER BY total DESC;
+        `),
 
-        SELECT
-            p.id,
-            p.name,
-            SUM(i.quantity) AS total_stock
+        // =========================================
+        // 5. HEATMAP
+        // =========================================
 
-        FROM inventory i
+        db.query(`
+            WITH top_products AS (
 
-        JOIN products p
-            ON p.id = i.product_id
+                SELECT
+                    p.id,
+                    p.name,
+                    SUM(i.quantity) AS total_stock
 
-        GROUP BY
-            p.id,
-            p.name
+                FROM inventory i
 
-        ORDER BY
-            total_stock DESC
+                JOIN products p
+                    ON p.id = i.product_id
 
-        LIMIT 5
+                GROUP BY
+                    p.id,
+                    p.name
 
-    )
+                ORDER BY total_stock DESC
 
-    SELECT
-        tp.name AS product,
-        w.name AS warehouse,
-        SUM(i.quantity) AS quantity
+                LIMIT 5
+            )
 
-    FROM inventory i
+            SELECT
+                tp.name AS product,
+                w.name AS warehouse,
+                SUM(i.quantity) AS quantity
 
-    JOIN top_products tp
-        ON tp.id = i.product_id
+            FROM inventory i
 
-    JOIN locations l
-        ON l.id = i.location_id
+            JOIN top_products tp
+                ON tp.id = i.product_id
 
-    JOIN warehouses w
-        ON w.id = l.warehouse_id
+            JOIN locations l
+                ON l.id = i.location_id
 
-    GROUP BY
-        tp.name,
-        w.name
+            JOIN warehouses w
+                ON w.id = l.warehouse_id
 
-    ORDER BY
-        tp.name,
-        w.name;
-`);
-const recentOrders = await db.query(`
-    SELECT
-        o.id,
-        u.name AS customer_name,
-        o.status,
-        o.total_amount,
-        o.created_at
-    FROM orders o
-    LEFT JOIN users u
-        ON o.customer_id = u.id
-    ORDER BY o.id DESC
-    LIMIT 5;
-`);
+            GROUP BY
+                tp.name,
+                w.name
 
-const purchaseOrders = await db.query(`
-    SELECT COUNT(*)
-    FROM purchaseorders;
-`);
-const inventoryCost = await db.query(`
-    SELECT
-        COALESCE(
-            SUM(quantity * COALESCE(unit_cost, 0)),
-            0
-        ) AS inventory_cost
-    FROM inventory;
-`);
-const inventorySellingValue = await db.query(`
-    SELECT
-        COALESCE(
-            SUM(quantity * COALESCE(selling_price, 0)),
-            0
-        ) AS inventory_selling_value
-    FROM inventory;
-`);
-const potentialProfit = Number(
-    (
-        Number(inventorySellingValue.rows[0].inventory_selling_value) -
-        Number(inventoryCost.rows[0].inventory_cost)
-    ).toFixed(2)
-);
-  return {
-    summary: {
+            ORDER BY
+                tp.name,
+                w.name;
+        `),
 
-    totalProducts: Number(totalProducts.rows[0].count),
+        // =========================================
+        // 6. RECENT ORDERS
+        // =========================================
 
-    lowStock: Number(lowStock.rows[0].count),
+        db.query(`
+            SELECT
+                o.id,
+                u.name AS customer_name,
+                o.status,
+                o.total_amount,
+                o.created_at
 
-    totalOrders: Number(totalOrders.rows[0].count),
+            FROM orders o
 
-    totalSuppliers: Number(totalSuppliers.rows[0].count),
+            LEFT JOIN users u
+                ON o.customer_id = u.id
 
-    pendingOrders: Number(pendingOrders.rows[0].count),
+            ORDER BY o.id DESC
 
-    processingOrders: Number(processingOrders.rows[0].count),
+            LIMIT 5;
+        `),
 
-    shippedOrders: Number(shippedOrders.rows[0].count),
+        // =========================================
+        // 7. PURCHASE ORDERS
+        // =========================================
 
-    deliveredOrders: Number(deliveredOrders.rows[0].count),
+        db.query(`
+            SELECT COUNT(*) AS purchase_orders
+            FROM purchaseorders;
+        `),
 
-    cancelledOrders: Number(cancelledOrders.rows[0].count),
+        // =========================================
+        // 8. INVENTORY VALUES
+        // =========================================
 
-    revenue: Number(revenue.rows[0].revenue),
+        db.query(`
+            SELECT
 
-    inventoryCost: Number(
-        inventoryCost.rows[0].inventory_cost
-    ),
+                COALESCE(
+                    SUM(
+                        quantity *
+                        COALESCE(unit_cost, 0)
+                    ),
+                    0
+                ) AS inventory_cost,
 
-    inventorySellingValue: Number(
-        inventorySellingValue.rows[0].inventory_selling_value
-    ),
+                COALESCE(
+                    SUM(
+                        quantity *
+                        COALESCE(selling_price, 0)
+                    ),
+                    0
+                ) AS inventory_selling_value
 
-    potentialProfit,
+            FROM inventory;
+        `)
+    ]);
 
-    purchaseOrders: Number(
-        purchaseOrders.rows[0].count
-    )
+    console.timeEnd("Dashboard total");
 
-},
-    categories: categories.rows,
-    heatmap: heatmap.rows,
-    recentOrders: recentOrders.rows
-};
-};
-    module.exports = {
-    getDashboardData,
+    // =========================================
+    // Extract values
+    // =========================================
+
+    const products = productStats.rows[0];
+
+    const orders = orderStats.rows[0];
+
+    const suppliers = supplierStats.rows[0];
+
+    const inventory = inventoryValues.rows[0];
+
+    const inventoryCost =
+        Number(inventory.inventory_cost);
+
+    const inventorySellingValue =
+        Number(inventory.inventory_selling_value);
+
+    const potentialProfit =
+        Number(
+            (
+                inventorySellingValue -
+                inventoryCost
+            ).toFixed(2)
+        );
+
+    // =========================================
+    // Final response
+    // =========================================
+
+    return {
+
+        summary: {
+
+            totalProducts:
+                Number(products.total_products),
+
+            lowStock:
+                Number(products.low_stock),
+
+            totalOrders:
+                Number(orders.total_orders),
+
+            totalSuppliers:
+                Number(suppliers.total_suppliers),
+
+            pendingOrders:
+                Number(orders.pending_orders),
+
+            processingOrders:
+                Number(orders.processing_orders),
+
+            shippedOrders:
+                Number(orders.shipped_orders),
+
+            deliveredOrders:
+                Number(orders.delivered_orders),
+
+            cancelledOrders:
+                Number(orders.cancelled_orders),
+
+            revenue:
+                Number(orders.revenue),
+
+            inventoryCost,
+
+            inventorySellingValue,
+
+            potentialProfit,
+
+            purchaseOrders:
+                Number(
+                    purchaseOrders.rows[0].purchase_orders
+                )
+        },
+
+        categories:
+            categories.rows,
+
+        heatmap:
+            heatmap.rows,
+
+        recentOrders:
+            recentOrders.rows
     };
+};
+
+module.exports = {
+    getDashboardData
+};

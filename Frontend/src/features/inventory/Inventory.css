@@ -1,33 +1,38 @@
-.inventory-layout{
+/* ========================================
+   INVENTORY LAYOUT
+======================================== */
 
-display:flex;
-
-background:#0F172A;
-
+.inventory-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background: #0F172A;
+    overflow-x: hidden;
 }
 
-.inventory-content{
+.inventory-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
 
-margin-left:270px;
+    /* IMPORTANT: sidebar already uses flex space */
+    margin-left: 0;
 
-width:calc(100% - 270px);
+    padding: 30px;
+    box-sizing: border-box;
 
-padding:35px;
+    background: #0F172A;
+    color: white;
 
-background:#0F172A;
-
-color: white;
-
+    overflow-x: hidden;
 }
 
-.inventory{
+.inventory {
+    width: 100%;
+    min-width: 0;
+    min-height: 100vh;
 
-background:#0F172A;
-
-min-height:100vh;
-
-padding:0;
-
+    background: #0F172A;
 }
 .add-btn{
     background:#22C55E;
@@ -85,59 +90,41 @@ padding:0;
     padding:10px;
 }
 
-.table-card{
+/* ========================================
+   INVENTORY LAYOUT
+======================================== */
 
-background:#fff;
-
-border-radius:22px;
-
-padding:25px;
-
-box-shadow:0 10px 30px rgba(0,0,0,.08);
-
-overflow:auto;
-
+.inventory-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background: #0F172A;
+    overflow-x: hidden;
 }
 
-table{
+.inventory-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
 
-width:100%;
+    /* IMPORTANT: sidebar already uses flex space */
+    margin-left: 0;
 
-border-collapse:collapse;
+    padding: 30px;
+    box-sizing: border-box;
 
-background:#fff;
+    background: #0F172A;
+    color: white;
 
+    overflow-x: hidden;
 }
 
-th{
+.inventory {
+    width: 100%;
+    min-width: 0;
+    min-height: 100vh;
 
-padding:20px;
-
-font-size:15px;
-
-font-weight:700;
-
-color:#64748B;
-
-}
-td{
-
-padding:20px;
-
-font-size:15px;
-
-color:#0F172A;
-
-}
-
-thead{
-
-background:#F8FAFC;
-
-}
-
-tbody tr{
-    border-bottom:1px solid #E5E7EB;
+    background: #0F172A;
 }
 
 .status {

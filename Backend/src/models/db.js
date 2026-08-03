@@ -3,23 +3,23 @@ require("dotenv").config();
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
+
     ssl: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: false
     },
+
+    max: 5,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 30000,
+    keepAlive: true
 });
 
-// Test connection
-pool.query(`
-    SELECT
-        current_database(),
-        current_user,
-        current_schema(),
-        COUNT(*) AS products
-    FROM products;
-`)
-.then(res => {
-    console.log(res.rows[0]);
-})
-.catch(err => console.error("DB TEST:", err));
+pool.on("connect", () => {
+    console.log("New PostgreSQL connection created");
+});
+
+pool.on("error", (err) => {
+    console.error("PostgreSQL pool error:", err);
+});
 
 module.exports = pool;

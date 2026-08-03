@@ -2,9 +2,10 @@ const db = require("../models/db");
 
 const getInventory = async () => {
 
+    console.time("getInventory DB query");
+
     const result = await db.query(`
         SELECT
-
             i.id,
 
             p.id AS product_id,
@@ -19,40 +20,36 @@ const getInventory = async () => {
             l.bin,
 
             i.quantity,
-
             i.reserved_quantity,
-
             i.damaged_quantity,
 
             (
                 i.quantity
-                - i.reserved_quantity
-                - i.damaged_quantity
+                - COALESCE(i.reserved_quantity, 0)
+                - COALESCE(i.damaged_quantity, 0)
             ) AS available_quantity,
 
             i.reorder_level,
-
             i.reorder_quantity,
-
             i.unit_cost,
-
             i.selling_price,
-
             i.status
 
         FROM inventory i
 
         JOIN products p
-        ON p.id = i.product_id
+            ON p.id = i.product_id
 
         JOIN locations l
-        ON l.id = i.location_id
+            ON l.id = i.location_id
 
         JOIN warehouses w
-        ON w.id = l.warehouse_id
+            ON w.id = l.warehouse_id
 
         ORDER BY p.name;
     `);
+
+    console.timeEnd("getInventory DB query");
 
     return result.rows;
 };

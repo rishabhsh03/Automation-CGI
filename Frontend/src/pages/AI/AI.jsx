@@ -6,6 +6,7 @@ import ChatHeader from "../../components/AI/ChatHeader";
 import EmptyState from "../../components/AI/EmptyState";
 import ChatInput from "../../components/AI/ChatInput";
 import ChatMessage from "../../components/AI/ChatMessage";
+
 import "./AI.css";
 
 export default function AI() {
@@ -14,49 +15,225 @@ export default function AI() {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
 
-const handleSend = () => {
+    // ------------------------------------------
+    // SESSION ID
+    // ------------------------------------------
 
-    if (!input.trim()) return;
+    const [sessionId] = useState(() => {
 
-    const userMessage = {
+        let storedSession =
+            localStorage.getItem("warehouse-ai-session");
 
-        id: Date.now(),
+        if (!storedSession) {
 
-        role: "user",
+            storedSession =
+                crypto.randomUUID();
 
-        content: input,
+            localStorage.setItem(
+                "warehouse-ai-session",
+                storedSession
+            );
 
-        time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-        })
+        }
+
+        return storedSession;
+
+    });
+
+
+    // ------------------------------------------
+    // SEND MESSAGE
+    // ------------------------------------------
+
+    const handleSend = async () => {
+
+        const prompt = input.trim();
+
+        if (!prompt || loading) {
+            return;
+        }
+
+
+        // ------------------------------------------
+        // USER MESSAGE
+        // ------------------------------------------
+
+        const userMessage = {
+
+            id: crypto.randomUUID(),
+
+            role: "user",
+
+            content: prompt,
+
+            time: new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+            })
+
+        };
+
+
+        setMessages((prev) => [
+            ...prev,
+            userMessage
+        ]);
+
+        setInput("");
+
+        setLoading(true);
+
+
+        try {
+
+            // ------------------------------------------
+            // CALL BACKEND AI
+            // ------------------------------------------
+
+            const response = await fetch(
+                "http://localhost:8000/api/ai/chat",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        sessionId:sessionId,
+
+                        prompt: userMessage.content
+
+                    })
+                }
+            );
+
+
+            // ------------------------------------------
+            // HTTP ERROR
+            // ------------------------------------------
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `Server returned ${response.status}`
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "[Warehouse AI Response]",
+                result
+            );
+
+
+            // ------------------------------------------
+            // AI MESSAGE
+            // ------------------------------------------
+
+            const aiMessage = {
+
+                id: crypto.randomUUID(),
+
+                role: "assistant",
+
+                content:
+                    result.message ||
+                    result.response ||
+                    "I couldn't generate a response.",
+
+                title:
+                    result.title || null,
+
+                data:
+                    result.data || [],
+
+                source:
+                    result.source || null,
+
+                intent:
+                    result.intent || null,
+
+                time: new Date().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })
+
+            };
+
+
+            setMessages((prev) => [
+                ...prev,
+                aiMessage
+            ]);
+
+
+        } catch (error) {
+
+            console.error(
+                "[Warehouse AI Error]",
+                error
+            );
+
+
+            // ------------------------------------------
+            // ERROR MESSAGE
+            // ------------------------------------------
+
+            const errorMessage = {
+
+                id: crypto.randomUUID(),
+
+                role: "assistant",
+
+                content:
+                    "I couldn't connect to the Warehouse AI server.",
+
+                error: true,
+
+                time: new Date().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })
+
+            };
+
+
+            setMessages((prev) => [
+                ...prev,
+                errorMessage
+            ]);
+
+        } finally {
+
+            setLoading(false);
+
+        }
 
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+const handleNewChat = () => {
 
-setTimeout(() => {
+    // Clear frontend messages
+    setMessages([]);
 
-    const aiMessage = {
+    // Clear current input
+    setInput("");
 
-        id: Date.now() + 1,
+    // Create a completely new backend conversation
+    setSessionId(
+        crypto.randomUUID()
+    );
 
-        role: "assistant",
-
-        content: "I'm Warehouse AI. I understood your message: " + userMessage.content,
-
-        time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-        })
-
-    };
-
-    setMessages(prev => [...prev, aiMessage]);
-
-},1000);
 };
     return (
+
         <div className="ai-layout">
 
             <Sidebar />
@@ -67,39 +244,61 @@ setTimeout(() => {
 
                 <div className="chat-container">
 
-                    <ChatHeader />
-                <div className="chat-body">
-                  <div className="chat-body">
+                    <ChatHeader 
+                    onNewChat={handleNewChat}
+                    />
 
-    {messages.length === 0 ? (
+                    <div className="chat-body">
 
-        <EmptyState
-            onSuggestionClick={(text) => setInput(text)}
-        />
+                        {messages.length === 0 ? (
 
-    ) : (
+                            <EmptyState
+                                onSuggestionClick={
+                                    (text) =>
+                                        setInput(text)
+                                }
+                            />
 
-        messages.map((message) => (
-            <ChatMessage
-                key={message.id}
-                message={message}
-            />
-        ))
+                        ) : (
 
-    )}
+                            messages.map(
+                                (message) => (
 
-</div>
+                                    <ChatMessage
+                                        key={message.id}
+                                        message={message}
+                                    />
+
+                                )
+                            )
+
+                        )}
+
+
+                        {loading && (
+
+                            <div className="ai-loading">
+                                Warehouse AI is thinking...
+                            </div>
+
+                        )}
+
+                    </div>
+
 
                     <ChatInput
                         input={input}
                         setInput={setInput}
                         onSend={handleSend}
+                        disabled={loading}
                     />
 
                 </div>
-            </div>
+
             </main>
 
         </div>
+
     );
+
 }

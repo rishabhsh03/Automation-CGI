@@ -4,27 +4,44 @@ const chat = async (req, res) => {
 
     try {
 
-        const { prompt } = req.body;
+        const {
+            prompt,
+            sessionId = "default"
+        } = req.body;
+
+        if (!prompt || !prompt.trim()) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Prompt is required"
+            });
+
+        }
 
         const result =
-            await aiService.processMessage(prompt);
+            await aiService.processMessage(
+                prompt,
+                sessionId
+            );
 
-        res.json(result);
+        return res.json(result);
 
-    } catch (err) {
+    } catch (error) {
 
-        console.error(err);
+        console.error(
+            "[AI Controller Error]",
+            error
+        );
 
-        res.status(500).json({
-
-            success:false,
-
-            message:err.message
-
+        return res.status(500).json({
+            success: false,
+            message: "AI request failed"
         });
 
     }
 
 };
 
-module.exports = { chat };
+module.exports = {
+    chat
+};

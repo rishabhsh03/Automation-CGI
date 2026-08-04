@@ -1,5 +1,9 @@
-const inventoryService = require("../../services/inventoryService");
-const INTENTS = require("../intents");
+const inventoryService =
+    require("../../services/inventoryService");
+
+const INTENTS =
+    require("../intents");
+
 
 class InventoryTool {
 
@@ -11,7 +15,7 @@ class InventoryTool {
                 this.getInventory.bind(this),
 
             [INTENTS.AVAILABLE_STOCK]:
-                this.searchProduct.bind(this),
+                this.getAvailableStock.bind(this),
 
             [INTENTS.LOW_STOCK]:
                 this.getLowStock.bind(this),
@@ -23,21 +27,35 @@ class InventoryTool {
 
     }
 
+
+    // ==========================================
+    // EXECUTE
+    // ==========================================
+
     async execute(analysis) {
 
         const handler =
-            this.intentHandlers[analysis.intent];
+            this.intentHandlers[
+                analysis.intent
+            ];
 
         if (!handler) {
 
             return {
+
                 success: false,
+
                 tool: "INVENTORY",
-                message: `Unsupported inventory intent: ${analysis.intent}`
+
+                message:
+                    `Unsupported inventory intent: ${analysis.intent}`
+
             };
+
         }
 
         return await handler(analysis);
+
     }
 
 
@@ -51,42 +69,113 @@ class InventoryTool {
             await inventoryService.getInventory();
 
         return {
+
             success: true,
+
             tool: "INVENTORY",
+
             action: "INVENTORY",
+
             data
+
         };
+
     }
 
 
     // ==========================================
-    // AVAILABLE STOCK / PRODUCT SEARCH
+    // AVAILABLE STOCK
     // ==========================================
 
-    async searchProduct(analysis) {
+    async getAvailableStock(analysis) {
 
         const product =
             analysis.entities?.product;
 
-        if (!product) {
+        const category =
+            analysis.entities?.category;
+
+
+        // --------------------------------------
+        // PRODUCT SPECIFIED
+        // --------------------------------------
+
+        if (product) {
+
+            const data =
+                await inventoryService.searchProduct(
+                    product
+                );
 
             return {
-                success: false,
+
+                success: true,
+
                 tool: "INVENTORY",
+
                 action: "AVAILABLE_STOCK",
-                message: "Product name is required"
+
+                filter: "PRODUCT",
+
+                data
+
             };
+
         }
 
+
+        // --------------------------------------
+        // CATEGORY SPECIFIED
+        // --------------------------------------
+
+        if (category) {
+
+            const data =
+                await inventoryService
+                    .getInventoryByCategory(
+                        category
+                    );
+
+            return {
+
+                success: true,
+
+                tool: "INVENTORY",
+
+                action: "AVAILABLE_STOCK",
+
+                filter: "CATEGORY",
+
+                category,
+
+                data
+
+            };
+
+        }
+
+
+        // --------------------------------------
+        // NO FILTER
+        // --------------------------------------
+
         const data =
-            await inventoryService.searchProduct(product);
+            await inventoryService.getInventory();
 
         return {
+
             success: true,
+
             tool: "INVENTORY",
+
             action: "AVAILABLE_STOCK",
+
+            filter: "ALL",
+
             data
+
         };
+
     }
 
 
@@ -97,14 +186,21 @@ class InventoryTool {
     async getLowStock() {
 
         const data =
-            await inventoryService.getLowStockProducts();
+            await inventoryService
+                .getLowStockProducts();
 
         return {
+
             success: true,
+
             tool: "INVENTORY",
+
             action: "LOW_STOCK",
+
             data
+
         };
+
     }
 
 
@@ -115,16 +211,25 @@ class InventoryTool {
     async getOutOfStock() {
 
         const data =
-            await inventoryService.getOutOfStockProducts();
+            await inventoryService
+                .getOutOfStockProducts();
 
         return {
+
             success: true,
+
             tool: "INVENTORY",
+
             action: "OUT_OF_STOCK",
+
             data
+
         };
+
     }
 
 }
 
-module.exports = new InventoryTool();
+
+module.exports =
+    new InventoryTool();

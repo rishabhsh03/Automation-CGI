@@ -319,11 +319,52 @@ const getOutOfStockProducts = async () => {
 
     return result.rows;
 };
+const getInventoryByCategory = async (category) => {
+
+    const result = await db.query(`
+        SELECT
+            i.id,
+
+            p.id AS product_id,
+            p.sku,
+            p.name,
+            p.category,
+
+            i.quantity,
+            i.reserved_quantity,
+            i.damaged_quantity,
+
+            (
+                i.quantity
+                - COALESCE(i.reserved_quantity, 0)
+                - COALESCE(i.damaged_quantity, 0)
+            ) AS available_quantity,
+
+            i.reorder_level,
+            i.reorder_quantity,
+            i.unit_cost,
+            i.selling_price,
+            i.status
+
+        FROM inventory i
+
+        JOIN products p
+            ON p.id = i.product_id
+
+        WHERE LOWER(p.category) = LOWER($1)
+
+        ORDER BY p.name;
+    `, [category]);
+
+    return result.rows;
+
+};
 module.exports = {
     getInventory,
     addInventory,
     updateInventory,
     getLowStockProducts,
     getOutOfStockProducts,
+    getInventoryByCategory,
     searchProduct
 };

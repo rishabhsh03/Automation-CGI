@@ -2,6 +2,8 @@ const INTENTS = require("./intents");
 
 const productTool = require("./tools/productTool");
 const inventoryTool = require("./tools/inventoryTool");
+const orderTool = require("./tools/orderTool");
+const dashboardTool = require("./tools/dashboardTool");
 
 class ToolDispatcher {
 
@@ -13,24 +15,49 @@ class ToolDispatcher {
             // PRODUCT
             // ==========================
 
-            [INTENTS.SEARCH_PRODUCT]: productTool,
+            [INTENTS.SEARCH_PRODUCT]:
+                productTool,
 
-            [INTENTS.GET_PRODUCT_PRICE]: productTool,
+            [INTENTS.GET_PRODUCT_PRICE]:
+                productTool,
 
-            [INTENTS.GET_PRODUCT_DETAILS]: productTool,
+            [INTENTS.GET_PRODUCT_DETAILS]:
+                productTool,
 
 
             // ==========================
             // INVENTORY
             // ==========================
 
-            [INTENTS.INVENTORY]: inventoryTool,
+            [INTENTS.INVENTORY]:
+                inventoryTool,
 
-            [INTENTS.AVAILABLE_STOCK]: inventoryTool,
+            [INTENTS.AVAILABLE_STOCK]:
+                inventoryTool,
 
-            [INTENTS.LOW_STOCK]: inventoryTool,
+            [INTENTS.LOW_STOCK]:
+                inventoryTool,
 
-            [INTENTS.OUT_OF_STOCK]: inventoryTool
+            [INTENTS.OUT_OF_STOCK]:
+                inventoryTool,
+
+
+            // ==========================
+            // ORDERS
+            // ==========================
+
+            [INTENTS.SALES_ORDER]:
+                orderTool,
+
+            // ==========================
+            // DASHBOARD
+            // ==========================
+
+            [INTENTS.DASHBOARD]:
+                dashboardTool,
+
+            [INTENTS.REVENUE]:
+                dashboardTool
 
         };
 
@@ -60,14 +87,17 @@ class ToolDispatcher {
 
 
         const tool =
-            this.intentToolMap[analysis.intent];
+            this.intentToolMap[
+            analysis.intent
+            ];
 
 
         if (!tool) {
 
             return {
                 success: false,
-                message: `No tool found for intent: ${analysis.intent}`
+                message:
+                    `No tool found for intent: ${analysis.intent}`
             };
 
         }
@@ -79,7 +109,9 @@ class ToolDispatcher {
                 `[ToolDispatcher] ${analysis.intent}`
             );
 
-            return await tool.execute(analysis);
+            return await tool.execute(
+                analysis
+            );
 
         } catch (error) {
 
@@ -99,4 +131,6 @@ class ToolDispatcher {
 
 }
 
-module.exports = new ToolDispatcher();
+
+module.exports =
+    new ToolDispatcher();

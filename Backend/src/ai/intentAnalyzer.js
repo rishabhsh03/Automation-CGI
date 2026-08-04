@@ -37,7 +37,22 @@ function analyzeIntent(message) {
 
     const normalizedMessage =
         normalizeMessage(message);
+    // ==========================================
+// STOCK QUERY FALLBACK
+// ==========================================
 
+const stockWords = [
+    "stock",
+    "stocks"
+];
+
+const hasStockWord =
+    stockWords.some(word =>
+        containsKeyword(
+            normalizedMessage,
+            word
+        )
+    );
     const matches = [];
 
     for (const [intent, config] of Object.entries(KEYWORDS)) {
@@ -88,7 +103,23 @@ function analyzeIntent(message) {
     });
 
     if (matches.length === 0) {
+        // ==========================================
+// GENERIC STOCK REQUEST
+// ==========================================
 
+if (
+    matches.length === 0 &&
+    hasStockWord
+) {
+
+    return {
+        intent: INTENTS.AVAILABLE_STOCK,
+        score: 1,
+        specificity: 5,
+        matchedKeywords: ["stock"]
+    };
+
+}
         return {
             intent: INTENTS.UNKNOWN,
             score: 0,

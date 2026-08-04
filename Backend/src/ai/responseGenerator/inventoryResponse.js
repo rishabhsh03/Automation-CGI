@@ -1,43 +1,110 @@
-class inventoryResponse {
-    lowStock(data){
-        if(!data.length){
-            return{
-                title:"Low Stock Report",
-                message: "Great! No product are currently below the reorder level."
+class InventoryResponse {
+
+    // ==========================================
+    // AVAILABLE STOCK
+    // ==========================================
+
+    availableStock(data, result = {}) {
+
+        if (!data || !data.length) {
+
+            const category =
+                result.category?.toUpperCase();
+
+            return {
+                title: category
+                    ? `${category} Stock`
+                    : "Available Stock",
+
+                message: category
+                    ? `No ${category} products were found in inventory.`
+                    : "No inventory records were found."
             };
+
         }
 
-        const lines = data.map(product => {
-            return `${product.name}
-        Available : ${product.available_quantity}
-        Reorder level : ${product.reorder_level}`;
-        });
-        return{
-            title: "Low Stock Report",
-            message:
-                `I found ${data.length} low-stock product(s).\n\n` +
-                lines.join("\n\n") +
-                "\n\nRecommendation: Create a purchase order soon."
+        const category =
+            result.category?.toUpperCase();
+
+        return {
+
+            title: category
+                ? `${category} Stock`
+                : "Available Stock",
+
+            message: category
+                ? `I found ${data.length} ${category} inventory record(s).`
+                : `I found ${data.length} inventory record(s).`
+
         };
+
     }
-    outOfSock(data){
-        if(!data.length){
-            return{
-                title:"Out of Stock",
+
+
+    // ==========================================
+    // LOW STOCK
+    // ==========================================
+
+    lowStock(data) {
+
+        if (!data || !data.length) {
+
+            return {
+
+                title: "Low Stock Report",
+
                 message:
-                    "Excellent! No product are outof stock"
+                    "Great! No products are currently below the reorder level."
+
             };
+
         }
-        const lines = data.map(product => {
-            return ` ${product.name}`;
-        });
-        return{
-            title:"Out of Stock",
+
+        return {
+
+            title: "Low Stock Report",
+
             message:
-                `${data.length} product(s) are currently unavailable.\n\n` +
-                lines.join("\n")
+                `I found ${data.length} low-stock product(s). ` +
+                "Consider creating a purchase order soon."
+
         };
+
     }
+
+
+    // ==========================================
+    // OUT OF STOCK
+    // ==========================================
+
+    outOfStock(data) {
+
+        if (!data || !data.length) {
+
+            return {
+
+                title: "Out of Stock",
+
+                message:
+                    "No products are currently out of stock."
+
+            };
+
+        }
+
+        return {
+
+            title: "Out of Stock",
+
+            message:
+                `${data.length} product(s) are currently unavailable.`
+
+        };
+
+    }
+
 }
 
-module.exports = new inventoryResponse();
+
+module.exports =
+    new InventoryResponse();

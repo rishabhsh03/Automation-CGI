@@ -2,61 +2,135 @@ class ContextResolver {
 
     resolve(message, context) {
 
-        const text = message.toLowerCase();
-
-        if (!context.lastResult) {
-
+        if (!message || !context) {
             return null;
-
         }
 
-        // -----------------------------
-        // CPU
-        // -----------------------------
+        const text = message
+            .toLowerCase()
+            .trim();
+        const followUpPatterns = [
+    "only",
+    "just",
+    "what about",
+    "how about",
+    "from those",
+    "from them",
+    "among those",
+    "among them",
+    "filter",
+    "of those"
+];
 
+const isFollowUp =
+    followUpPatterns.some(
+        pattern => text.includes(pattern)
+    );
+
+if (!isFollowUp) {
+    return null;
+}
+        const lastResult = context.lastResult;
+
+        // No previous result available
         if (
-            text.includes("cpu") ||
-            text.includes("processor")
+            !Array.isArray(lastResult) ||
+            lastResult.length === 0
         ) {
+            return null;
+        }
+
+        // ==========================================
+        // CATEGORY FILTERS
+        // ==========================================
+
+        const categories = {
+
+            cpu: [
+                "cpu",
+                "cpus",
+                "processor",
+                "processors"
+            ],
+
+            gpu: [
+                "gpu",
+                "gpus",
+                "graphics card",
+                "graphics cards"
+            ],
+
+            ram: [
+                "ram",
+                "memory"
+            ],
+
+            ssd: [
+                "ssd",
+                "ssds"
+            ],
+
+            hdd: [
+                "hdd",
+                "hard drive",
+                "hard drives"
+            ],
+
+            monitor: [
+                "monitor",
+                "monitors",
+                "display",
+                "displays"
+            ]
+
+        };
+
+        // ==========================================
+        // FIND CATEGORY IN MESSAGE
+        // ==========================================
+
+        for (
+            const [category, keywords]
+            of Object.entries(categories)
+        ) {
+
+            const matched =
+                keywords.some(
+                    keyword =>
+                        text.includes(keyword)
+                );
+
+            if (!matched) {
+                continue;
+            }
+
+            const filtered =
+                lastResult.filter(item => {
+
+                    if (!item.category) {
+                        return false;
+                    }
+
+                    return (
+                        item.category
+                            .toLowerCase() ===
+                        category
+                    );
+
+                });
 
             return {
 
                 handled: true,
 
-                title: "CPU Results",
+                type: "FILTER_CATEGORY",
 
-                data:
-                    context.lastResult.filter(
-                        item =>
-                            item.category &&
-                            item.category.toLowerCase() === "cpu"
-                    )
+                category,
 
-            };
+                title:
+                    `${category.toUpperCase()} Results`,
 
-        }
-
-        // -----------------------------
-        // GPU
-        // -----------------------------
-
-        if (
-            text.includes("gpu") ||
-            text.includes("graphics")
-        ) {
-
-            return {
-
-                handled: true,
-
-                title: "GPU Results",
-
-                data:
-                    context.lastResult.filter(
-                        item =>
-                            item.category &&
-                            item.category.toLowerCase() === "gpu"
-                    )
+                data: filtered
 
             };
 

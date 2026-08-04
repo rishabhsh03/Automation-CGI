@@ -50,51 +50,68 @@ class AIService {
             // ------------------------------------------
 
             const contextResult =
-                contextResolver.resolve(
-                    message,
-                    previousContext
-                );
+    contextResolver.resolve(
+        message,
+        previousContext
+    );
 
-            if (contextResult) {
+if (contextResult?.handled) {
 
-                console.log(
-                    "[AI] Answered From Context"
-                );
+    console.log(
+        "[AI] Answered From Context:",
+        contextResult
+    );
 
-                const aiResponse =
-                    responseGenerator.generate({
+    const data =
+        contextResult.data || [];
 
-                        success: true,
+    let response;
 
-                        tool: contextResult.tool,
+    if (data.length === 0) {
 
-                        action: contextResult.action,
+        response =
+            `No ${contextResult.category?.toUpperCase() || ""} products were found in the previous results.`;
 
-                        data: contextResult.data
+    } else {
 
-                    });
+        const productNames =
+            data
+                .map(item => item.name)
+                .filter(Boolean)
+                .join(", ");
 
-                conversationStore.addMessage(
-                    sessionId,
-                    "assistant",
-                    aiResponse.message
-                );
+        response =
+            `Found ${data.length} ${contextResult.category?.toUpperCase() || ""} product(s) from the previous results.`;
 
-                return {
+        if (productNames) {
+            response += ` ${productNames}`;
+        }
 
-                    success: true,
+    }
 
-                    source: "CONTEXT_MEMORY",
+    conversationStore.addMessage(
+        sessionId,
+        "assistant",
+        response
+    );
 
-                    title: aiResponse.title,
+    return {
 
-                    message: aiResponse.message,
+        success: true,
 
-                    data: contextResult.data
+        source: "CONTEXT_MEMORY",
 
-                };
+        type: contextResult.type,
 
-            }
+        title: contextResult.title,
+
+        message: response,
+
+        data
+
+    };
+
+}
 
             console.log("\n==============================");
             console.log("[AI] User:", message);

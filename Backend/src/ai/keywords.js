@@ -65,16 +65,23 @@ const KEYWORDS = {
     },
 
     [INTENTS.AVAILABLE_STOCK]: {
-        keywords: [
-            "available stock",
-            "stock available",
-            "stock of",
-            "quantity available",
-            "available quantity",
-            "how many",
-            "how much stock"
-        ]
-    },
+    keywords: [
+        "available stock",
+        "stock available",
+        "stock of",
+        "quantity available",
+        "available quantity",
+        "how many",
+        "how much stock",
+
+        // Natural stock queries
+        "show stock",
+        "check stock",
+        "current stock",
+        "stock level",
+        "stock levels"
+    ]
+},
 
     [INTENTS.INVENTORY]: {
         keywords: [
@@ -86,7 +93,17 @@ const KEYWORDS = {
         ]
     },
 
-
+    [INTENTS.REVENUE]: {
+    keywords: [
+        "revenue",
+        "total revenue",
+        "sales revenue",
+        "total sales",
+        "sales amount",
+        "revenue generated",
+        "how much revenue"
+    ]
+},
     // ==========================================
     // SUPPLIER
     // ==========================================

@@ -32,6 +32,8 @@ const INTENTS = {
 
     DASHBOARD: "DASHBOARD",
 
+    REVENUE:"REVENUE",
+
     // Conversation
 
     GREETING: "GREETING",

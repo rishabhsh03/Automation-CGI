@@ -1,21 +1,30 @@
 import "./ChatHeader.css";
 
-export default function ChatHeader() {
+export default function ChatHeader({
+    onNewChat
+}) {
+
     return (
+
         <div className="chat-header">
 
-            <div className="chat-title">
-
-                <h2>🤖 Warehouse AI</h2>
-
-                <p>Your intelligent warehouse assistant</p>
-
+            <div>
+                <h2>Warehouse AI</h2>
+                <p>
+                    Ask questions about your warehouse
+                </p>
             </div>
 
-            <button className="new-chat-btn">
+            <button
+                type="button"
+                onClick={onNewChat}
+                className="new-chat-btn"
+            >
                 + New Chat
             </button>
 
         </div>
+
     );
+
 }

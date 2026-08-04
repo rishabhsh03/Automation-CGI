@@ -70,6 +70,12 @@ const searchProduct = async (product) => {
 const getOutOfStockProducts = async () => {
     return await inventoryRepository.getOutOfStockProducts();
 };
+const getInventoryByCategory = async (category) => {
+
+    return await inventoryRepository
+        .getInventoryByCategory(category);
+
+};
 module.exports = {
 
     getInventory,
@@ -77,6 +83,7 @@ module.exports = {
     updateInventory,
     getLowStockProducts,
     getOutOfStockProducts,
+    getInventoryByCategory,
     searchProduct
 
 };

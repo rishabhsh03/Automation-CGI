@@ -280,10 +280,50 @@ const searchProduct = async (product) => {
 
     return result.rows;
 };
+const getOutOfStockProducts = async () => {
+
+    const result = await db.query(`
+        SELECT
+            i.id,
+            p.id AS product_id,
+            p.sku,
+            p.name,
+            p.category,
+
+            i.quantity,
+            i.reserved_quantity,
+            i.damaged_quantity,
+
+            (
+                i.quantity
+                - COALESCE(i.reserved_quantity, 0)
+                - COALESCE(i.damaged_quantity, 0)
+            ) AS available_quantity,
+
+            i.reorder_level,
+            i.reorder_quantity
+
+        FROM inventory i
+
+        JOIN products p
+            ON p.id = i.product_id
+
+        WHERE (
+            i.quantity
+            - COALESCE(i.reserved_quantity, 0)
+            - COALESCE(i.damaged_quantity, 0)
+        ) <= 0
+
+        ORDER BY p.name;
+    `);
+
+    return result.rows;
+};
 module.exports = {
     getInventory,
     addInventory,
     updateInventory,
     getLowStockProducts,
+    getOutOfStockProducts,
     searchProduct
 };

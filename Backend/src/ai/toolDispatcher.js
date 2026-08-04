@@ -1,124 +1,102 @@
-const productService = require("../services/productService");
 const INTENTS = require("./intents");
 
-class ProductTool {
+const productTool = require("./tools/productTool");
+const inventoryTool = require("./tools/inventoryTool");
+
+class ToolDispatcher {
 
     constructor() {
 
-        this.intentHandlers = {
+        this.intentToolMap = {
 
-            [INTENTS.SEARCH_PRODUCT]: this.searchProduct.bind(this),
+            // ==========================
+            // PRODUCT
+            // ==========================
 
-            [INTENTS.GET_PRODUCT_PRICE]: this.getProductPrice.bind(this),
+            [INTENTS.SEARCH_PRODUCT]: productTool,
 
-            [INTENTS.GET_PRODUCT_DETAILS]: this.getProductDetails.bind(this)
+            [INTENTS.GET_PRODUCT_PRICE]: productTool,
+
+            [INTENTS.GET_PRODUCT_DETAILS]: productTool,
+
+
+            // ==========================
+            // INVENTORY
+            // ==========================
+
+            [INTENTS.INVENTORY]: inventoryTool,
+
+            [INTENTS.AVAILABLE_STOCK]: inventoryTool,
+
+            [INTENTS.LOW_STOCK]: inventoryTool,
+
+            [INTENTS.OUT_OF_STOCK]: inventoryTool
 
         };
 
     }
 
-    async execute(analysis) {
 
-        const handler = this.intentHandlers[analysis.intent];
+    async dispatch(analysis) {
 
-        if (!handler) {
+        if (!analysis) {
 
             return {
                 success: false,
-                tool: "PRODUCT",
-                message: `Unsupported intent: ${analysis.intent}`
+                message: "Analysis is required"
             };
 
         }
 
-        return await handler(analysis);
 
-    }
+        if (!analysis.intent) {
 
-    // ---------------- SEARCH PRODUCT ----------------
-
-    async searchProduct(analysis) {
-
-        const { product, sku, category, barcode } = analysis.entities;
-
-        let data;
-
-        if (sku) {
-
-            data = await productService.getBySku(sku);
-
-        } else if (barcode) {
-
-            data = await productService.getByBarcode(barcode);
-
-        } else if (category) {
-
-            data = await productService.getByCategory(category);
-
-        } else {
-
-            data = await productService.searchProduct(product);
+            return {
+                success: false,
+                message: "Intent is required"
+            };
 
         }
 
-        return {
 
-            success: true,
+        const tool =
+            this.intentToolMap[analysis.intent];
 
-            tool: "PRODUCT",
 
-            action: "SEARCH_PRODUCT",
+        if (!tool) {
 
-            data
+            return {
+                success: false,
+                message: `No tool found for intent: ${analysis.intent}`
+            };
 
-        };
+        }
 
-    }
 
-    // ---------------- PRODUCT PRICE ----------------
+        try {
 
-    async getProductPrice(analysis) {
+            console.log(
+                `[ToolDispatcher] ${analysis.intent}`
+            );
 
-        const data = await productService.getProductPrice(
-            analysis.entities.product
-        );
+            return await tool.execute(analysis);
 
-        return {
+        } catch (error) {
 
-            success: true,
+            console.error(
+                "[ToolDispatcher Error]",
+                error
+            );
 
-            tool: "PRODUCT",
+            return {
+                success: false,
+                message: error.message
+            };
 
-            action: "GET_PRODUCT_PRICE",
-
-            data
-
-        };
-
-    }
-
-    // ---------------- PRODUCT DETAILS ----------------
-
-    async getProductDetails(analysis) {
-
-        const data = await productService.getProductDetails(
-            analysis.entities.product
-        );
-
-        return {
-
-            success: true,
-
-            tool: "PRODUCT",
-
-            action: "GET_PRODUCT_DETAILS",
-
-            data
-
-        };
+        }
 
     }
 
 }
 
-module.exports = new ProductTool();
+module.exports = new ToolDispatcher();

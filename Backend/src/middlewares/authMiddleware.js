@@ -1,9 +1,8 @@
+const jwt = require("jsonwebtoken");
+
 const authenticate = (req, res, next) => {
 
-    console.log("Headers:", req.headers);
-
     const authHeader = req.headers.authorization;
-
 
     if (!authHeader) {
         console.log("No Authorization Header");
@@ -14,8 +13,17 @@ const authenticate = (req, res, next) => {
         });
     }
 
-    const token = authHeader.split(" ")[1];
+    // Make sure header is: Bearer <token>
+    const [type, token] = authHeader.split(" ");
 
+    if (type !== "Bearer" || !token) {
+        console.log("Invalid Authorization format");
+
+        return res.status(401).json({
+            success: false,
+            message: "Invalid Authorization format"
+        });
+    }
 
     try {
 
@@ -24,7 +32,7 @@ const authenticate = (req, res, next) => {
             process.env.JWT_SECRET
         );
 
-        console.log("Decoded:", decoded);
+        console.log("Authenticated user:", decoded);
 
         req.user = decoded;
 
@@ -38,8 +46,7 @@ const authenticate = (req, res, next) => {
             success: false,
             message: "Invalid Token"
         });
-
     }
-
 };
+
 module.exports = authenticate;

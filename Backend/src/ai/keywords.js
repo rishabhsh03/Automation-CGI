@@ -1,47 +1,174 @@
-const INTENTS = {
+const INTENTS = require("./intents");
 
-    // Product
+const KEYWORDS = {
 
-    SEARCH_PRODUCT: "SEARCH_PRODUCT",
+    // ==========================================
+    // PRODUCT
+    // ==========================================
 
-    GET_PRODUCT_PRICE: "GET_PRODUCT_PRICE",
+    [INTENTS.GET_PRODUCT_PRICE]: {
+        keywords: [
+            "price",
+            "cost",
+            "selling price",
+            "how much",
+            "product price"
+        ]
+    },
 
-    GET_PRODUCT_DETAILS: "GET_PRODUCT_DETAILS",
+    [INTENTS.GET_PRODUCT_DETAILS]: {
+        keywords: [
+            "product details",
+            "product detail",
+            "details of",
+            "information about",
+            "product information",
+            "tell me about"
+        ]
+    },
 
-    // Inventory
+    [INTENTS.SEARCH_PRODUCT]: {
+        keywords: [
+            "find product",
+            "search product",
+            "find",
+            "search",
+            "look for",
+            "product named"
+        ]
+    },
 
-    INVENTORY: "INVENTORY",
 
-    AVAILABLE_STOCK: "AVAILABLE_STOCK",
+    // ==========================================
+    // INVENTORY
+    // ==========================================
 
-    LOW_STOCK: "LOW_STOCK",
+    [INTENTS.OUT_OF_STOCK]: {
+        keywords: [
+            "out of stock",
+            "out-of-stock",
+            "zero stock",
+            "no stock",
+            "unavailable products"
+        ]
+    },
 
-    OUT_OF_STOCK: "OUT_OF_STOCK",
+    [INTENTS.LOW_STOCK]: {
+        keywords: [
+            "low stock",
+            "low-stock",
+            "below reorder level",
+            "reorder level",
+            "running low",
+            "almost out of stock"
+        ]
+    },
 
-    // Supplier
+    [INTENTS.AVAILABLE_STOCK]: {
+        keywords: [
+            "available stock",
+            "stock available",
+            "stock of",
+            "quantity available",
+            "available quantity",
+            "how many",
+            "how much stock"
+        ]
+    },
 
-    SUPPLIER: "SUPPLIER",
+    [INTENTS.INVENTORY]: {
+        keywords: [
+            "inventory",
+            "show inventory",
+            "inventory list",
+            "all inventory",
+            "warehouse inventory"
+        ]
+    },
 
-    // Orders
 
-    PURCHASE_ORDER: "PURCHASE_ORDER",
+    // ==========================================
+    // SUPPLIER
+    // ==========================================
 
-    SALES_ORDER: "SALES_ORDER",
+    [INTENTS.SUPPLIER]: {
+        keywords: [
+            "supplier",
+            "suppliers",
+            "vendor",
+            "vendors"
+        ]
+    },
 
-    // Dashboard
 
-    DASHBOARD: "DASHBOARD",
+    // ==========================================
+    // PURCHASE ORDER
+    // ==========================================
 
-    // Conversation
+    [INTENTS.PURCHASE_ORDER]: {
+        keywords: [
+            "purchase order",
+            "purchase orders",
+            "po",
+            "supplier order"
+        ]
+    },
 
-    GREETING: "GREETING",
 
-    HELP: "HELP",
+    // ==========================================
+    // SALES ORDER
+    // ==========================================
 
-    GENERAL: "GENERAL",
+    [INTENTS.SALES_ORDER]: {
+        keywords: [
+            "sales order",
+            "sales orders",
+            "customer order",
+            "customer orders",
+            "orders"
+        ]
+    },
 
-    UNKNOWN: "UNKNOWN"
+
+    // ==========================================
+    // DASHBOARD
+    // ==========================================
+
+    [INTENTS.DASHBOARD]: {
+        keywords: [
+            "dashboard",
+            "summary",
+            "overview",
+            "warehouse summary",
+            "business summary"
+        ]
+    },
+
+
+    // ==========================================
+    // CONVERSATION
+    // ==========================================
+
+    [INTENTS.GREETING]: {
+        keywords: [
+            "hello",
+            "hi",
+            "hey",
+            "good morning",
+            "good afternoon",
+            "good evening"
+        ]
+    },
+
+    [INTENTS.HELP]: {
+        keywords: [
+            "help",
+            "what can you do",
+            "commands",
+            "how can you help"
+        ]
+    }
 
 };
 
-module.exports = INTENTS;
+module.exports = KEYWORDS;

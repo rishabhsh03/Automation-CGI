@@ -1,43 +1,48 @@
-const SYSTEM_PROMPT = require("../prompts/systemPrompt");
+const SYSTEM_PROMPT =
+    require("../prompts/systemPrompt");
 
 class LLMService {
 
-    async analyzeMessage(message) {
+    // ==========================================
+    // GENERIC LLM REQUEST
+    // ==========================================
+
+    async generate(
+        messages,
+        options = {}    ) {
 
         try {
 
             const response = await fetch(
-                "http://localhost:11434/api/chat",
+               "http://127.0.0.1:11434/api/chat" ,
                 {
                     method: "POST",
 
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type":
+                            "application/json"
                     },
 
                     body: JSON.stringify({
 
-                        model: "qwen3:4b",
+                        model:
+                            options.model ||
+                            "qwen3:4b",
 
                         stream: false,
 
-                        format: "json",
+                        format:
+                            options.format,
 
-                        messages: [
-                            {
-                                role: "system",
-                                content: SYSTEM_PROMPT
-                            },
-                            {
-                                role: "user",
-                                content: message
-                            }
-                        ],
+                        messages,
 
                         options: {
-                            temperature: 0
+                            temperature:
+                                options.temperature ?? 0
                         }
+
                     })
+
                 }
             );
 
@@ -51,13 +56,8 @@ class LLMService {
             }
 
 
-            const result = await response.json();
-
-
-            console.log(
-                "[Ollama Raw Response]:",
-                result.message?.content
-            );
+            const result =
+                await response.json();
 
 
             if (!result.message?.content) {
@@ -69,16 +69,66 @@ class LLMService {
             }
 
 
-            const analysis =
-                JSON.parse(result.message.content);
+            return result.message.content;
 
-
-            return analysis;
 
         } catch (error) {
 
             console.error(
-                "[LLM Service Error]:",
+                "[LLM Generate Error]:",
+                error.message
+            );
+
+            throw error;
+
+        }
+
+    }
+
+
+    // ==========================================
+    // INTENT + ENTITY ANALYSIS
+    // ==========================================
+
+    async analyzeMessage(message) {
+
+        try {
+
+            const content =
+                await this.generate(
+                    [
+                        {
+                            role: "system",
+                            content:
+                                SYSTEM_PROMPT
+                        },
+
+                        {
+                            role: "user",
+                            content:
+                                message
+                        }
+                    ],
+                    {
+                        format: "json",
+                        temperature: 0
+                    }
+                );
+
+
+            console.log(
+                "[Ollama Raw Response]:",
+                content
+            );
+
+
+            return JSON.parse(content);
+
+
+        } catch (error) {
+
+            console.error(
+                "[LLM Analysis Error]:",
                 error.message
             );
 
@@ -91,4 +141,5 @@ class LLMService {
 }
 
 
-module.exports = new LLMService();
+module.exports =
+    new LLMService();

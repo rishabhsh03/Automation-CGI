@@ -6,9 +6,9 @@ class LanguageDetector {
 
     async detect(text) {
 
-        // ------------------------------------------
+        // ==========================================
         // VALIDATION
-        // ------------------------------------------
+        // ==========================================
 
         if (
             !text ||
@@ -17,89 +17,150 @@ class LanguageDetector {
         ) {
 
             return {
-                language: "en",
-                name: "English",
+                code: "en",
+                language: "English",
                 confidence: 1
             };
 
         }
 
 
-        // ------------------------------------------
-        // ASK LLM
-        // ------------------------------------------
+        try {
 
-        const prompt = `
-Detect the language of the following user message.
+            // ==========================================
+            // LANGUAGE DETECTION
+            // ==========================================
+
+            const content =
+                await llmService.generate(
+                    [
+                        {
+                            role: "system",
+
+                            content: `
+You are a language detection system.
+
+Detect the primary language of the user's message.
 
 Return ONLY valid JSON.
 
-Format:
+Required format:
 
 {
-    "language": "ISO-639-1 language code",
-    "name": "language name",
-    "confidence": number between 0 and 1
+    "code": "ISO-639-1 code",
+    "language": "Language name",
+    "confidence": 0.98
 }
 
 Rules:
 
-- Detect mixed-language text too.
-- Hinglish should return "hi".
-- Preserve English technical terms when determining the main language.
-- Do not explain anything.
-- Do not use markdown.
-- Return JSON only.
+1. Return JSON only.
+2. Do not explain your answer.
+3. Use ISO-639-1 language codes when available.
+4. Detect mixed-language messages.
+5. Hindi written using Latin characters (Hinglish)
+   should be detected as Hindi ("hi").
+6. Technical words should NOT determine the language.
 
-Message:
-${JSON.stringify(text)}
-`;
+Examples of technical words:
+
+GPU
+CPU
+RAM
+SSD
+RTX
+AMD
+Intel
+SKU
+warehouse
+stock
+inventory
+order
+
+Examples:
+
+"show GPU stock"
+
+{
+    "code": "en",
+    "language": "English",
+    "confidence": 0.99
+}
+
+"GPU ka stock dikhao"
+
+{
+    "code": "hi",
+    "language": "Hindi",
+    "confidence": 0.95
+}
+
+"GPU का stock दिखाओ"
+
+{
+    "code": "hi",
+    "language": "Hindi",
+    "confidence": 0.99
+}
+`
+                        },
+
+                        {
+                            role: "user",
+                            content: text
+                        }
+                    ],
+
+                    {
+                        format: "json",
+                        temperature: 0
+                    }
+                );
 
 
-        try {
+            // ==========================================
+            // PARSE RESPONSE
+            // ==========================================
 
             const result =
-                await llmService.chat(prompt);
-
-            const cleaned =
-                result
-                    .replace(/```json/gi, "")
-                    .replace(/```/g, "")
-                    .trim();
-
-            const parsed =
-                JSON.parse(cleaned);
+                JSON.parse(content);
 
 
             return {
 
-                language:
-                    parsed.language || "en",
+                code:
+                    result.code || "en",
 
-                name:
-                    parsed.name || "English",
+                language:
+                    result.language || "English",
 
                 confidence:
                     Number(
-                        parsed.confidence ?? 0
+                        result.confidence ?? 0
                     )
 
             };
 
+
         } catch (error) {
 
             console.error(
-                "[LanguageDetector]",
+                "[Language Detector Error]:",
                 error.message
             );
 
 
-            // Detection should NEVER break AI chat.
+            // Language detection should never
+            // crash Warehouse AI.
 
             return {
-                language: "en",
-                name: "English",
+
+                code: "en",
+
+                language: "English",
+
                 confidence: 0
+
             };
 
         }

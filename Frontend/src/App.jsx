@@ -85,6 +85,12 @@ function App() {
     element={<AI/>}
 
 />
+console.log(
+    "Razorpay key loaded:",
+    import.meta.env.VITE_RAZORPAY_KEY_ID
+        ? "YES"
+        : "NO"
+);
       </Routes>
     </BrowserRouter>
 

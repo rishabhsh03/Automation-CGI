@@ -667,3 +667,162 @@ tbody tr:hover{
     background:#1d4ed8;
 
 }
+.pay-btn {
+    border: none;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.pay-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+/* =========================================
+   ORDER ACTION BUTTONS
+========================================= */
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.action-buttons .view-btn,
+.action-buttons .edit-btn {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.action-buttons .pay-btn {
+    height: 42px;
+    min-width: 72px;
+
+    padding: 0 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.action-buttons .pay-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Give Action column enough space */
+
+table th:last-child,
+table td:last-child {
+    min-width: 210px;
+    white-space: nowrap;
+}
+/* =========================================
+   ORDER TABLE ACTIONS - FINAL OVERRIDE
+========================================= */
+
+.orders-page .action-buttons {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+
+    width: auto !important;
+    flex-wrap: nowrap !important;
+}
+
+
+/* VIEW + EDIT */
+
+.orders-page .action-buttons .view-btn,
+.orders-page .action-buttons .edit-btn {
+    width: 52px !important;
+    height: 52px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex: 0 0 52px !important;
+
+    border: none !important;
+    border-radius: 12px !important;
+}
+
+
+/* PAY */
+
+.orders-page .action-buttons .order-pay-btn {
+    width: 70px !important;
+    height: 52px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex: 0 0 70px !important;
+
+    border: none !important;
+    border-radius: 12px !important;
+
+    background: #22c55e !important;
+
+    color: white !important;
+
+    font-size: 15px !important;
+    font-weight: 600 !important;
+
+    cursor: pointer !important;
+}
+
+
+/* HOVER */
+
+.orders-page .action-buttons .order-pay-btn:hover {
+    transform: translateY(-1px);
+}
+
+
+/* DISABLED */
+
+.orders-page .action-buttons .order-pay-btn:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+}
+
+
+/* ACTION COLUMN */
+
+.orders-page table th:last-child,
+.orders-page table td:last-child {
+    min-width: 220px !important;
+}

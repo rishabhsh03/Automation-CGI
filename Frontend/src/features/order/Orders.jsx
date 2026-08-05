@@ -13,6 +13,7 @@ import {
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import Modal from "../../components/Modal";
+import PayButton from "../../components/Payment/PayButton";
 import "./Orders.css";
 const API = "http://localhost:8000/api/orders";
 
@@ -45,46 +46,46 @@ export default function Orders() {
   const fetchOrders = async () => {
     try {
 
-        const res = await fetch("http://localhost:8000/api/orders");
+      const res = await fetch("http://localhost:8000/api/orders");
 
-        const result = await res.json();
+      const result = await res.json();
 
-        if (result.success) {
+      if (result.success) {
 
-            setOrders(result.data);
+        setOrders(result.data);
 
-            const totalOrders = result.data.length;
+        const totalOrders = result.data.length;
 
-            const pendingOrders = result.data.filter(
-                order => order.status === "PENDING"
-            ).length;
+        const pendingOrders = result.data.filter(
+          order => order.status === "PENDING"
+        ).length;
 
-            const deliveredOrders = result.data.filter(
-                order => order.status === "DELIVERED"
-            ).length;
+        const deliveredOrders = result.data.filter(
+          order => order.status === "DELIVERED"
+        ).length;
 
-            const revenue = result.data
-                .filter(order => order.status === "DELIVERED")
-                .reduce(
-                    (sum, order) => sum + Number(order.total_amount),
-                    0
-                );
+        const revenue = result.data
+          .filter(order => order.status === "DELIVERED")
+          .reduce(
+            (sum, order) => sum + Number(order.total_amount),
+            0
+          );
 
-            setOrderSummary({
-                totalOrders,
-                pendingOrders,
-                deliveredOrders,
-                revenue
-            });
+        setOrderSummary({
+          totalOrders,
+          pendingOrders,
+          deliveredOrders,
+          revenue
+        });
 
-        }
+      }
 
     } catch (error) {
 
-        console.error(error);
+      console.error(error);
 
     }
-};
+  };
 
   useEffect(() => {
     fetchOrders();
@@ -153,48 +154,48 @@ export default function Orders() {
         return "";
     }
   };
-const updateQuantity = (index, quantity) => {
-  if (quantity < 1) quantity = 1;
+  const updateQuantity = (index, quantity) => {
+    if (quantity < 1) quantity = 1;
 
-  setOrderItems((prev) =>
-    prev.map((item, i) => {
-      if (i !== index) return item;
+    setOrderItems((prev) =>
+      prev.map((item, i) => {
+        if (i !== index) return item;
 
-      return {
-        ...item,
-        quantity,
-        total_price: quantity * Number(item.unit_price),
-      };
-    })
-  );
-};
-const updateProduct = (index, productId) => {
+        return {
+          ...item,
+          quantity,
+          total_price: quantity * Number(item.unit_price),
+        };
+      })
+    );
+  };
+  const updateProduct = (index, productId) => {
 
     const product = products.find(
-        p => p.id === Number(productId)
+      p => p.id === Number(productId)
     );
 
     if (!product) return;
 
     setOrderItems(prev =>
-        prev.map((item, i) => {
+      prev.map((item, i) => {
 
-            if (i !== index) return item;
+        if (i !== index) return item;
 
-            const quantity = Number(item.quantity);
+        const quantity = Number(item.quantity);
 
-            return {
-                ...item,
-                product_id: product.id,
-                unit_price: Number(product.selling_price),
-                total_price:
-                    quantity * Number(product.selling_price)
-            };
+        return {
+          ...item,
+          product_id: product.id,
+          unit_price: Number(product.selling_price),
+          total_price:
+            quantity * Number(product.selling_price)
+        };
 
-        })
+      })
     );
 
-};
+  };
 
   const grandTotal = orderItems.reduce(
     (sum, item) => sum + item.total_price,
@@ -448,9 +449,11 @@ const updateProduct = (index, productId) => {
 
                     <td>
                       <div className="action-buttons">
+
                         <button
                           className="view-btn"
                           onClick={() => handleView(order)}
+                          title="View Order"
                         >
                           <FaEye />
                         </button>
@@ -458,9 +461,21 @@ const updateProduct = (index, productId) => {
                         <button
                           className="edit-btn"
                           onClick={() => handleEdit(order)}
+                          title="Edit Order"
                         >
                           <FaEdit />
                         </button>
+
+                        {order.status !== "DELIVERED" &&
+                          order.status !== "CANCELLED" && (
+                            <PayButton
+                              orderId={order.id}
+                              amount={order.total_amount}
+                              customerName={order.customer_name}
+                              onSuccess={fetchOrders}
+                            />
+                          )}
+
                       </div>
                     </td>
                   </tr>
@@ -479,18 +494,18 @@ const updateProduct = (index, productId) => {
 
                 <div className="form-group">
                   <label>Customer Name</label>
-<select
-    value={customerId}
-    onChange={(e) => setCustomerId(Number(e.target.value))}
->
-    <option value="">Select Customer</option>
+                  <select
+                    value={customerId}
+                    onChange={(e) => setCustomerId(Number(e.target.value))}
+                  >
+                    <option value="">Select Customer</option>
 
-    {customers.map((customer) => (
-        <option key={customer.id} value={customer.id}>
-            {customer.name}
-        </option>
-    ))}
-</select>
+                    {customers.map((customer) => (
+                      <option key={customer.id} value={customer.id}>
+                        {customer.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="form-group">
@@ -592,9 +607,9 @@ const updateProduct = (index, productId) => {
                 <strong>Order ID:</strong> ORD-{selectedOrder.id}
               </p>
 
-             <p>
-    <strong>Customer:</strong> {selectedOrder.customer_name}
-</p>
+              <p>
+                <strong>Customer:</strong> {selectedOrder.customer_name}
+              </p>
 
               <p>
                 <strong>Status:</strong> {selectedOrder.status}
@@ -643,21 +658,21 @@ const updateProduct = (index, productId) => {
               </div>
               <div className="edit-order-footer">
 
-  <button
-    className="cancel-btn"
-    onClick={() => setEditModalOpen(false)}
-  >
-    Cancel
-  </button>
+                <button
+                  className="cancel-btn"
+                  onClick={() => setEditModalOpen(false)}
+                >
+                  Cancel
+                </button>
 
-  <button
-    className="update-btn"
-    onClick={handleUpdateOrder}
-  >
-    Update
-  </button>
+                <button
+                  className="update-btn"
+                  onClick={handleUpdateOrder}
+                >
+                  Update
+                </button>
 
-</div>
+              </div>
             </div>
           )}
         </Modal>

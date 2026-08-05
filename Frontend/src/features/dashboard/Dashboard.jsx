@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import { motion } from "framer-motion";
 import Sidebar from "../../components/Sidebar";
@@ -16,13 +17,14 @@ import RecentOrders from "../../components/RecentOrders";
 import "../../components/KPICards.css";
 import API_BASE_URL from "../../config/api";
 export default function Dashboard() {
- const [dashboard, setDashboard] = useState({
-  summary: {},
-  categories: [],
-  heatmap: [],
-  recentOrders: [],
-  purchaseSales: []
-});
+  const navigate = useNavigate();
+  const [dashboard, setDashboard] = useState({
+    summary: {},
+    categories: [],
+    heatmap: [],
+    recentOrders: [],
+    purchaseSales: []
+  });
 
   const [loading, setLoading] = useState(true);
 
@@ -37,15 +39,15 @@ export default function Dashboard() {
   useEffect(() => {
     const loadDashboard = async () => {
       try {
-      const response = await fetch(
-  `${API_BASE_URL}/api/dashboard`
-);
+        const response = await fetch(
+          `${API_BASE_URL}/api/dashboard`
+        );
 
-const result = await response.json();
+        const result = await response.json();
 
-if (result.success) {
-  setDashboard(result.data);
-}
+        if (result.success) {
+          setDashboard(result.data);
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -63,48 +65,72 @@ if (result.success) {
       </div>
     );
   }
-  
+
 
   return (
     <div className="dashboard-container">
       <Sidebar
-    search={search}
-    setSearch={setSearch}
-/>
+        search={search}
+        setSearch={setSearch}
+      />
 
       <motion.main
         className="dashboard-content"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        <Navbar/>
+        <Navbar />
+        <div
+          className="dashboard-ai-card"
+          onClick={() => navigate("/ai")}
+        >
+          <div className="dashboard-ai-info">
+            <span className="dashboard-ai-icon">✦</span>
 
+            <div>
+              <h3>AI Assistant</h3>
+              <p>
+                Ask about inventory, products, orders and warehouse data
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate("/ai");
+            }}
+          >
+            Open Assistant →
+          </button>
+        </div>
         {/* ================= KPI ================= */}
         <KPICards summary={dashboard.summary} />
 
         {/* ================= CHARTS ================= */}
 
         {/* Product Chart */}
-<div className="dashboard-grid single">
+        <div className="dashboard-grid single">
 
-  <div className="dashboard-card">
+          <div className="dashboard-card">
 
-    <ProductChart categories={dashboard.categories} />
+            <ProductChart categories={dashboard.categories} />
 
-  </div>
+          </div>
 
-</div>
+        </div>
 
-{/* HeatMap */}
-<div className="dashboard-grid single">
+        {/* HeatMap */}
+        <div className="dashboard-grid single">
 
-  <div className="dashboard-card">
+          <div className="dashboard-card">
 
-    <HeatMap data={dashboard.heatmap} />
+            <HeatMap data={dashboard.heatmap} />
 
-  </div>
+          </div>
 
-</div>
+        </div>
 
         {/* ================= TABLES ================= */}
 
@@ -118,7 +144,7 @@ if (result.success) {
           <div className="dashboard-card">
             <h2>Recent Orders</h2>
 
-           <RecentOrders orders={dashboard.recentOrders} />
+            <RecentOrders orders={dashboard.recentOrders} />
           </div>
         </div>
         <Modal

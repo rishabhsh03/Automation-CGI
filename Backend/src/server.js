@@ -19,6 +19,12 @@ app.use(
     "/api/payments",
     paymentRoutes
 );
+app.get("/", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "Automation CGI Backend is running"
+    });
+});
 const PORT = process.env.PORT || 8000;
 const aiRoutes = require("./routes/aiRoutes");
 

@@ -12,7 +12,7 @@ import Reports from "./features/report/Reports";
 import ProtectedRoute from "./components/ProtectedRoute";
 import VerifyOTP from "./features/auth/VerifyOTP";
 import AI from "./pages/AI/AI";
-
+import API_BASE_URL from "./config/api";
 function App() {
   return (
     <BrowserRouter>

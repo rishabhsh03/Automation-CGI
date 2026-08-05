@@ -8,6 +8,8 @@ import {
   FaEnvelope,
   FaBuilding,
 } from "react-icons/fa";
+import API_BASE_URL from "../../config/api";
+
 const getPerformance = (days) => {
     if (days <= 3) {
         return {
@@ -117,7 +119,9 @@ const performance = getPerformance(
 );
   const loadSuppliers = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/supplier");
+      const res = await fetch(
+    `${API_BASE_URL}/api/supplier`
+);
 
       const result = await res.json();
 
@@ -138,17 +142,12 @@ const performance = getPerformance(
 
     try{
 
-        const res = await fetch(
-
-            `http://localhost:8000/api/supplier/${id}`,
-
-            {
-
-                method:"DELETE"
-
-            }
-
-        );
+       const res = await fetch(
+    `${API_BASE_URL}/api/supplier/${id}`,
+    {
+        method: "DELETE"
+    }
+);
 
         const result = await res.json();
 
@@ -166,8 +165,8 @@ const performance = getPerformance(
 const handleSubmit = async () => {
 
     const url = editingId
-        ? `http://localhost:8000/api/supplier/${editingId}`
-        : "http://localhost:8000/api/supplier";
+    ? `${API_BASE_URL}/api/supplier/${editingId}`
+    : `${API_BASE_URL}/api/supplier`;
 
     const method = editingId ? "PUT" : "POST";
 

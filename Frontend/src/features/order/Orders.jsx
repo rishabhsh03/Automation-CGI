@@ -15,7 +15,9 @@ import Navbar from "../../components/Navbar";
 import Modal from "../../components/Modal";
 import PayButton from "../../components/Payment/PayButton";
 import "./Orders.css";
-const API = "http://localhost:8000/api/orders";
+
+import API_BASE_URL from "../../config/api";
+const API = `${API_BASE_URL}/api/orders`;
 
 export default function Orders() {
   const [customers, setCustomers] = useState([]);
@@ -46,7 +48,7 @@ export default function Orders() {
   const fetchOrders = async () => {
     try {
 
-      const res = await fetch("http://localhost:8000/api/orders");
+      const res = await fetch(`${API_BASE_URL}/api/orders`);
 
       const result = await res.json();
 
@@ -88,41 +90,48 @@ export default function Orders() {
   };
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch("http://localhost:8000/api/products");
-        const result = await res.json();
+  fetchOrders();
+}, []);
 
-        if (result.success) {
-          setProducts(result.data);
-        }
-      } catch (error) {
-        console.error(error);
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch(
+        `${API_BASE_URL}/api/products`
+      );
+
+      const result = await res.json();
+
+      if (result.success) {
+        setProducts(result.data);
       }
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    fetchProducts();
-  }, []);
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const res = await fetch("http://localhost:8000/api/user");
-        const result = await res.json();
+  fetchProducts();
+}, []);
 
-        if (result.success) {
-          setCustomers(result.data);
-        }
-      } catch (error) {
-        console.error(error);
+useEffect(() => {
+  const fetchCustomers = async () => {
+    try {
+      const res = await fetch(
+        `${API_BASE_URL}/api/user`
+      );
+
+      const result = await res.json();
+
+      if (result.success) {
+        setCustomers(result.data);
       }
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    fetchCustomers();
-  }, []);
-
+  fetchCustomers();
+}, []);
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
       String(order.id).includes(search) ||
@@ -233,37 +242,39 @@ export default function Orders() {
 
     setEditModalOpen(true);
   };
-  const handleUpdateOrder = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8000/api/orders/${selectedOrder.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            status: selectedOrder.status,
-          }),
+const handleUpdateOrder = async () => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/orders/${selectedOrder.id}`,
+      {
+        method: "PUT",
+
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
 
-      const result = await response.json();
-
-      if (result.success) {
-        alert("Order Updated Successfully");
-
-        setEditModalOpen(false);
-
-        // Refresh orders
-        fetchOrders();
-      } else {
-        alert(result.message);
+        body: JSON.stringify({
+          status: selectedOrder.status,
+        }),
       }
-    } catch (error) {
-      console.error(error);
+    );
+
+    const result = await response.json();
+
+    if (result.success) {
+      alert("Order Updated Successfully");
+
+      setEditModalOpen(false);
+
+      fetchOrders();
+    } else {
+      alert(result.message);
     }
-  };
+
+  } catch (error) {
+    console.error(error);
+  }
+};
   console.log("Orders State:", orders);
   console.log("Filtered Orders:", filteredOrders);
   const handleCreateOrder = async () => {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-
+import API_BASE_URL from "../../config/api";
 export default function VerifyOTP() {
 
     const { state } = useLocation();
@@ -16,7 +16,7 @@ export default function VerifyOTP() {
             setLoading(true);
 
             const response = await fetch(
-                "http://localhost:8000/api/auth/verify-otp",
+                `${API_BASE_URL}/api/auth/verify-otp`,
                 {
                     method: "POST",
                     headers: {

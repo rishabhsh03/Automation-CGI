@@ -3,6 +3,7 @@ import "./Warehouse.css";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import SearchBar from "../../components/SearchBar";
+import API_BASE_URL from "../../config/api";
 export default function Warehouse() {
 
     const [warehouses, setWarehouses] = useState([]);
@@ -10,7 +11,7 @@ export default function Warehouse() {
 
     useEffect(() => {
 
-        fetch("http://localhost:8000/api/warehouses")
+        fetch(`${API_BASE_URL}/api/warehouses`)
             .then(res => res.json())
             .then(result => {
                 if(result.success){

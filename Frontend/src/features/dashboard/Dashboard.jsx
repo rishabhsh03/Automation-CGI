@@ -14,7 +14,7 @@ import InventoryTable from "../inventory/InventoryTable";
 import RecentOrders from "../../components/RecentOrders";
 
 import "../../components/KPICards.css";
-
+import API_BASE_URL from "../../config/api";
 export default function Dashboard() {
  const [dashboard, setDashboard] = useState({
   summary: {},
@@ -37,7 +37,9 @@ export default function Dashboard() {
   useEffect(() => {
     const loadDashboard = async () => {
       try {
-      const response = await fetch("http://localhost:8000/api/dashboard");
+      const response = await fetch(
+  `${API_BASE_URL}/api/dashboard`
+);
 
 const result = await response.json();
 

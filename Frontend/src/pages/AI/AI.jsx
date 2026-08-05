@@ -6,7 +6,7 @@ import ChatHeader from "../../components/AI/ChatHeader";
 import EmptyState from "../../components/AI/EmptyState";
 import ChatInput from "../../components/AI/ChatInput";
 import ChatMessage from "../../components/AI/ChatMessage";
-
+import API_BASE_URL from "../../config/api";
 import "./AI.css";
 
 export default function AI() {
@@ -91,7 +91,7 @@ export default function AI() {
             // ------------------------------------------
 
             const response = await fetch(
-                "http://localhost:8000/api/ai/chat",
+                `${API_BASE_URL}/api/ai/chat`,
                 {
                     method: "POST",
 

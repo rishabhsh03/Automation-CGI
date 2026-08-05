@@ -8,7 +8,7 @@ import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 
 import "./Inventory.css";
-
+import API_BASE_URL from "../../config/api";
 export default function Inventory() {
 
     const [inventory, setInventory] = useState([]);
@@ -29,7 +29,9 @@ export default function Inventory() {
 
 const loadInventory = async () => {
     try {
-        const res = await fetch("http://localhost:8000/api/inventory");
+        const res = await fetch(
+  `${API_BASE_URL}/api/inventory`
+);
 
         if (!res.ok) {
             throw new Error(`HTTP Error: ${res.status}`);
@@ -76,7 +78,7 @@ const loadInventory = async () => {
 
         const res = await fetch(
 
-            `http://localhost:8000/api/inventory/${editingItem.id}`,
+            `${API_BASE_URL}/api/inventory/${editingItem.id}`,
 
             {
 

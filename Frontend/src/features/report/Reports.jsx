@@ -30,7 +30,7 @@ import { saveAs } from "file-saver";
 
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-
+import API_BASE_URL from "../../config/api";
 export default function Reports() {
   const [summary, setSummary] = useState({});
 
@@ -54,7 +54,7 @@ export default function Reports() {
 
   const loadSummary = async () => {
     try {
-        const res = await fetch("http://localhost:8000/api/report/summary");
+        const res = await fetch(`${API_BASE_URL}/api/report/summary`);
 
         const result = await res.json();
 
@@ -69,7 +69,7 @@ export default function Reports() {
 };
   const loadMonthlySales = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/report/monthly-sales");
+      const res = await fetch(`${API_BASE_URL}/api/report/monthly-sales`);
 
       const result = await res.json();
 
@@ -84,7 +84,7 @@ export default function Reports() {
     setLoading(true);
 
     try {
-        const res = await fetch("http://localhost:8000/api/report", {
+        const res = await fetch(`${API_BASE_URL}/api/report`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

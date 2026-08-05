@@ -1,5 +1,6 @@
+import API_BASE_URL from "../config/api";
 
-const API = "http://localhost:8000/api/auth";
+const API = `${API_BASE_URL}/api/auth`;
 
 export const registerUser = async (userData) => {
         const response = await fetch(`${API}/register`, {

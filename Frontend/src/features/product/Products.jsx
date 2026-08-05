@@ -5,9 +5,9 @@ import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 
 import "./Products.css";
-
+import API_BASE_URL from "../../config/api";
 export default function Products() {
-    const API = "http://localhost:8000/api/products";
+    const API = `${API_BASE_URL}/api/products`;
 
     const [products, setProducts] = useState([]);
     

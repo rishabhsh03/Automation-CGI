@@ -1,12 +1,13 @@
 import "./InventoryTable.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../../config/api";
 export default function InventoryTable({search = ""}) {
 
   const [inventory, setInventory] = useState([]);
    const navigate = useNavigate();
 useEffect(() => {
-  fetch("http://localhost:8000/api/inventory")
+  fetch(`${API_BASE_URL}/api/inventory`)
     .then((res) => res.json())
     .then((result) => {
       if (result.success) {

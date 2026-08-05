@@ -96,23 +96,40 @@ export default function Orders() {
 useEffect(() => {
   const fetchProducts = async () => {
     try {
+      const token =
+        localStorage.getItem("token") ||
+        sessionStorage.getItem("token");
+
       const res = await fetch(
-        `${API_BASE_URL}/api/products`
+        `${API_BASE_URL}/api/products`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const result = await res.json();
 
       if (result.success) {
         setProducts(result.data);
+      } else {
+        console.error(
+          "Products error:",
+          result.message
+        );
       }
+
     } catch (error) {
-      console.error(error);
+      console.error(
+        "Products fetch error:",
+        error
+      );
     }
   };
 
   fetchProducts();
 }, []);
-
 useEffect(() => {
   const fetchCustomers = async () => {
     try {

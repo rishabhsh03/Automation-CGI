@@ -156,7 +156,9 @@ export default function Products() {
 
     };
 const deleteProduct = async (Id) => {
-    const token = localStorage.getItem("token")
+const token =
+    localStorage.getItem("token") ||
+    sessionStorage.getItem("token");
     const res = await fetch(
     `${API}/${deleteId}`,
     {

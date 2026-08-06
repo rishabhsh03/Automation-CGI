@@ -311,8 +311,8 @@ onClick={()=>handleEdit(item)}
         setQRModal(true);
         
     }}
+    <FaQrcode/>
 </button>
-
 {!item.in_inventory && (
 <button
 className="delete-btn"

@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import { FaPlus, FaSearch, FaEdit, FaTrash } from "react-icons/fa";
+import { 
+    FaPlus, 
+    FaSearch, 
+    FaEdit, 
+    FaTrash,
+    FaQrcode
 
+} from "react-icons/fa";
+import {QRCodeSVG} from "qrcode.react"
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 
@@ -8,6 +15,10 @@ import "./Products.css";
 import API_BASE_URL from "../../config/api";
 export default function Products() {
     const API = `${API_BASE_URL}/api/products`;
+    
+    const[showQRModal, setQRModal] = useState(false);
+
+    const [qrProduct, setQrProduct] = useState(null);
 
     const [products, setProducts] = useState([]);
     
@@ -292,6 +303,16 @@ onClick={()=>handleEdit(item)}
 
 </button>
 
+<button>
+    className="qr-btn"
+    title="Product Qr Code"
+    onClick{() => {
+        setQrProduct(item);
+        setQRModal(true);
+        
+    }}
+</button>
+
 {!item.in_inventory && (
 <button
 className="delete-btn"
@@ -509,7 +530,51 @@ Cancel
 )
 
 }
+{showQRModal && qrProduct && (
 
+    <div className="modal-overlay">
+
+        <div className="qr-modal">
+
+            <h2>Product QR Code</h2>
+
+            <p className="qr-product-name">
+                {qrProduct.name}
+            </p>
+
+            <p className="qr-product-sku">
+                SKU: {qrProduct.sku}
+            </p>
+
+            <div className="qr-code-container">
+
+                <QRCodeSVG
+                    value={`PRODUCT:${qrProduct.id}`}
+                    size={220}
+                    level="H"
+                />
+
+            </div>
+
+            <p className="qr-value">
+                PRODUCT:{qrProduct.id}
+            </p>
+
+            <button
+                className="cancel-btn"
+                onClick={() => {
+                    setShowQRModal(false);
+                    setQrProduct(null);
+                }}
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+)}
 </main>
 
 </div>

@@ -739,3 +739,46 @@ th{
         0 25px 60px rgba(0,0,0,.45);
 
 }
+.qr-btn {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.qr-modal {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    width: 360px;
+    max-width: 90%;
+    text-align: center;
+}
+
+.qr-modal h2 {
+    margin-bottom: 8px;
+}
+
+.qr-product-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.qr-product-sku {
+    margin-bottom: 20px;
+}
+
+.qr-code-container {
+    background: white;
+    padding: 20px;
+    display: inline-flex;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+.qr-value {
+    font-family: monospace;
+    margin-bottom: 20px;
+}

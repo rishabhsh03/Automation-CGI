@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import {
     FaSearch,
     FaEdit
@@ -6,7 +6,7 @@ import {
 
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
-
+import QRScanner from "../../components/QRScanner/QRScanner";
 import "./Inventory.css";
 import API_BASE_URL from "../../config/api";
 export default function Inventory() {
@@ -20,6 +20,10 @@ export default function Inventory() {
     const [editingItem, setEditingItem] = useState(null);
 
     const [quantity, setQuantity] = useState("");
+
+    const [showScanner, setShowScanner] = useState(false);
+
+    const [scannedProduct, setScannedProduct] = useState(null);
 
     useEffect(() => {
 
@@ -129,7 +133,56 @@ const loadInventory = async () => {
         );
 
     });
+const handleQRScan = async (decodedText) => {
+    console.log("Scanned:", decodedText);
 
+    setShowScanner(false);
+
+    // QR must look like PRODUCT:2
+    if (!decodedText.startsWith("PRODUCT:")) {
+        alert("Invalid product QR code");
+        return;
+    }
+
+    const productId = decodedText.split(":")[1];
+
+    if (!Number.isInteger(productId) || productId <= 0) {
+        alert("Invalid product ID");
+        return;
+    }
+
+    console.log("Product ID:", productId);
+
+    try {
+        const token =
+            localStorage.getItem("token") ||
+            sessionStorage.getItem("token");
+
+        const response = await fetch(
+            `${API_BASE_URL}/api/products/${productId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        console.log("Scanned product:", result);
+
+        if (!response.ok || !result.success) {
+            alert(result.message || "Product not found");
+            return;
+        }
+
+        setScannedProduct(result.data);
+
+    } catch (error) {
+        console.error("QR product error:", error);
+        alert("Unable to load product");
+    }
+};
     return(
 
 <div className="inventory-layout">
@@ -147,13 +200,17 @@ const loadInventory = async () => {
 
 <div className="inventory-header">
 
-<div>
+    <div>
+        <h1>Inventory</h1>
+        <p>Manage warehouse stock</p>
+    </div>
 
-<h1>Inventory</h1>
-
-<p>Manage warehouse stock</p>
-
-</div>
+    <button
+        className="scan-qr-btn"
+        onClick={() => setShowScanner(true)}
+    >
+        Scan QR
+    </button>
 
 </div>
 
@@ -341,81 +398,94 @@ onClick={()=>handleEdit(item)}
 
 </div>
 
-{/* Edit Modal */}
+{showModal && editingItem && (
 
-{
+    <div className="inventory-modal-overlay">
 
-showModal && (
+        <div className="inventory-edit-modal">
 
-<div className="modal-overlay">
+            <h2>Update Stock</h2>
 
-<div className="modal">
+            <p className="inventory-edit-product">
+                {editingItem.name}
+            </p>
 
-<h2>
+            <label>Quantity</label>
 
-Update Stock
+            <input
+                type="number"
+                min="0"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+            />
 
-</h2>
+            <div className="inventory-modal-buttons">
 
-<p>
+                <button
+                    className="inventory-update-btn"
+                    onClick={updateQuantity}
+                >
+                    Update
+                </button>
 
-<b>
+                <button
+                    className="inventory-cancel-btn"
+                    onClick={() => {
+                        setShowModal(false);
+                        setEditingItem(null);
+                    }}
+                >
+                    Cancel
+                </button>
 
-{
+            </div>
 
-editingItem.name
+        </div>
 
-}
+    </div>
 
-</b>
+)}
 
-</p>
+{/* QR Scanner */}
 
-<input
+{showScanner && (
+    <QRScanner
+        onScan={handleQRScan}
+        onClose={() => setShowScanner(false)}
+    />
+)}
 
-type="number"
 
-value={quantity}
+{/* Scanned Product */}
 
-onChange={(e)=>setQuantity(e.target.value)}
+{scannedProduct && (
+    <div className="modal-overlay">
 
-/>
+        <div className="modal">
 
-<div className="modal-buttons">
+            <h2>Scanned Product</h2>
 
-<button
+            <p>
+                <strong>Name:</strong>{" "}
+                {scannedProduct.name}
+            </p>
 
-className="save-btn"
+            <p>
+                <strong>SKU:</strong>{" "}
+                {scannedProduct.sku}
+            </p>
 
-onClick={updateQuantity}
+            <button
+                className="cancel-btn"
+                onClick={() => setScannedProduct(null)}
+            >
+                Close
+            </button>
 
->
+        </div>
 
-Update
-
-</button>
-
-<button
-
-className="cancel-btn"
-
-onClick={()=>setShowModal(false)}
-
->
-
-Cancel
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-)
-
-}
+    </div>
+)}
 
 </div>
 

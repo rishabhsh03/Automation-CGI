@@ -1,0 +1,234 @@
+/* =========================================
+   QR SCANNER OVERLAY
+========================================= */
+
+.qr-scanner-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(2, 6, 23, 0.82);
+    backdrop-filter: blur(8px);
+
+    z-index: 9999;
+}
+
+
+/* =========================================
+   SCANNER MODAL
+========================================= */
+
+.qr-scanner-modal {
+    width: 100%;
+    max-width: 460px;
+
+    padding: 28px;
+
+    background: #0f172a;
+
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.45);
+
+    text-align: center;
+
+    color: #f8fafc;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.qr-scanner-modal h2 {
+    margin: 0 0 8px;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    color: Black;
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.qr-scanner-modal p {
+    margin: 0 0 20px;
+
+    font-size: 14px;
+
+    color: Black;
+}
+
+
+/* =========================================
+   CAMERA / QR READER
+========================================= */
+
+#qr-reader {
+    width: 100%;
+
+    overflow: hidden;
+
+    margin: 20px 0;
+
+    border: 2px solid #22c55e !important;
+    border-radius: 14px;
+
+    background: #020617;
+}
+
+
+/* Camera video */
+
+#qr-reader video {
+    width: 100% !important;
+
+    border-radius: 12px;
+}
+
+
+/* =========================================
+   HTML5-QRCODE INTERNAL ELEMENTS
+========================================= */
+
+#qr-reader__scan_region {
+    background: #020617 !important;
+}
+
+
+/* Dashboard area created by html5-qrcode */
+
+#qr-reader__dashboard {
+    padding: 12px !important;
+
+    background: #0f172a !important;
+
+    color: #f8fafc !important;
+}
+
+
+/* Text inside scanner */
+
+#qr-reader__dashboard span {
+    color: #f8fafc !important;
+}
+
+
+/* =========================================
+   CAMERA SELECT DROPDOWN
+========================================= */
+
+#qr-reader select {
+    width: 100%;
+
+    padding: 10px 12px;
+
+    margin-top: 8px;
+
+    border: 1px solid #334155;
+    border-radius: 8px;
+
+    background: #1e293b;
+
+    color: #f8fafc;
+
+    outline: none;
+}
+
+
+/* =========================================
+   HTML5 QR BUTTONS
+========================================= */
+
+#qr-reader button {
+    padding: 10px 16px;
+
+    margin-top: 10px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #22c55e;
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+#qr-reader button:hover {
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.qr-scanner-modal > button {
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 12px 18px;
+
+    border: 1px solid #334155;
+    border-radius: 10px;
+
+    background: #1e293b;
+
+    color: #f8fafc;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.qr-scanner-modal > button:hover {
+    background: #334155;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .qr-scanner-overlay {
+        padding: 12px;
+    }
+
+    .qr-scanner-modal {
+        padding: 20px;
+
+        max-width: 100%;
+    }
+
+    .qr-scanner-modal h2 {
+        font-size: 21px;
+    }
+
+    #qr-reader {
+        margin: 16px 0;
+    }
+}

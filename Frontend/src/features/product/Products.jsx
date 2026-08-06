@@ -7,25 +7,25 @@ import {
     FaQrcode
 
 } from "react-icons/fa";
-import {QRCodeSVG} from "qrcode.react"
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
+import {QRCodeSVG} from "qrcode.react"
 
 import "./Products.css";
 import API_BASE_URL from "../../config/api";
 export default function Products() {
     const API = `${API_BASE_URL}/api/products`;
     
-    const[showQRModal, setQRModal] = useState(false);
-
-    const [qrProduct, setQrProduct] = useState(null);
-
+    
     const [products, setProducts] = useState([]);
     
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-
+    
     const [deleteId, setDeleteId] = useState(null);
+    
+    const[showQRModal, setShowQRModal] = useState(false);
 
+    const [qrProduct, setQrProduct] = useState(null);
     const [search, setSearch] = useState("");
 
     const [showModal, setShowModal] = useState(false);
@@ -292,41 +292,42 @@ filteredProducts.map(item=>(
 
 <td>
 
-<div className="action-buttons">
+    <div className="action-buttons">
 
-<button
-className="edit-btn"
-onClick={()=>handleEdit(item)}
->
+        {/* EDIT */}
+        <button
+            className="edit-btn"
+            onClick={() => handleEdit(item)}
+        >
+            <FaEdit />
+        </button>
 
-<FaEdit/>
+        {/* QR CODE */}
+        <button
+            className="qr-btn"
+            title="Product QR Code"
+            onClick={() => {
+                setQrProduct(item);
+                setShowQRModal(true);
+            }}
+        >
+            <FaQrcode />
+        </button>
 
-</button>
+        {/* DELETE */}
+        {!item.in_inventory && (
+            <button
+                className="delete-btn"
+                onClick={() => {
+                    setDeleteId(item.id);
+                    setShowDeleteModal(true);
+                }}
+            >
+                <FaTrash />
+            </button>
+        )}
 
-<button>
-    className="qr-btn"
-    title="Product Qr Code"
-    onClick{() => {
-        setQrProduct(item);
-        setQRModal(true);
-        
-    }}
-    <FaQrcode/>
-</button>
-{!item.in_inventory && (
-<button
-className="delete-btn"
-onClick={()=> {
-    setDeleteId(item.id);
-    setShowDeleteModal(true);
-}}
->
-
-<FaTrash/>
-
-</button>
-)}
-</div>
+    </div>
 
 </td>
 </tr>
@@ -531,32 +532,25 @@ Cancel
 
 }
 {showQRModal && qrProduct && (
-
     <div className="modal-overlay">
 
         <div className="qr-modal">
 
             <h2>Product QR Code</h2>
 
-            <p className="qr-product-name">
-                {qrProduct.name}
-            </p>
+            <h3>{qrProduct.name}</h3>
 
-            <p className="qr-product-sku">
-                SKU: {qrProduct.sku}
-            </p>
+            <p>SKU: {qrProduct.sku}</p>
 
             <div className="qr-code-container">
-
                 <QRCodeSVG
                     value={`PRODUCT:${qrProduct.id}`}
                     size={220}
                     level="H"
                 />
-
             </div>
 
-            <p className="qr-value">
+            <p>
                 PRODUCT:{qrProduct.id}
             </p>
 
@@ -573,7 +567,6 @@ Cancel
         </div>
 
     </div>
-
 )}
 </main>
 

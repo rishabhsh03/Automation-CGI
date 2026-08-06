@@ -19,6 +19,7 @@
     "bcrypt": "^6.0.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.42.2",
+    "html5-qrcode": "^2.3.8",
     "jsonwebtoken": "^9.0.3",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",

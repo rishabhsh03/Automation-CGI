@@ -324,3 +324,158 @@
 .outofstock {
     background: #EF4444;
 }
+.inventory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.scan-qr-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    background: #22c55e;
+    color: white;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+.scan-qr-btn:hover {
+    transform: translateY(-2px);
+}
+
+.qr-scanner-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.qr-scanner-modal {
+    width: min(450px, 90vw);
+    padding: 24px;
+    border-radius: 16px;
+
+    background: white;
+    color: #111827;
+    text-align: center;
+}
+
+#qr-reader {
+    width: 100%;
+    margin: 20px 0;
+}
+.inventory-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(2, 6, 23, 0.75);
+    backdrop-filter: blur(6px);
+}
+
+.inventory-edit-modal {
+    position: relative;
+
+    width: 100%;
+    max-width: 420px;
+
+    padding: 28px;
+
+    background: #0f172a;
+    color: #f8fafc;
+
+    border: 1px solid #334155;
+    border-radius: 16px;
+
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+
+    z-index: 9001;
+}
+
+.inventory-edit-modal h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.inventory-edit-product {
+    margin-bottom: 22px;
+    color: #94a3b8;
+}
+
+.inventory-edit-modal label {
+    display: block;
+    margin-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.inventory-edit-modal input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border: 1px solid #334155;
+    border-radius: 8px;
+
+    background: #1e293b;
+    color: #f8fafc;
+
+    font-size: 16px;
+    outline: none;
+}
+
+.inventory-edit-modal input:focus {
+    border-color: #22c55e;
+}
+
+.inventory-modal-buttons {
+    display: flex;
+    gap: 12px;
+
+    margin-top: 24px;
+}
+
+.inventory-update-btn,
+.inventory-cancel-btn {
+    flex: 1;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.inventory-update-btn {
+    background: #22c55e;
+    color: white;
+}
+
+.inventory-cancel-btn {
+    background: #334155;
+    color: white;
+}

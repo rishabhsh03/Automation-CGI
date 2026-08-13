@@ -11,10 +11,6 @@ class ToolDispatcher {
 
         this.intentToolMap = {
 
-            // ==========================
-            // PRODUCT
-            // ==========================
-
             [INTENTS.SEARCH_PRODUCT]:
                 productTool,
 
@@ -25,9 +21,7 @@ class ToolDispatcher {
                 productTool,
 
 
-            // ==========================
-            // INVENTORY
-            // ==========================
+       
 
             [INTENTS.INVENTORY]:
                 inventoryTool,
@@ -42,16 +36,12 @@ class ToolDispatcher {
                 inventoryTool,
 
 
-            // ==========================
-            // ORDERS
-            // ==========================
+           
 
             [INTENTS.SALES_ORDER]:
                 orderTool,
 
-            // ==========================
-            // DASHBOARD
-            // ==========================
+        
 
             [INTENTS.DASHBOARD]:
                 dashboardTool,

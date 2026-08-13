@@ -1,72 +1,90 @@
-import "./ProductChart.css";
-
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-} from "recharts";
+import React from "react";
+import ReactECharts from "echarts-for-react";
 
 export default function ProductChart({ categories = [] }) {
-  const chartData = categories
+  // Make sure categories is actually an array
+  const safeCategories = Array.isArray(categories)
+    ? categories
+    : [];
+
+  const chartData = safeCategories
     .map((item) => ({
-      category: item.category,
-      total: Number(item.total),
+      category: item?.category ?? "Unknown",
+      total: Number(item?.total ?? item?.count ?? 0),
     }))
+    .filter((item) => Number.isFinite(item.total))
     .sort((a, b) => b.total - a.total)
-    .slice(0, 10); // Show only top 10 categories
-  if (!categories || categories.length === 0) {
-    return (
-      <div className="product-chart">
-        <h2>Products by Category</h2>
-        <p>No data available</p>
-      </div>
-    );
-  }
+    .slice(0, 10);
 
-  console.log("Categories:", categories);
+  const option = {
+    title: {
+      text: "Products by Category",
+      left: "left",
+    },
+
+    tooltip: {
+      trigger: "axis",
+    },
+
+    toolbox: {
+      feature: {
+        restore: {},
+        saveAsImage: {},
+      },
+    },
+
+    grid: {
+      left: "5%",
+      right: "5%",
+      bottom: "15%",
+      containLabel: true,
+    },
+
+    xAxis: {
+      type: "category",
+      data: chartData.map((item) => item.category),
+    },
+
+    yAxis: {
+      type: "value",
+      name: "Products",
+    },
+
+    series: [
+      {
+        name: "Products",
+        type: "bar",
+        data: chartData.map((item) => item.total),
+        barMaxWidth: 50,
+      },
+    ],
+  };
+
   return (
-    <div className="product-chart">
-      <div className="product-chart-header">
-        <div>
+    <div
+      className="product-chart"
+      style={{
+        width: "100%",
+        minHeight: "400px",
+      }}
+    >
+      {chartData.length === 0 ? (
+        <div className="product">
           <h2>Products by Category</h2>
-          <p>Current Inventory Distribution</p>
+          <p>No product category data available.</p>
         </div>
-      </div>
-
-      <div className="chart-container">
-        <ResponsiveContainer width="100%" height={350}>
-          <BarChart
-            data={chartData}
-            margin={{
-              top: 20,
-              right: 20,
-              left:10,
-              bottom: 70,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-
-            <XAxis
-              dataKey="category"
-              angle={-45}
-              textAnchor="end"
-              interval={0}
-              height={110}
-              tick={{ fill: "#CBD5E1", fontSize: 12 }}
-            />
-
-            <YAxis stroke="#CBD5E1" />
-
-            <Tooltip />
-
-            <Bar dataKey="total" barSize={28} fill="#3b82f6" radius={[6, 6, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+      ) : (
+        <ReactECharts
+          option={option}
+          style={{
+            width: "100%",
+            height: "400px",
+          }}
+          opts={{
+            renderer: "canvas",
+          }}
+        />
+      )}
     </div>
   );
 }

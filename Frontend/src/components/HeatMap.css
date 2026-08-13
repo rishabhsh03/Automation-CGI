@@ -6,8 +6,8 @@
 .heatmap-table th{
     padding:16px;
     text-align:center;
-    background:#111827;
-    color:#fff;
+    background:white;
+    color:black;
     font-size:16px;
 }
 
@@ -20,7 +20,7 @@
 .product-name{
     text-align:left;
     font-weight:600;
-    color:#fff;
+    color:black;
 }
 
 .heat-box{
@@ -28,6 +28,7 @@
     height:20px;
     border-radius:6px;
     margin:auto;
+    
 }
 
 .green{
@@ -56,13 +57,13 @@
     border-radius:10px;
 
     font-weight:700;
-    color:#fff;
+    color:black;
 
     margin:auto;
 }
 .heatmap-header{
     text-align: center;
-    color: white;
+    color: black ;
     border-radius: 10px;
     font-size: ;
 }

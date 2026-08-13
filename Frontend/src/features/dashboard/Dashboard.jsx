@@ -9,11 +9,9 @@ import KPICards from "../../components/KPICards";
 import SalesActivity from "../../components/SalesActivity";
 import CategoryProgress from "../../components/CategoryProgress";
 import HeatMap from "../../components/HeatMap";
-import ProductChart from "../../components/ProductChart";
-// import PurchaseSalesChart from "../../components/PurchaseSalesChart";
 import InventoryTable from "../inventory/InventoryTable";
 import RecentOrders from "../../components/RecentOrders";
-
+import ProductChart from "../../components/ProductChart";
 import "../../components/KPICards.css";
 import API_BASE_URL from "../../config/api";
 export default function Dashboard() {
@@ -110,27 +108,20 @@ export default function Dashboard() {
 
         {/* ================= CHARTS ================= */}
 
-        {/* Product Chart */}
-        <div className="dashboard-grid single">
+     
+{/* Product Chart */}
+<div className="dashboard-grid single">
+  <div className="dashboard-card">
+    <ProductChart categories={dashboard.categories} />
+  </div>
+</div>
 
-          <div className="dashboard-card">
-
-            <ProductChart categories={dashboard.categories} />
-
-          </div>
-
-        </div>
-
-        {/* HeatMap */}
-        <div className="dashboard-grid single">
-
-          <div className="dashboard-card">
-
-            <HeatMap data={dashboard.heatmap} />
-
-          </div>
-
-        </div>
+{/* HeatMap */}
+<div className="dashboard-grid single">
+  <div className="dashboard-card">
+    <HeatMap data={dashboard.heatmap} />
+  </div>
+</div>
 
         {/* ================= TABLES ================= */}
 

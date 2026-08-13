@@ -1,5 +1,5 @@
 .inventory-table-card{
-    background:#1E293B;
+    background:white;
     border-radius:20px;
     overflow-x:auto;
     overflow-y:hidden;
@@ -8,7 +8,7 @@
 .inventory-table-card table{
     width:100%;
     border-collapse:collapse;
-    background:#1E293B;
+    background:white;
 }
 
 .inventory-table-card thead{
@@ -16,22 +16,23 @@
 }
 
 .inventory-table-card tbody{
-    background:#1E293B;
+    background:white;
+    
 }
 
 .inventory-table-card tr{
-    background:#1E293B;
+    background:white;
 }
 
 .inventory-table-card th{
     padding:16px 20px;
-    color:#CBD5E1;
+    color:black;
 }
 
 .inventory-table-card td{
     padding:16px 20px;
-    color:#F8FAFC;
-    background:#1E293B;
+    color:black;
+    background:white;
 }
 /* Header */
 

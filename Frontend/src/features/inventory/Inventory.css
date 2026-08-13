@@ -3,26 +3,26 @@
 ======================================== */
 
 .inventory-layout {
-    display: flex;
     width: 100%;
     min-height: 100vh;
-    background: #0F172A;
+
+    background:white;
+
     overflow-x: hidden;
 }
 
 .inventory-content {
-    flex: 1;
-    min-width: 0;
+    margin-left: 260px;
+
+    width: calc(100% - 260px);
     min-height: 100vh;
 
-    /* IMPORTANT: sidebar already uses flex space */
-    margin-left: 0;
-
     padding: 30px;
+
     box-sizing: border-box;
 
-    background: #0F172A;
-    color: white;
+    background: white;
+    color: black;
 
     overflow-x: hidden;
 }
@@ -32,7 +32,7 @@
     min-width: 0;
     min-height: 100vh;
 
-    background: #0F172A;
+    background: white;
 }
 .add-btn{
     background:#22C55E;
@@ -51,8 +51,8 @@
 }
 
 .stat-card{
-    background:#1E293B;
-    color: white;
+    background:white;
+    color: black;
     padding:20px;
     border-radius:15px;
     box-shadow:0 5px 15px rgba(0,0,0,.08);
@@ -90,42 +90,6 @@
     padding:10px;
 }
 
-/* ========================================
-   INVENTORY LAYOUT
-======================================== */
-
-.inventory-layout {
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-    background: #0F172A;
-    overflow-x: hidden;
-}
-
-.inventory-content {
-    flex: 1;
-    min-width: 0;
-    min-height: 100vh;
-
-    /* IMPORTANT: sidebar already uses flex space */
-    margin-left: 0;
-
-    padding: 30px;
-    box-sizing: border-box;
-
-    background: #0F172A;
-    color: white;
-
-    overflow-x: hidden;
-}
-
-.inventory {
-    width: 100%;
-    min-width: 0;
-    min-height: 100vh;
-
-    background: #0F172A;
-}
 
 .status {
     display: inline-flex;
@@ -138,7 +102,7 @@
 
     border-radius: 999px;
 
-    color: #fff;
+    color: black;
     font-size: 15px;
     font-weight: 600;
 

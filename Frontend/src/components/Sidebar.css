@@ -1,13 +1,14 @@
-.sidebar{
-    width:270px;
-    min-width:250px;
-    height:100vh;
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
 
-    background:#0F172A;
+    width: 260px;
+    height: 100vh;
 
-    overflow-y:auto;
+    overflow-y: auto;
 
-    flex-shrink:0;
+    z-index: 1000;
 }
 /* Logo */
 
@@ -48,7 +49,7 @@
 }
 
 .sidebar-logo h2{
-
+    color: black;
     font-size:24px;
 
     margin:0;
@@ -59,7 +60,7 @@
 
     margin-top:4px;
 
-    color:#94A3B8;
+    color:black;
 
     font-size:13px;
 
@@ -68,7 +69,7 @@
 /* Menu */
 
 .sidebar-menu{
-
+    
     flex:1;
 
     padding:25px;
@@ -77,7 +78,7 @@
 
 .menu-title{
 
-    color:#94A3B8;
+    color:black;
 
     font-size:12px;
 
@@ -95,7 +96,7 @@
 
     background:transparent;
 
-    color:white;
+    color:black;
 
     display:flex;
 
@@ -119,7 +120,7 @@
 
 .menu-item:hover{
 
-background:#1E293B;
+background:#22C55E;
 
 }
 
@@ -148,13 +149,13 @@ box-shadow:0 10px 20px rgba(34,197,94,.3);
 
 .logout-btn{
 
-    width:100%;
+    width:55%;
 
     border:none;
 
-    background:#EF4444;
+    /* background:#EF4444; */
 
-    color:white;
+    color:black;
 
     padding:15px;
 
@@ -176,11 +177,11 @@ box-shadow:0 10px 20px rgba(34,197,94,.3);
 
 }
 
-.logout-btn:hover{
+/* .logout-btn:hover{
 
     background:#DC2626;
 
-}
+} */
 
 /* Scrollbar */
 

@@ -1,0 +1,15 @@
+[0;1;39mGlobal[0m
+[0;94m         Protocols:[0m -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+[0;94m  resolv.conf mode:[0m stub
+
+[0;1;39mLink 2 (eno1)[0m
+[0;94m    Current Scopes:[0m none
+[0;94m         Protocols:[0m -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+[0;94m     Default Route:[0m no
+
+[0;1;39mLink 3 (wlp1s0)[0m
+[0;94m    Current Scopes:[0m DNS
+[0;94m         Protocols:[0m +DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+[0;94mCurrent DNS Server:[0m 8.8.8.8
+[0;94m       DNS Servers:[0m 10.0.1.12 8.8.8.8
+[0;94m     Default Route:[0m yes

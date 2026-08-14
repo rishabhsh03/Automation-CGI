@@ -14,6 +14,7 @@ import RecentOrders from "../../components/RecentOrders";
 import ProductChart from "../../components/ProductChart";
 import "../../components/KPICards.css";
 import API_BASE_URL from "../../config/api";
+import WarehouseLoader from "../../components/WarehouseLoader";
 export default function Dashboard() {
   const navigate = useNavigate();
   const [dashboard, setDashboard] = useState({
@@ -56,17 +57,13 @@ export default function Dashboard() {
     loadDashboard();
   }, []);
   if (loading) {
-    return (
-      <div className="dash-loading">
-        <span className="dash-loading-pulse" />
-        Loading dashboard…
-      </div>
-    );
+    return <WarehouseLoader/>
   }
 
 
   return (
     <div className="dashboard-container">
+      {loading && <WarehouseLoader/>}
       <Sidebar
         search={search}
         setSearch={setSearch}

@@ -351,7 +351,7 @@
 
     background: #ffffff;
 
-    color: #0f172a;
+    color: black;
 
     border-radius: 20px;
 
@@ -524,4 +524,125 @@
     .quick-actions {
         grid-template-columns: 1fr;
     }
+}
+.loader {
+    width: 90px;
+    height: 14px;
+
+    box-shadow: 0 3px 0 #22c55e;
+
+    position: relative;
+
+    clip-path: inset(-40px 0 -5px);
+}
+
+.loader::before {
+    content: "";
+
+    position: absolute;
+
+    inset: auto calc(50% - 17px) 0;
+
+    height: 50px;
+
+    --g: no-repeat linear-gradient(#22c55e 0 0);
+
+    background:
+        var(--g),
+        var(--g),
+        var(--g),
+        var(--g);
+
+    background-size: 16px 14px;
+
+    animation:
+        l7-1 2s infinite linear,
+        l7-2 2s infinite linear;
+}
+
+@keyframes l7-1 {
+    0%,
+    100% {
+        background-position:
+            0 -50px,
+            100% -50px;
+    }
+
+    17.5% {
+        background-position:
+            0 100%,
+            100% -50px,
+            0 -50px,
+            100% -50px;
+    }
+
+    35% {
+        background-position:
+            0 100%,
+            100% 100%,
+            0 -50px,
+            100% -50px;
+    }
+
+    52.5% {
+        background-position:
+            0 100%,
+            100% 100%,
+            0 calc(100% - 16px),
+            100% -50px;
+    }
+
+    70%,
+    98% {
+        background-position:
+            0 100%,
+            100% 100%,
+            0 calc(100% - 16px),
+            100% calc(100% - 16px);
+    }
+}
+
+@keyframes l7-2 {
+    0%,
+    70% {
+        transform: translate(0);
+    }
+
+    100% {
+        transform: translate(200%);
+    }
+}
+.dash-loading {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 25px;
+
+    background: #ffffff;
+}
+
+.dash-loading-text {
+    color: #0f172a;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+.dashboard-loading .dashboard-content {
+    filter: blur(3px);
+    transform: scale(0.995);
+
+    transition:
+        filter 0.3s ease,
+        transform 0.3s ease;
+}
+
+.dashboard-loading .dashboard-card,
+.dashboard-loading .dashboard-ai-card {
+    pointer-events: none;
 }

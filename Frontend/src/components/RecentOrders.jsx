@@ -1,35 +1,46 @@
-export default function RecentOrders({ orders }) {
+export default function RecentOrders({ orders = [] }) {
   return (
-    <div
-      style={{
-        background: "white",
-        borderRadius: "20px",
-        padding: "24px",
-        color: "white",
-      }}
-    >
-      <h2
-        style={{
-          fontSize: "22px",
-          fontWeight: "600",
-          marginBottom: "20px",
-        }}
-      >
-        Recent Orders
-      </h2>
+    <div className="recent-orders">
+      <h2>Recent Orders</h2>
 
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
-        <tbody>
-          {orders.map((order) => (
-            <tr key={order.id}>
-              <td style={{ padding: "12px 0" }}>ORD-{order.id}</td>
-              <td>{order.customer_name}</td>
-              <td>{order.status}</td>
-              <td>₹{Number(order.total_amount).toLocaleString()}</td>
+      <div className="recent-orders-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Customer</th>
+              <th>Status</th>
+              <th>Amount</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {orders.map((order) => (
+              <tr key={order.id}>
+                <td className="order-number">
+                  ORD-{order.id}
+                </td>
+
+                <td className="customer-name">
+                  {order.customer_name || "Unknown Customer"}
+                </td>
+
+                <td>
+                  <span
+                    className={`status ${order.status?.toLowerCase()}`}
+                  >
+                    {order.status}
+                  </span>
+                </td>
+
+                <td className="order-amount">
+                  ₹{Number(order.total_amount || 0).toLocaleString("en-IN")}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

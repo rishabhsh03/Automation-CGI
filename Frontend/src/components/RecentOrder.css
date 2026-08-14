@@ -4,53 +4,104 @@
 
 .recent-orders {
     width: 100%;
+    box-sizing: border-box;
+
     background: #ffffff;
-    color: #000000;
+    color: #0f172a;
+
     border-radius: 16px;
     padding: 0;
-    box-sizing: border-box;
+
+    overflow: hidden;
 }
 
-/* Title */
+/* =========================================
+   TITLE
+========================================= */
 
 .recent-orders h2 {
     margin: 0 0 28px 0;
-    padding: 0;
 
     color: #0f172a;
-    font-size: 28px;
+
+    font-size: 24px;
     font-weight: 700;
 }
 
-/* Table */
+/* =========================================
+   TABLE WRAPPER
+========================================= */
+
+.recent-orders-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* =========================================
+   TABLE
+========================================= */
 
 .recent-orders table {
     width: 100%;
+
+    min-width: 650px;
+
     border-collapse: collapse;
+    table-layout: fixed;
+
     background: #ffffff;
 }
 
-/* Header */
+/* =========================================
+   HEADER
+========================================= */
 
 .recent-orders thead {
-    background: #f8fafc;
+    background: #ffffff;
 }
 
 .recent-orders th {
-    padding: 16px;
+    padding: 14px 16px;
+
     text-align: left;
 
-    color: #0f172a;
+    color: black;
+
     font-size: 14px;
     font-weight: 700;
 
     border-bottom: 1px solid #e2e8f0;
 }
 
-/* Rows */
+/* Column widths */
+
+.recent-orders th:nth-child(1),
+.recent-orders td:nth-child(1) {
+    width: 22%;
+}
+
+.recent-orders th:nth-child(2),
+.recent-orders td:nth-child(2) {
+    width: 28%;
+}
+
+.recent-orders th:nth-child(3),
+.recent-orders td:nth-child(3) {
+    width: 28%;
+}
+
+.recent-orders th:nth-child(4),
+.recent-orders td:nth-child(4) {
+    width: 22%;
+}
+
+/* =========================================
+   ROW
+========================================= */
 
 .recent-orders tbody tr {
     background: #ffffff;
+
     transition: background 0.2s ease;
 }
 
@@ -58,37 +109,61 @@
     background: #f8fafc;
 }
 
-/* Cells */
-
 .recent-orders td {
     padding: 18px 16px;
 
-    color: black;
+    color: #000000;
     background: #ffffff;
 
     border-bottom: 1px solid #e2e8f0;
 
     font-size: 15px;
+
+    vertical-align: middle;
 }
 
-/* Last row */
 
-.recent-orders tbody tr:last-child td {
-    border-bottom: none;
+.recent-orders .order-number {
+    font-weight: 700;
+
+    white-space: nowrap;
 }
 
-/* Status */
+
+
+.recent-orders .customer-name {
+    font-weight: 500;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+.recent-orders .order-amount {
+    font-weight: 600;
+    color: black;
+    white-space: nowrap;
+}
+
 
 .recent-orders .status {
     display: inline-flex;
-    align-items: center;
 
-    padding: 6px 12px;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 110px;
+
+    padding: 8px 14px;
 
     border-radius: 999px;
 
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
+
+    white-space: nowrap;
 }
 
 /* Pending */
@@ -96,6 +171,13 @@
 .recent-orders .pending {
     background: #fef3c7;
     color: #92400e;
+}
+
+/* Delivered */
+
+.recent-orders .delivered {
+    background: #dcfce7;
+    color: #166534;
 }
 
 /* Completed */
@@ -112,22 +194,23 @@
     color: #991b1b;
 }
 
-/* Responsive */
+
+
+.recent-orders tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
 
 @media (max-width: 700px) {
+
     .recent-orders {
-        overflow-x: auto;
+        overflow: hidden;
     }
 
     .recent-orders table {
-        min-width: 600px;
+        min-width: 650px;
     }
-}
-.dashboard-card {
-    background: #ffffff;
-    color: #000000;
-    border-radius: 20px;
-    padding: 30px;
-    box-sizing: border-box;
-    min-height: auto;
 }

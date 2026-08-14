@@ -1,69 +1,188 @@
-.heatmap-table{
-    width:100%;
-    border-collapse:collapse;
+/* =========================================
+   HEATMAP CARD
+========================================= */
+
+.heatmap-card {
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 24px;
+    color: #0f172a;
+    overflow: hidden;
 }
 
-.heatmap-table th{
-    padding:16px;
-    text-align:center;
-    background:white;
-    color:black;
-    font-size:16px;
+.heatmap-header {
+    margin: 0 0 20px;
+    text-align: left;
+    color: #0f172a;
+    font-size: 22px;
+    font-weight: 700;
 }
 
-.heatmap-table td{
-    padding:20px 16px;
-    text-align:center;
-    border-bottom:1px solid rgba(255,255,255,.08);
+/* =========================================
+   TABLE WRAPPER
+========================================= */
+
+.heatmap-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-radius: 12px;
 }
 
-.product-name{
-    text-align:left;
-    font-weight:600;
-    color:black;
+/* =========================================
+   TABLE
+========================================= */
+
+.heatmap-table {
+    width: 100%;
+    min-width: 700px;
+
+    border-collapse: collapse;
+    table-layout: fixed;
 }
 
-.heat-box{
-    width:20px;
-    height:20px;
-    border-radius:6px;
-    margin:auto;
-    
-}
+/* =========================================
+   HEADER
+========================================= */
 
-.green{
-    background:#22c55e;
-}
+.heatmap-table th {
+    padding: 16px 12px;
 
-.yellow{
-    background:#facc15;
-}
+    background: #f8fafc;
+    color: #0f172a;
 
-.orange{
-    background:#f59e0b;
-}
-
-.red{
-    background:#ef4444;
-}
-.heat-box{
-    width:45px;
-    height:42px;
-    
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:10px;
-
-    font-weight:700;
-    color:black;
-
-    margin:auto;
-}
-.heatmap-header{
     text-align: center;
-    color: black ;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.heatmap-table th:first-child {
+    width: 220px;
+    text-align: left;
+}
+
+/* =========================================
+   CELLS
+========================================= */
+
+.heatmap-table td {
+    padding: 16px 12px;
+
+    text-align: center;
+
+    color: #0f172a;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    background: #ffffff;
+}
+
+/* =========================================
+   PRODUCT NAME
+========================================= */
+
+.product-name {
+    text-align: left !important;
+
+    font-weight: 600;
+
+    color: #0f172a;
+
+    white-space: nowrap;
+}
+
+/* =========================================
+   HEAT BOX
+========================================= */
+
+.heat-box {
+    width: 45px;
+    height: 42px;
+
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border-radius: 10px;
-    font-size: ;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    color: #0f172a;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.heat-box:hover {
+    transform: scale(1.08);
+
+    box-shadow:
+        0 6px 15px rgba(15, 23, 42, 0.15);
+}
+
+/* =========================================
+   HEAT LEVELS
+========================================= */
+
+.green {
+    background: #22c55e;
+}
+
+.yellow {
+    background: #facc15;
+}
+
+.orange {
+    background: #f59e0b;
+}
+
+.red {
+    background: #ef4444;
+}
+
+/* =========================================
+   ROW HOVER
+========================================= */
+
+.heatmap-table tbody tr:hover td {
+    background: #f8fafc;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .heatmap-card {
+        padding: 16px;
+    }
+
+    .heatmap-header {
+        font-size: 20px;
+    }
+
+    .heatmap-table {
+        min-width: 650px;
+    }
+
+    .heatmap-table th,
+    .heatmap-table td {
+        padding: 12px 8px;
+    }
+
+    .heat-box {
+        width: 38px;
+        height: 36px;
+        font-size: 12px;
+    }
 }

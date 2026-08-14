@@ -2,7 +2,7 @@ export default function RecentOrders({ orders }) {
   return (
     <div
       style={{
-        background: "#1E293B",
+        background: "white",
         borderRadius: "20px",
         padding: "24px",
         color: "white",

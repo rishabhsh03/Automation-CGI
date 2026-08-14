@@ -133,10 +133,8 @@ export default function Dashboard() {
           </div>
 
           <div className="dashboard-card">
-            <h2>Recent Orders</h2>
-
-            <RecentOrders orders={dashboard.recentOrders} />
-          </div>
+  <RecentOrders orders={dashboard.recentOrders} />
+</div>
         </div>
         <Modal
           isOpen={openModal}

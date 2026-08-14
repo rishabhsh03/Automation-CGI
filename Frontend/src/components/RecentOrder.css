@@ -1,23 +1,133 @@
+/* =========================================
+   RECENT ORDERS
+========================================= */
+
 .recent-orders {
+    width: 100%;
     background: #ffffff;
-    border-radius: 20px;
-    padding: 24px;
-    color: #111827;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    color: #000000;
+    border-radius: 16px;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+/* Title */
+
+.recent-orders h2 {
+    margin: 0 0 28px 0;
+    padding: 0;
+
+    color: #0f172a;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* Table */
 
 .recent-orders table {
     width: 100%;
     border-collapse: collapse;
+    background: #ffffff;
 }
+
+/* Header */
+
+.recent-orders thead {
+    background: #f8fafc;
+}
+
+.recent-orders th {
+    padding: 16px;
+    text-align: left;
+
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 700;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Rows */
+
+.recent-orders tbody tr {
+    background: #ffffff;
+    transition: background 0.2s ease;
+}
+
+.recent-orders tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* Cells */
 
 .recent-orders td {
-    padding: 14px 0;
-    border-bottom: 1px solid #e5e7eb;
-    color: #111827;
+    padding: 18px 16px;
+
+    color: black;
+    background: #ffffff;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    font-size: 15px;
 }
 
-.recent-orders h2 {
-    margin-bottom: 20px;
-    color: #111827;
+/* Last row */
+
+.recent-orders tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status */
+
+.recent-orders .status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 12px;
+
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Pending */
+
+.recent-orders .pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* Completed */
+
+.recent-orders .completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+/* Cancelled */
+
+.recent-orders .cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+    .recent-orders {
+        overflow-x: auto;
+    }
+
+    .recent-orders table {
+        min-width: 600px;
+    }
+}
+.dashboard-card {
+    background: #ffffff;
+    color: #000000;
+    border-radius: 20px;
+    padding: 30px;
+    box-sizing: border-box;
+    min-height: auto;
 }

@@ -15,9 +15,7 @@ const getDashboardData = async () => {
         inventoryValues
     ] = await Promise.all([
 
-        // =========================================
-        // 1. PRODUCT + LOW STOCK
-        // =========================================
+        
 
         db.query(`
             SELECT
@@ -32,9 +30,6 @@ const getDashboardData = async () => {
                 ) AS low_stock;
         `),
 
-        // =========================================
-        // 2. ALL ORDER STATS IN ONE QUERY
-        // =========================================
 
         db.query(`
             SELECT
@@ -70,18 +65,12 @@ const getDashboardData = async () => {
             FROM orders;
         `),
 
-        // =========================================
-        // 3. SUPPLIERS
-        // =========================================
+
 
         db.query(`
             SELECT COUNT(*) AS total_suppliers
             FROM suppliers;
         `),
-
-        // =========================================
-        // 4. CATEGORIES
-        // =========================================
 
         db.query(`
             SELECT
@@ -91,10 +80,6 @@ const getDashboardData = async () => {
             GROUP BY category
             ORDER BY total DESC;
         `),
-
-        // =========================================
-        // 5. HEATMAP
-        // =========================================
 
         db.query(`
             WITH top_products AS (
@@ -143,9 +128,6 @@ const getDashboardData = async () => {
                 w.name;
         `),
 
-        // =========================================
-        // 6. RECENT ORDERS
-        // =========================================
 
         db.query(`
             SELECT
@@ -165,18 +147,11 @@ const getDashboardData = async () => {
             LIMIT 5;
         `),
 
-        // =========================================
-        // 7. PURCHASE ORDERS
-        // =========================================
 
         db.query(`
             SELECT COUNT(*) AS purchase_orders
             FROM purchaseorders;
         `),
-
-        // =========================================
-        // 8. INVENTORY VALUES
-        // =========================================
 
         db.query(`
             SELECT
@@ -203,9 +178,7 @@ const getDashboardData = async () => {
 
     console.timeEnd("Dashboard total");
 
-    // =========================================
-    // Extract values
-    // =========================================
+
 
     const products = productStats.rows[0];
 
@@ -229,9 +202,7 @@ const getDashboardData = async () => {
             ).toFixed(2)
         );
 
-    // =========================================
-    // Final response
-    // =========================================
+  
 
     return {
 
@@ -293,3 +264,4 @@ const getDashboardData = async () => {
 module.exports = {
     getDashboardData
 };
+

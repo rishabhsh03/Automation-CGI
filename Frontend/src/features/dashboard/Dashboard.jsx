@@ -1,6 +1,6 @@
+import "./Dashboard.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Dashboard.css";
 import { motion } from "framer-motion";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
@@ -32,9 +32,6 @@ export default function Dashboard() {
   const [search, setSearch] = useState("");
 
 
-  // -------------------------
-  // useEffect
-  // -------------------------
   useEffect(() => {
     const loadDashboard = async () => {
       try {
@@ -100,27 +97,21 @@ export default function Dashboard() {
             Open Assistant →
           </button>
         </div>
-        {/* ================= KPI ================= */}
+    
         <KPICards summary={dashboard.summary} />
 
-        {/* ================= CHARTS ================= */}
-
      
-{/* Product Chart */}
-<div className="dashboard-grid single">
-  <div className="dashboard-card">
+<div className="dashboard-grid chart-heatmap-grid">
+
+  <div className="dashboard-card compact-chart-card">
     <ProductChart categories={dashboard.categories} />
   </div>
-</div>
 
-{/* HeatMap */}
-<div className="dashboard-grid single">
-  <div className="dashboard-card">
+  <div className="dashboard-card compact-heatmap-card">
     <HeatMap data={dashboard.heatmap} />
   </div>
-</div>
 
-        {/* ================= TABLES ================= */}
+</div>
 
         <div className="dashboard-grid">
           <div className="dashboard-card">

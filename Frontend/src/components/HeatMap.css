@@ -1,188 +1,275 @@
 /* =========================================
-   HEATMAP CARD
+   WAREHOUSE STOCK HEALTH
 ========================================= */
 
-.heatmap-card {
-    width: 100%;
-    box-sizing: border-box;
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 24px;
-    color: #0f172a;
-    overflow: hidden;
+.heatmap-container {
+    width: 100% !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
 }
 
-.heatmap-header {
-    margin: 0 0 20px;
-    text-align: left;
-    color: #0f172a;
-    font-size: 22px;
-    font-weight: 700;
+
+/* HEADER */
+
+.heatmap-container .heatmap-header {
+    display: block !important;
+    margin-bottom: 18px !important;
 }
+
+.heatmap-container .heatmap-header h2 {
+    margin: 0 0 8px 0 !important;
+
+    color: #0f172a !important;
+
+    font-size: 26px !important;
+    font-weight: 700 !important;
+}
+
+.heatmap-container .heatmap-header p {
+    margin: 0 !important;
+
+    color: #64748b !important;
+
+    font-size: 15px !important;
+}
+
+
+/* =========================================
+   LEGEND
+========================================= */
+
+.heatmap-container .heatmap-legend {
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: center !important;
+
+    gap: 20px !important;
+
+    margin: 15px 0 22px !important;
+
+    flex-wrap: wrap !important;
+}
+
+.heatmap-container .heatmap-legend-item {
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: center !important;
+
+    gap: 7px !important;
+
+    color: #475569 !important;
+
+    font-size: 13px !important;
+
+    font-weight: 500 !important;
+}
+
+.heatmap-container .heatmap-legend-box {
+    width: 12px !important;
+    height: 12px !important;
+
+    min-width: 12px !important;
+    min-height: 12px !important;
+
+    display: inline-block !important;
+
+    border-radius: 4px !important;
+}
+
 
 /* =========================================
    TABLE WRAPPER
 ========================================= */
 
 .heatmap-table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    border-radius: 12px;
+    width: 100% !important;
+
+    overflow-x: auto !important;
 }
+
 
 /* =========================================
    TABLE
 ========================================= */
 
-.heatmap-table {
-    width: 100%;
-    min-width: 700px;
+.heatmap-container table.heatmap-table {
+    width: 100% !important;
 
-    border-collapse: collapse;
-    table-layout: fixed;
+    border-collapse: separate !important;
+
+    border-spacing: 0 !important;
+
+    background: #ffffff !important;
+
+    color: #0f172a !important;
+
+    table-layout: fixed !important;
 }
+
 
 /* =========================================
-   HEADER
+   TABLE HEADER
 ========================================= */
 
-.heatmap-table th {
-    padding: 16px 12px;
-
-    background: #f8fafc;
-    color: #0f172a;
-
-    text-align: center;
-
-    font-size: 15px;
-    font-weight: 700;
-
-    border-bottom: 1px solid #e2e8f0;
+.heatmap-container table.heatmap-table thead {
+    background: #f8fafc !important;
 }
 
-.heatmap-table th:first-child {
-    width: 220px;
-    text-align: left;
+.heatmap-container table.heatmap-table th {
+    padding: 14px 12px !important;
+
+    background: #f8fafc !important;
+
+    color: #0f172a !important;
+
+    opacity: 1 !important;
+
+    text-align: center !important;
+
+    font-size: 14px !important;
+
+    font-weight: 700 !important;
+
+    border-bottom: 1px solid #e2e8f0 !important;
 }
+
+.heatmap-container table.heatmap-table th:first-child {
+    text-align: left !important;
+}
+
 
 /* =========================================
-   CELLS
+   TABLE BODY
 ========================================= */
 
-.heatmap-table td {
-    padding: 16px 12px;
-
-    text-align: center;
-
-    color: #0f172a;
-
-    border-bottom: 1px solid #e2e8f0;
-
-    background: #ffffff;
+.heatmap-container table.heatmap-table tbody {
+    background: #ffffff !important;
 }
 
-/* =========================================
-   PRODUCT NAME
-========================================= */
+.heatmap-container table.heatmap-table tbody tr {
+    background: #ffffff !important;
 
-.product-name {
+    opacity: 1 !important;
+}
+
+.heatmap-container table.heatmap-table td {
+    padding: 14px 12px !important;
+
+    background: #ffffff !important;
+
+    color: #0f172a !important;
+
+    opacity: 1 !important;
+
+    text-align: center !important;
+
+    font-size: 14px !important;
+
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+
+/* PRODUCT */
+
+.heatmap-container table.heatmap-table .product-name {
     text-align: left !important;
 
-    font-weight: 600;
+    color: #0f172a !important;
 
-    color: #0f172a;
+    font-weight: 600 !important;
 
-    white-space: nowrap;
+    white-space: nowrap !important;
+
+    overflow: hidden !important;
+
+    text-overflow: ellipsis !important;
 }
+
 
 /* =========================================
    HEAT BOX
 ========================================= */
 
-.heat-box {
-    width: 45px;
-    height: 42px;
+.heatmap-container .heat-box {
+    width: 65px !important;
+    height: 40px !important;
 
-    margin: auto;
+    margin: auto !important;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex !important;
 
-    border-radius: 10px;
+    align-items: center !important;
+    justify-content: center !important;
 
-    font-size: 14px;
-    font-weight: 700;
+    border-radius: 9px !important;
 
-    color: #0f172a;
+    color: #ffffff !important;
 
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    font-size: 13px !important;
+
+    font-weight: 700 !important;
 }
 
-.heat-box:hover {
-    transform: scale(1.08);
-
-    box-shadow:
-        0 6px 15px rgba(15, 23, 42, 0.15);
-}
 
 /* =========================================
-   HEAT LEVELS
+   COLORS
 ========================================= */
 
-.green {
-    background: #22c55e;
+.heatmap-container .stock-good {
+    background: #22c55e !important;
+    color: #ffffff !important;
 }
 
-.yellow {
-    background: #facc15;
+.heatmap-container .stock-medium {
+    background: #facc15 !important;
+    color: #422006 !important;
 }
 
-.orange {
-    background: #f59e0b;
+.heatmap-container .stock-low {
+    background: #f59e0b !important;
+    color: #431407 !important;
 }
 
-.red {
-    background: #ef4444;
+.heatmap-container .stock-critical {
+    background: #ef4444 !important;
+    color: #ffffff !important;
 }
+
+.heatmap-container .stock-empty {
+    background: #cbd5e1 !important;
+    color: #475569 !important;
+}
+
 
 /* =========================================
-   ROW HOVER
+   NO HOVER
 ========================================= */
 
-.heatmap-table tbody tr:hover td {
-    background: #f8fafc;
+.heatmap-container table.heatmap-table tbody tr:hover {
+    background: #ffffff !important;
 }
 
+.heatmap-container table.heatmap-table tbody tr:hover td {
+    background: #ffffff !important;
+    color: #0f172a !important;
+}
+
+
 /* =========================================
-   RESPONSIVE
+   MOBILE
 ========================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
 
-    .heatmap-card {
-        padding: 16px;
+    .heatmap-container .heatmap-legend {
+        gap: 12px !important;
     }
 
-    .heatmap-header {
-        font-size: 20px;
-    }
-
-    .heatmap-table {
-        min-width: 650px;
-    }
-
-    .heatmap-table th,
-    .heatmap-table td {
-        padding: 12px 8px;
-    }
-
-    .heat-box {
-        width: 38px;
-        height: 36px;
-        font-size: 12px;
+    .heatmap-container table.heatmap-table {
+        min-width: 650px !important;
     }
 }

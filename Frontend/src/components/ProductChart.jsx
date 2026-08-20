@@ -1,90 +1,148 @@
-import React from "react";
 import ReactECharts from "echarts-for-react";
+import "./ProductChart.css";
 
 export default function ProductChart({ categories = [] }) {
-  // Make sure categories is actually an array
-  const safeCategories = Array.isArray(categories)
-    ? categories
-    : [];
+    // Make sure backend data is always an array
+    const safeCategories = Array.isArray(categories)
+        ? categories
+        : [];
 
-  const chartData = safeCategories
-    .map((item) => ({
-      category: item?.category ?? "Unknown",
-      total: Number(item?.total ?? item?.count ?? 0),
-    }))
-    .filter((item) => Number.isFinite(item.total))
-    .sort((a, b) => b.total - a.total)
-    .slice(0, 10);
+    // Convert backend data to ECharts format
+    const data = safeCategories
+        .map((item) => ({
+            name: item?.category ?? "Unknown",
+            value: Number(
+                item?.total ??
+                item?.quantity ??
+                item?.count ??
+                0
+            ),
+        }))
+        .filter((item) => item.value > 0);
 
-  const option = {
-    title: {
-      text: "Products by Category",
-      left: "left",
-    },
+    // Sort largest → smallest
+    const sortedData = [...data].sort(
+        (a, b) => b.value - a.value
+    );
 
-    tooltip: {
-      trigger: "axis",
-    },
+    // Keep only top 8
+    const topCategories = sortedData.slice(0, 8);
 
-    toolbox: {
-      feature: {
-        restore: {},
-        saveAsImage: {},
-      },
-    },
+    // Combine remaining categories
+    const otherValue = sortedData
+        .slice(8)
+        .reduce(
+            (sum, item) => sum + item.value,
+            0
+        );
 
-    grid: {
-      left: "5%",
-      right: "5%",
-      bottom: "15%",
-      containLabel: true,
-    },
+    // Final chart data
+    const chartData = [
+        ...topCategories,
 
-    xAxis: {
-      type: "category",
-      data: chartData.map((item) => item.category),
-    },
+        ...(otherValue > 0
+            ? [
+                {
+                    name: "Others",
+                    value: otherValue,
+                },
+            ]
+            : []),
+    ];
 
-    yAxis: {
-      type: "value",
-      name: "Products",
-    },
+    console.log("ProductChart:", {
+        categories,
+        data,
+        chartData,
+    });
 
-    series: [
-      {
-        name: "Products",
-        type: "bar",
-        data: chartData.map((item) => item.total),
-        barMaxWidth: 50,
-      },
-    ],
-  };
+    const option = {
+        tooltip: {
+            trigger: "item",
 
-  return (
-    <div
-      className="product-chart"
-      style={{
-        width: "100%",
-        minHeight: "400px",
-      }}
-    >
-      {chartData.length === 0 ? (
-        <div className="product">
-          <h2>Products by Category</h2>
-          <p>No product category data available.</p>
+            formatter: (params) => {
+                return `
+                    <strong>${params.name}</strong><br/>
+                    Quantity: ${params.value}<br/>
+                    Share: ${params.percent}%
+                `;
+            },
+        },
+
+        legend: {
+            orient: "vertical",
+            right: 80,
+            top: "center",
+            type:"scroll",
+
+            itemWidth: 14,
+            itemHeight: 14,
+
+            textStyle: {
+                color: "#475569",
+                fontSize: 13,
+            },
+        },
+
+        series: [
+            {
+                name: "Product Distribution",
+                type: "pie",
+
+                radius: ["48%", "70%"],
+
+                center: ["35%", "50%"],
+
+                data: chartData,
+
+                // IMPORTANT
+                // Don't show 20 labels around the chart
+                label: {
+                    show: false,
+                },
+
+                labelLine: {
+                    show: false,
+                },
+
+                itemStyle: {
+                    borderRadius: 7,
+                    borderColor: "#ffffff",
+                    borderWidth: 3,
+                },
+
+                emphasis: {
+                    scale: true,
+                    scaleSize: 8,
+
+                    itemStyle: {
+                        shadowBlur: 20,
+                        shadowOffsetX: 0,
+                        shadowColor:
+                            "rgba(0, 0, 0, 0.15)",
+                    },
+                },
+            },
+        ],
+    };
+
+    return (
+        <div className="product-chart">
+            <h2>Product Disribution</h2>
+            {chartData.length === 0 ? (
+                <div className="product-chart-empty">
+                    No product data available
+                </div>
+            ) : (
+                <ReactECharts
+                    option={option}
+                    style={{
+                        width: "100%",
+                        height: "360px",
+                    }}
+                />
+            )}
+
         </div>
-      ) : (
-        <ReactECharts
-          option={option}
-          style={{
-            width: "100%",
-            height: "400px",
-          }}
-          opts={{
-            renderer: "canvas",
-          }}
-        />
-      )}
-    </div>
-  );
+    );
 }

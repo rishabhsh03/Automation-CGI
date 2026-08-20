@@ -646,3 +646,57 @@
 .dashboard-loading .dashboard-ai-card {
     pointer-events: none;
 }
+
+.chart-heatmap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    width: 100%;
+    margin-bottom: 25px;
+
+    align-items: stretch;
+}
+
+
+/* Chart card */
+
+.compact-chart-card {
+    height: 500px;
+    padding: 24px;
+
+    overflow: hidden;
+}
+
+
+/* Heatmap card */
+
+.compact-heatmap-card {
+    height: 500px;
+    padding: 24px;
+
+    overflow: hidden;
+}
+
+
+/* Make the chart itself smaller */
+
+.compact-chart-card .product-chart {
+    width: 100%;
+    height: 420px;
+}
+
+
+/* Responsive */
+
+@media (max-width: 1100px) {
+
+    .chart-heatmap-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .compact-chart-card,
+    .compact-heatmap-card {
+        height: 500px;
+    }
+}

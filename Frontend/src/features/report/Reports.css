@@ -401,38 +401,6 @@ tbody tr:hover{
 }
 
 /* ===========================================
-   Status
-=========================================== */
-
-.status{
-
-    padding:8px 16px;
-
-    border-radius:20px;
-
-    font-size:13px;
-
-    font-weight:600;
-
-}
-
-.completed{
-
-    background:#DCFCE7;
-
-    color:#15803D;
-
-}
-
-.pending{
-
-    background:#FEF3C7;
-
-    color:#92400E;
-
-}
-
-/* ===========================================
    Responsive
 =========================================== */
 

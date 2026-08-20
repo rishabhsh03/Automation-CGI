@@ -1,3 +1,4 @@
+import "./RecentOrder.css"
 export default function RecentOrders({ orders = [] }) {
   return (
     <div className="recent-orders">

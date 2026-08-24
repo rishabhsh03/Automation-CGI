@@ -11,7 +11,7 @@ import CategoryProgress from "../../components/CategoryProgress";
 import HeatMap from "../../components/HeatMap";
 import InventoryTable from "../inventory/InventoryTable";
 import RecentOrders from "../../components/RecentOrders";
-import ProductChart from "../../components/ProductChart";
+import AIChart from "../../components/charts/AIChart";
 import "../../components/KPICards.css";
 import API_BASE_URL from "../../config/api";
 import WarehouseLoader from "../../components/WarehouseLoader";
@@ -42,6 +42,12 @@ export default function Dashboard() {
         const result = await response.json();
 
         if (result.success) {
+          console.log("========== DASHBOARD ==========");
+          console.log("Dashboard:", result.data);
+          console.log(
+            "Categories JSON:",
+            JSON.stringify(result.data.categories, null, 2)
+        );
           setDashboard(result.data);
         }
       } catch (error) {
@@ -57,10 +63,288 @@ export default function Dashboard() {
     return <WarehouseLoader/>
   }
 
+  const handleChartAI = async (prompt) => {
 
+    console.log(
+        "Chart request:",
+        prompt
+    );
+
+
+    const request =
+        prompt.toLowerCase().trim();
+
+
+   
+
+    if (
+        request.includes("heatmap") ||
+        request.includes("heat map") ||
+        request.includes("warehouse stock")
+    ) {
+
+        const result = {
+
+            type: "heatmap",
+
+            dataSource: "heatmap",
+
+            title: "Warehouse Stock Health",
+
+            subtitle:
+                "Inventory availability across warehouses"
+
+        };
+
+
+        console.log(
+            "Chart result:",
+            result
+        );
+
+
+        return result;
+
+    }
+
+
+    if (
+        request.includes("sankey") ||
+        request.includes("flow") ||
+        request.includes("movement")
+    ) {
+
+        const result = {
+
+            type: "sankey",
+
+            dataSource: "stockMovements",
+
+            title: "Warehouse Inventory Flow",
+
+            subtitle:
+                "Movement of inventory across warehouses"
+
+        };
+
+
+        console.log(
+            "Chart result:",
+            result
+        );
+
+
+        return result;
+
+    }
+
+
+
+
+    if (
+        request.includes("scatter")
+    ) {
+
+        const result = {
+
+            type: "scatter",
+
+            dataSource: "categories",
+
+            title: "Inventory Distribution",
+
+            subtitle:
+                "Inventory relationship visualization"
+
+        };
+
+
+        console.log(
+            "Chart result:",
+            result
+        );
+
+
+        return result;
+
+    }
+
+
+  
+
+    if (
+        request.includes("radar")
+    ) {
+
+        const result = {
+
+            type: "radar",
+
+            dataSource: "categories",
+
+            title: "Inventory Comparison",
+
+            subtitle:
+                "Category comparison"
+
+        };
+
+
+        console.log(
+            "Chart result:",
+            result
+        );
+
+
+        return result;
+
+    }
+
+
+
+    if (
+        request.includes("gauge") ||
+        request.includes("health")
+    ) {
+
+        const result = {
+
+            type: "gauge",
+
+            dataSource: "categories",
+
+            title: "Inventory Health",
+
+            subtitle:
+                "Current inventory status"
+
+        };
+
+
+        console.log(
+            "Chart result:",
+            result
+        );
+
+
+        return result;
+
+    }
+
+
+
+    if (
+        request.includes("donut")
+    ) {
+
+        return {
+
+            type: "donut",
+
+            dataSource: "categories",
+
+            title: "Inventory Distribution",
+
+            subtitle:
+                "Current inventory distribution"
+
+        };
+
+    }
+
+
+
+    if (
+        request.includes("pie")
+    ) {
+
+        return {
+
+            type: "pie",
+
+            dataSource: "categories",
+
+            title: "Inventory Distribution",
+
+            subtitle:
+                "Current inventory distribution"
+
+        };
+
+    }
+
+
+
+
+    if (
+        request.includes("bar")
+    ) {
+
+        return {
+
+            type: "bar",
+
+            dataSource: "categories",
+
+            title: "Inventory by Category",
+
+            subtitle:
+                "Current inventory across categories"
+
+        };
+
+    }
+
+
+
+
+    if (
+        request.includes("line")
+    ) {
+
+        return {
+
+            type: "line",
+
+            dataSource: "categories",
+
+            title: "Inventory Trend",
+
+            subtitle:
+                "Inventory visualization"
+
+        };
+
+    }
+
+
+
+
+    if (
+        request.includes("area")
+    ) {
+
+        return {
+
+            type: "area",
+
+            dataSource: "categories",
+
+            title: "Inventory Overview",
+
+            subtitle:
+                "Inventory area visualization"
+
+        };
+
+    }
+
+
+    return null;
+};
   return (
     <div className="dashboard-container">
-      {loading && <WarehouseLoader/>}
+      
       <Sidebar
         search={search}
         setSearch={setSearch}
@@ -101,15 +385,26 @@ export default function Dashboard() {
         <KPICards summary={dashboard.summary} />
 
      
-<div className="dashboard-grid chart-heatmap-grid">
+        <div className="dashboard-grid chart-heatmap-grid">
 
-  <div className="dashboard-card compact-chart-card">
-    <ProductChart categories={dashboard.categories} />
-  </div>
+<div className="dashboard-card compact-chart-card">
 
-  <div className="dashboard-card compact-heatmap-card">
-    <HeatMap data={dashboard.heatmap} />
-  </div>
+    <AIChart
+        categories={dashboard.categories}
+        heatmap={dashboard.heatmap}
+        recentOrders={dashboard.recentOrders}
+        onGenerate={handleChartAI}
+    />
+
+</div>
+{/* 
+<div className="dashboard-card compact-heatmap-card">
+
+    <HeatMap
+        data={dashboard.heatmap}
+    />
+
+</div> */}
 
 </div>
 

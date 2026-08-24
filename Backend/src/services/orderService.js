@@ -1,8 +1,5 @@
 const orderRepository = require("../repositories/orderRepository");
 
-// ============================
-// Create Order
-// ============================
 
 const createOrder = async (data) => {
 
@@ -10,9 +7,7 @@ const createOrder = async (data) => {
 
 };
 
-// ============================
-// Get All Orders
-// ============================
+
 
 const getOrders = async () => {
 
@@ -20,9 +15,6 @@ const getOrders = async () => {
 
 };
 
-// ============================
-// Get Order By ID
-// ============================
 
 const getOrderById = async (id) => {
 
@@ -30,9 +22,6 @@ const getOrderById = async (id) => {
 
 };
 
-// ============================
-// Update Order Status
-// ============================
 
 const updateOrderStatus = async (id, status) => {
 
@@ -40,9 +29,6 @@ const updateOrderStatus = async (id, status) => {
 
 };
 
-// ============================
-// Delete Order
-// ============================
 
 const deleteOrder = async (id) => {
 
@@ -50,9 +36,6 @@ const deleteOrder = async (id) => {
 
 };
 
-// ============================
-// Recent Orders
-// ============================
 
 const getRecentOrders = async () => {
 

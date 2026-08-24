@@ -19,7 +19,6 @@ router.get(
     getProducts
 );
 
-// Only ADMIN and WAREHOUSE_MANAGER can add products
 router.post(
     "/",
     authenticate,

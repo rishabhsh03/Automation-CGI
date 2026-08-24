@@ -1,6 +1,4 @@
-/* =========================================
-   WAREHOUSE STOCK HEALTH
-========================================= */
+
 
 .heatmap-container {
     width: 100% !important;
@@ -9,7 +7,6 @@
 }
 
 
-/* HEADER */
 
 .heatmap-container .heatmap-header {
     display: block !important;
@@ -34,9 +31,6 @@
 }
 
 
-/* =========================================
-   LEGEND
-========================================= */
 
 .heatmap-container .heatmap-legend {
     display: flex !important;
@@ -81,9 +75,7 @@
 }
 
 
-/* =========================================
-   TABLE WRAPPER
-========================================= */
+
 
 .heatmap-table-wrapper {
     width: 100% !important;
@@ -92,9 +84,6 @@
 }
 
 
-/* =========================================
-   TABLE
-========================================= */
 
 .heatmap-container table.heatmap-table {
     width: 100% !important;
@@ -111,9 +100,6 @@
 }
 
 
-/* =========================================
-   TABLE HEADER
-========================================= */
 
 .heatmap-container table.heatmap-table thead {
     background: #f8fafc !important;
@@ -142,9 +128,7 @@
 }
 
 
-/* =========================================
-   TABLE BODY
-========================================= */
+
 
 .heatmap-container table.heatmap-table tbody {
     background: #ffffff !important;
@@ -173,7 +157,7 @@
 }
 
 
-/* PRODUCT */
+
 
 .heatmap-container table.heatmap-table .product-name {
     text-align: left !important;
@@ -189,10 +173,6 @@
     text-overflow: ellipsis !important;
 }
 
-
-/* =========================================
-   HEAT BOX
-========================================= */
 
 .heatmap-container .heat-box {
     width: 65px !important;
@@ -215,9 +195,6 @@
 }
 
 
-/* =========================================
-   COLORS
-========================================= */
 
 .heatmap-container .stock-good {
     background: #22c55e !important;
@@ -245,10 +222,6 @@
 }
 
 
-/* =========================================
-   NO HOVER
-========================================= */
-
 .heatmap-container table.heatmap-table tbody tr:hover {
     background: #ffffff !important;
 }
@@ -259,9 +232,6 @@
 }
 
 
-/* =========================================
-   MOBILE
-========================================= */
 
 @media (max-width: 800px) {
 

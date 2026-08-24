@@ -1,2 +1,3 @@
 DEMO
-https://automation-cgi.vercel.app/dashboard
+https://automation-cgi.vercel.app
+

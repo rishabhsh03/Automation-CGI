@@ -19,7 +19,7 @@ export default function AI() {
     // SESSION ID
     // ------------------------------------------
 
-    const [sessionId] = useState(() => {
+    const [sessionId, setSessionId] = useState(() => {
 
         let storedSession =
             localStorage.getItem("warehouse-ai-session");
@@ -227,9 +227,9 @@ const handleNewChat = () => {
     setInput("");
 
     // Create a completely new backend conversation
-    setSessionId(
-        crypto.randomUUID()
-    );
+    const newSessionId = crypto.randomUUID();
+    localStorage.setItem("warehouse-ai-session", newSessionId);
+    setSessionId(newSessionId);
 
 };
     return (

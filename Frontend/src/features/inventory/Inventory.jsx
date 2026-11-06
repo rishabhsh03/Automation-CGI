@@ -25,38 +25,36 @@ export default function Inventory() {
 
     const [scannedProduct, setScannedProduct] = useState(null);
 
-    useEffect(() => {
+    const loadInventory = async () => {
+        try {
+            const res = await fetch(
+                `${API_BASE_URL}/api/inventory`
+            );
 
-        loadInventory();
+            if (!res.ok) {
+                throw new Error(`HTTP Error: ${res.status}`);
+            }
 
-    }, []);
+            const result = await res.json();
 
-const loadInventory = async () => {
-    try {
-        const res = await fetch(
-  `${API_BASE_URL}/api/inventory`
-);
+            console.log(result);
 
-        if (!res.ok) {
-            throw new Error(`HTTP Error: ${res.status}`);
-        }
+            if (result.success && Array.isArray(result.data)) {
+                setInventory(result.data);
+            } else {
+                console.error(result);
+                setInventory([]);
+            }
 
-        const result = await res.json();
-
-        console.log(result);
-
-        if (result.success && Array.isArray(result.data)) {
-            setInventory(result.data);
-        } else {
-            console.error(result);
+        } catch (err) {
+            console.error("Inventory API Error:", err);
             setInventory([]);
         }
+    };
 
-    } catch (err) {
-        console.error("Inventory API Error:", err);
-        setInventory([]);
-    }
-};
+    useEffect(() => {
+        loadInventory();
+    }, []);
 
     const getStatus = (qty)=>{
 

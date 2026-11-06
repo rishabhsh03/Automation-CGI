@@ -1,46 +1,50 @@
-import React from "react";
 import EChartsReact from "echarts-for-react";
 
-export default function IntradayChart({ data = []}) {
-
+export default function IntradayChart({ data = [] }) {
     const safeData = Array.isArray(data) ? data : [];
     const time = safeData.map(item => item.time);
     const quantities = safeData.map(item => Number(item.quantities) || 0);
 
     const option = {
         tooltip: {
-            trigger:"axis",
+            trigger: "axis",
         },
         grid: {
             left: "50px",
             right: "30px",
             top: "30px",
-            bottom:"40px",
-            conatinLabel: true,
+            bottom: "40px",
+            containLabel: true,
         },
-        xAxis:{
-            type:"category",
-            data: times,
-
-            boundarygap: false,
-
-            axisLine:{
+        xAxis: {
+            type: "category",
+            data: time,
+            boundaryGap: false,
+            axisLine: {
                 lineStyle: {
-                    color:" #cbd5e1",
+                    color: "#cbd5e1",
                 },
             },
-            axisLabel:{
-                color:" #64748b",
+            axisLabel: {
+                color: "#64748b",
             },
         },
-        yAxis:{
-            type: Value,
+        yAxis: {
+            type: "value",
+            axisLine: {
+                lineStyle: {
+                    color: "#e2e8f0",
+                },
+            },
+        },
+        series: [
+            {
+                data: quantities,
+                type: "line",
+                smooth: true,
+            },
+        ],
+    };
 
-            axisLine:{
-                lineStyle:{
-                    color: "#e2e8f0"
-                }
-            }
-        }
-    }
+    return <EChartsReact option={option} style={{ height: "100%", width: "100%" }} />;
 }

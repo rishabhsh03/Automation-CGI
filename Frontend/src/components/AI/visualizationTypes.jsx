@@ -31,6 +31,6 @@ export const VISUALIZATION_TYPE = {
     BOXPLOT: "boxplot"
 };
 
-export const SUPPORTED_VISUALIZATION = object.values(
+export const SUPPORTED_VISUALIZATION = Object.values(
     VISUALIZATION_TYPE
 )
